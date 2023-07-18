@@ -1,6 +1,6 @@
 {
-  "key.player_info.name": "Player Info",
-  "category.player_info.name": "Open Screen",
+  "key.x_player_info.name": "Player Info",
+  "category.x_player_info.name": "Open Screen",
 
   "Minecraft.info.group.base": "Basic Info",
   "Minecraft.info.group.xp": "Experience & Level",

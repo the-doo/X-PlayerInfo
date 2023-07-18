@@ -1,6 +1,6 @@
 {
-  "keybind.key.player_info.name": "玩家信息",
-  "keybind.category.player_info.name": "展示",
+  "keybind.key.x_player_info.name": "玩家信息",
+  "keybind.category.x_player_info.name": "展示",
 
   "Minecraft.info.group.base": "基本信息",
   "Minecraft.info.group.xp": "经验与等级",
