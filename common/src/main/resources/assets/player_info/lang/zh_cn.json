@@ -35,11 +35,15 @@
   "attribute.extend.saturation_level": "饱和度",
   "attribute.extend.saturation_level.tip": "玩家目前的饱和度（Saturation），在饥饿值被消耗前会首先被消耗，其值不能超过目前的饥饿值，最低值为0。初始值为5。这是一项隐藏变量，无法被玩家直接监测具体值。",
   "attribute.extend.experience_level": "等级",
+  "attribute.extend.experience_level.tip": "等级",
   "attribute.extend.total_experience": "经验值",
+  "attribute.extend.total_experience.tip": "经验值",
   "attribute.extend.experience_progress": "等级进度",
+  "attribute.extend.experience_progress.tip": "等级进度",
   "attribute.name.extend.xp_bonus": "经验加成",
   "attribute.name.extend.xp_bonus.tip": "额外的经验加成，生效于所有经验来源。如果该属性值为0.5, 则最终经验为3(= 2 + 2 * 0.5)。特别说明，最终值会忽略小数(不会四舍五入)，如1(= 1 + 1 * 0.5)。仅对玩家有效。",
   "attribute.extend.pick_range": "触及范围",
+  "attribute.extend.pick_range.tip": "触及范围",
 
   "attribute.name.extend.armor_penetration": "护甲穿透",
   "attribute.name.extend.armor_penetration.tip": "计算伤害时无视总护甲的百分比。最大值是100，为无视100%护甲。生效于所有生物。",
@@ -57,7 +61,11 @@
   "attribute.extend.damage_bonus.undefined": "伤害加成",
   "attribute.extend.damage_bonus.undefined.tip": "对所有生物造成的额外伤害",
   "attribute.extend.damage_bonus.undead": "亡灵伤害加成",
+  "attribute.extend.damage_bonus.undead.tip": "亡灵伤害加成",
   "attribute.extend.damage_bonus.arthropod": "节肢伤害加成",
+  "attribute.extend.damage_bonus.arthropod.tip": "节肢伤害加成",
   "attribute.extend.damage_bonus.illager": "灾厄伤害加成",
-  "attribute.extend.damage_bonus.water": "水生物伤害加成"
+  "attribute.extend.damage_bonus.illager.tip": "灾厄伤害加成",
+  "attribute.extend.damage_bonus.water": "水生物伤害加成",
+  "attribute.extend.damage_bonus.water.tip": "水生物伤害加成"
 }

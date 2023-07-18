@@ -35,11 +35,15 @@
   "attribute.extend.saturation_level": "Saturation",
   "attribute.extend.saturation_level.tip": "The player's current saturation level, which determines how fast foodLevel depletes and is controlled by the kinds of food the player has eaten. Its maximum value always equals foodLevel's value and decreases with foodLevel. Its initial value on world creation or respawn is 5.",
   "attribute.extend.experience_level": "Level",
+  "attribute.extend.experience_level.tip": "Level",
   "attribute.extend.total_experience": "Experience",
+  "attribute.extend.total_experience.tip": "Experience",
   "attribute.extend.experience_progress": "Level Progress",
+  "attribute.extend.experience_progress.tip": "Level Progress",
   "attribute.name.extend.xp_bonus": "Experience bonus",
   "attribute.name.extend.xp_bonus.tip": "Extra experience bonus, applies to all experience sources. If the attribute value is 0.5, and final xp is 3(= 2 + 2 * 0.5). Special Note, the final xp ignores decimal(won't round), like 1(= 1 + 1 * 0.5).Only available to players.",
   "attribute.extend.pick_range": "Pick Range",
+  "attribute.extend.pick_range.tip": "Pick Range",
 
   "attribute.name.extend.armor_reduction": "Ignore Armor",
   "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 100, ignoring 100% armor.Works on all living entity.",
@@ -57,7 +61,11 @@
   "attribute.extend.damage_bonus.undefined": "Normal Damage Bonus",
   "attribute.extend.damage_bonus.undefined.tip": "Works on all living entitiy",
   "attribute.extend.damage_bonus.undead": "Undead Damage Bonus",
+  "attribute.extend.damage_bonus.undead.tip": "Undead Damage Bonus",
   "attribute.extend.damage_bonus.arthropod": "Arthropod Damage Bonus",
+  "attribute.extend.damage_bonus.arthropod.tip": "Arthropod Damage Bonus",
   "attribute.extend.damage_bonus.illager": "Illager Damage Bonus",
+  "attribute.extend.damage_bonus.illager.tip": "Illager Damage Bonus",
   "attribute.extend.damage_bonus.water": "Water Damage Bonus",
+  "attribute.extend.damage_bonus.water.tip": "Water Damage Bonus"
 }
