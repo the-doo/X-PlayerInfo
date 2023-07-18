@@ -6,4 +6,9 @@ public class XPlayerInfo {
     public static void init() {
 
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T get(Object t) {
+        return (T) t;
+    }
 }

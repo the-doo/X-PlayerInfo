@@ -48,7 +48,7 @@
   "attribute.name.extend.armor_penetration": "护甲穿透",
   "attribute.name.extend.armor_penetration.tip": "计算伤害时无视总护甲的百分比。最大值是100，为无视100%护甲。生效于所有生物。",
   "attribute.extend.damage_reduction_by_armor": "护甲减免",
-  "attribute.extend.damage_reduction_by_armor.tip": "通常情况下，护甲及韧性所减免的伤害。1为最大值，完全减免",
+  "attribute.extend.damage_reduction_by_armor.tip": "通常情况下，护甲及韧性所减免的伤害。1为最大值，完全减免。",
   "attribute.extend.critical_hits": "跳斩伤害加成",
   "attribute.extend.critical_hits.tip": "跳跃攻击所造成的伤害，即原版暴击伤害",
   "attribute.name.extend.attack.damage_percentage_bonus": "百分比伤害",
@@ -67,5 +67,20 @@
   "attribute.extend.damage_bonus.illager": "灾厄伤害加成",
   "attribute.extend.damage_bonus.illager.tip": "灾厄伤害加成",
   "attribute.extend.damage_bonus.water": "水生物伤害加成",
-  "attribute.extend.damage_bonus.water.tip": "水生物伤害加成"
+  "attribute.extend.damage_bonus.water.tip": "水生物伤害加成",
+
+  "attribute.extend.armor_bonus.magic": "魔法伤害减免",
+  "attribute.extend.armor_bonus.magic.tip": "魔法伤害减免。1为最大值，完全减免。",
+  "attribute.extend.armor_bonus.fall": "坠落伤害减免",
+  "attribute.extend.armor_bonus.fall.tip": "坠落伤害减免。1为最大值，完全减免。",
+  "attribute.extend.armor_bonus.inFire": "火焰伤害减免",
+  "attribute.extend.armor_bonus.inFire.tip": "火焰伤害减免。1为最大值，完全减免。",
+  "attribute.extend.armor_bonus.lightningBolt": "雷电伤害减免",
+  "attribute.extend.armor_bonus.lightningBolt.tip": "雷电伤害减免。1为最大值，完全减免。",
+  "attribute.extend.armor_bonus.explosion": "爆炸伤害减免",
+  "attribute.extend.armor_bonus.explosion.tip": "爆炸伤害减免。1为最大值，完全减免。",
+  "attribute.extend.armor_bonus.wither": "凋灵伤害减免",
+  "attribute.extend.armor_bonus.wither.tip": "凋灵伤害减免。1为最大值，完全减免。",
+  "attribute.extend.armor_bonus.drown": "溺水伤害减免",
+  "attribute.extend.armor_bonus.drown.tip": "溺水伤害减免。1为最大值，完全减免。"
 }

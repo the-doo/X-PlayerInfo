@@ -4,8 +4,10 @@ import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;
+import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.google.common.collect.Lists;
-import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,11 +23,17 @@ import static com.doo.playerinfo.consts.Const.MINECRAFT_NAME;
 
 public abstract class InfoRegisters {
 
+    private static DamageSource damageTest;
+
     private InfoRegisters() {
     }
 
     public static void initMinecraft() {
         InfoItemCollector.register(MINECRAFT_NAME, player -> {
+            if (damageTest == null) {
+                damageTest = player.level().damageSources().mobAttack(null);
+            }
+
             List<InfoGroupItems> sorted = Lists.newArrayList();
             AttributeMap attributes = player.getAttributes();
             Abilities abilities = player.getAbilities();
@@ -35,6 +43,7 @@ public abstract class InfoRegisters {
                     .add(Attributes.MAX_HEALTH.getDescriptionId(), attributes.getValue(Attributes.MAX_HEALTH))
                     .addAttr(ExtractAttributes.HEALING_BONUS)
                     .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount())
+                    .addAttr(ExtractAttributes.ABSORPTION_BONUS)
             );
 
             sorted.add(InfoGroupItems.group("xp").attrMap(attributes)
@@ -63,12 +72,12 @@ public abstract class InfoRegisters {
 
             int armorValue = player.getArmorValue();
             float armorT = (float) attributes.getValue(Attributes.ARMOR_TOUGHNESS);
-            double damageR = 1 - CombatRules.getDamageAfterAbsorb(1F, armorValue, armorT);
             InfoGroupItems armor = InfoGroupItems.group("armor").attrMap(attributes)
                     .add(Attributes.ARMOR.getDescriptionId(), armorValue)
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
-                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, damageR)
-                    .addAttr(Attributes.KNOCKBACK_RESISTANCE);
+                    .addAttr(Attributes.KNOCKBACK_RESISTANCE)
+                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - LivingEntityAccessor.get(player).getDamageAfterArmorAbsorb(damageTest, 1));
+            addMagicArmor(player, (name, value) -> armor.add("attribute.extend.armor_bonus." + name, value));
             sorted.add(armor);
 
             FoodData foodData = player.getFoodData();
@@ -86,6 +95,25 @@ public abstract class InfoRegisters {
             );
             return sorted;
         });
+    }
+
+    private static void addMagicArmor(Player player, BiConsumer<String, Object> consumer) {
+        DamageSources sources = player.level().damageSources();
+        LivingEntityAccessor accessor = LivingEntityAccessor.get(player);
+        DamageSource source = sources.magic();
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        source = sources.fall();
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        source = sources.inFire();
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        source = sources.lightningBolt();
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        source = sources.explosion(null, null);
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        source = sources.wither();
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        source = sources.drown();
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
     }
 
     private static void getDamageBound(Player player, BiConsumer<String, Object> consumer) {

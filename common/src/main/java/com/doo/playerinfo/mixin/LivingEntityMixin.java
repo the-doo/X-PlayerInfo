@@ -1,6 +1,7 @@
 package com.doo.playerinfo.mixin;
 
 import com.doo.playerinfo.attributes.ExtractAttributes;
+import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.utils.DamageSourceUtil;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LivingEntity.class)
-public abstract class LivingEntityMixin {
+public abstract class LivingEntityMixin implements LivingEntityAccessor {
 
     @Shadow
     public abstract double getAttributeValue(Attribute attribute);

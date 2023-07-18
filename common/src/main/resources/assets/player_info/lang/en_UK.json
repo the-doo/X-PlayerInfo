@@ -48,7 +48,7 @@
   "attribute.name.extend.armor_reduction": "Ignore Armor",
   "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 100, ignoring 100% armor.Works on all living entity.",
   "attribute.extend.damage_reduction_by_armor": "Damage Reduction By Armor",
-  "attribute.extend.damage_reduction_by_armor.tip": "Usually, only damage reduced by armor and toughness.The maximum value is 1(completely reduction)",
+  "attribute.extend.damage_reduction_by_armor.tip": "Usually, only damage reduced by armor and toughness.The maximum value is 1(completely reduction).",
   "attribute.extend.critical_hits": "Jump Damage Bonus",
   "attribute.extend.critical_hits.tip": "Damage bonus when jumping attack, i.e. vanilla crit. Fixed value is 1.5(Formula: damage value * 1.5).",
   "attribute.name.extend.attack.crit_rate": "Critical Damage Chance",
@@ -67,5 +67,18 @@
   "attribute.extend.damage_bonus.illager": "Illager Damage Bonus",
   "attribute.extend.damage_bonus.illager.tip": "Illager Damage Bonus",
   "attribute.extend.damage_bonus.water": "Water Damage Bonus",
-  "attribute.extend.damage_bonus.water.tip": "Water Damage Bonus"
+  "attribute.extend.damage_bonus.water.tip": "Water Damage Bonus",
+
+  "attribute.extend.armor_bonus.magic": "Magic Damage Reduction",
+  "attribute.extend.armor_bonus.magic.tip": "Magic Damage Reduction.The maximum value is 1(completely reduction).",
+  "attribute.extend.armor_bonus.fall": "Fall Damage Reduction",
+  "attribute.extend.armor_bonus.fall.tip": "Fall Damage Reduction.The maximum value is 1(completely reduction).",
+  "attribute.extend.armor_bonus.inFire": "Fire Damage Reduction",
+  "attribute.extend.armor_bonus.inFire.tip": "Fire Damage Reduction.The maximum value is 1(completely reduction).",
+  "attribute.extend.armor_bonus.lightningBolt": "LightningBolt Damage Reduction",
+  "attribute.extend.armor_bonus.lightningBolt.tip": "LightningBolt Damage Reduction.The maximum value is 1(completely reduction).",
+  "attribute.extend.armor_bonus.explosion": "Explosion Damage Reduction",
+  "attribute.extend.armor_bonus.explosion.tip": "Explosion Damage Reduction.The maximum value is 1(completely reduction).",
+  "attribute.extend.armor_bonus.wither": "Wither Damage Reduction",
+  "attribute.extend.armor_bonus.wither.tip": "Wither Damage Reduction.The maximum value is 1(completely reduction)."
 }
