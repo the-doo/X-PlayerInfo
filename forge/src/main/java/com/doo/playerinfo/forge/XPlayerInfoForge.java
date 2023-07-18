@@ -47,11 +47,10 @@ public class XPlayerInfoForge {
 
     public XPlayerInfoForge() {
         XPlayerInfo.init();
-        ATTRIBUTE_REGISTRY.register(ExtractAttributes.CRIT_RATE.getDescriptionId(), () -> ExtractAttributes.CRIT_RATE);
-        ATTRIBUTE_REGISTRY.register(ExtractAttributes.CRIT_DAMAGE.getDescriptionId(), () -> ExtractAttributes.CRIT_DAMAGE);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ExtractAttributes.registerForge(attr -> ATTRIBUTE_REGISTRY.register(attr.getDescriptionId(), () -> attr));
         ATTRIBUTE_REGISTRY.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);

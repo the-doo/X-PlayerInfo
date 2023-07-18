@@ -3,6 +3,7 @@
   "category.player_info.name": "Open Screen",
 
   "Minecraft.info.base": "Basic Info",
+  "Minecraft.info.xp": "Experience & Level",
   "Minecraft.info.damage": "Damage & Armor",
   "Minecraft.info.food": "Food",
 
@@ -30,18 +31,20 @@
   "attribute.extend.experience_level": "Level",
   "attribute.extend.total_experience": "Experience",
   "attribute.extend.experience_progress": "Level Progress",
+  "attribute.name.extend.xp_bonus": "Experience bonus",
+  "attribute.name.extend.xp_bonus.tip": "Extra experience bonus, applies to all experience sources. If the attribute value is 0.5, and final xp is 3(= 2 + 2 * 0.5).Special Note, the final xp ignores decimal(won't round), like 1(= 1 + 1 * 0.5).",
   "attribute.extend.pick_range": "Pick Range",
 
   "attribute.extend.critical_hits": "Jump Damage Bonus",
   "attribute.extend.critical_hits": "Damage bonus when jumping attack, i.e. vanilla crit. Fixed value is 1.5.",
   "attribute.name.extend.attack.crit_rate": "Critical Damage Chance",
   "attribute.name.extend.attack.crit_rate.tip": "Extra crit bonus chance. Value range is 1~100.",
-  "attribute.name.extend.attack.crit_damage": "Critical Damage Bouns",
-  "attribute.name.extend.attack.crit_damage.tip": "Crit damage, bonus to all damage (including enchantments and jump damage bonus). If the attribute value is 0.25, and finally damage is 1.25(= 1 + 1 * 0.25).",
-  "attribute.extend.damage_bound.undefined": "Normal Damage Bouns",
-  "attribute.extend.damage_bound.undefined.tip": "Works on all living entitiy",
-  "attribute.extend.damage_bound.undead": "Undead Damage Bouns",
-  "attribute.extend.damage_bound.arthropod": "Arthropod Damage Bonus",
-  "attribute.extend.damage_bound.illager": "Illager Damage Bonus",
-  "attribute.extend.damage_bound.water": "Water Damage Bonus"
+  "attribute.name.extend.attack.crit_damage": "Critical Damage Bonus",
+  "attribute.name.extend.attack.crit_damage.tip": "Crit damage, bonus to all damage (including enchantments and jump damage bonus). If the attribute value is 0.25, and final damage is 1.25(= 1 + 1 * 0.25).",
+  "attribute.extend.damage_bonus.undefined": "Normal Damage Bonus",
+  "attribute.extend.damage_bonus.undefined.tip": "Works on all living entitiy",
+  "attribute.extend.damage_bonus.undead": "Undead Damage Bonus",
+  "attribute.extend.damage_bonus.arthropod": "Arthropod Damage Bonus",
+  "attribute.extend.damage_bonus.illager": "Illager Damage Bonus",
+  "attribute.extend.damage_bonus.water": "Water Damage Bonus"
 }

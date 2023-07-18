@@ -3,6 +3,7 @@
   "keybind.category.player_info.name": "展示",
 
   "Minecraft.info.base": "基本信息",
+  "Minecraft.info.xp": "经验与等级",
   "Minecraft.info.damage": "伤害与护甲",
   "Minecraft.info.food": "食物",
 
@@ -30,6 +31,8 @@
   "attribute.extend.experience_level": "等级",
   "attribute.extend.total_experience": "经验值",
   "attribute.extend.experience_progress": "等级进度",
+  "attribute.name.extend.xp_bonus": "经验加成",
+  "attribute.name.extend.xp_bonus.tip": "额外的经验加成，生效于所有经验来源。如果该属性值为0.5, 则最终经验为3(= 2 + 2 * 0.5)。特别说明，最终值会忽略小数(不会四舍五入)，如1(= 1 + 1 * 0.5)",
   "attribute.extend.pick_range": "触及范围",
 
   "attribute.extend.critical_hits": "跳斩伤害加成",
@@ -37,12 +40,12 @@
   "attribute.name.extend.attack.crit_rate": "暴击几率",
   "attribute.name.extend.attack.crit_rate.tip": "造成暴击伤害加成的几率",
   "attribute.name.extend.attack.crit_damage": "暴击伤害加成",
-  "attribute.name.extend.attack.crit_damage.tip": "基于所有伤害(包括附魔及跳斩)的额外伤害加成。如果该属性值为0.25, 则最终伤害为1.25(=1 + 1 * 0.25)。",
+  "attribute.name.extend.attack.crit_damage.tip": "基于所有伤害(包括附魔及跳斩)的额外伤害加成。如果该属性值为0.25, 则最终伤害为1.25(= 1 + 1 * 0.25)。",
 
-  "attribute.extend.damage_bound.undefined": "伤害加成",
-  "attribute.extend.damage_bound.undefined.tip": "对所有生物造成的额外伤害",
-  "attribute.extend.damage_bound.undead": "亡灵伤害加成",
-  "attribute.extend.damage_bound.arthropod": "节肢伤害加成",
-  "attribute.extend.damage_bound.illager": "灾厄伤害加成",
-  "attribute.extend.damage_bound.water": "水生物伤害加成"
+  "attribute.extend.damage_bonus.undefined": "伤害加成",
+  "attribute.extend.damage_bonus.undefined.tip": "对所有生物造成的额外伤害",
+  "attribute.extend.damage_bonus.undead": "亡灵伤害加成",
+  "attribute.extend.damage_bonus.arthropod": "节肢伤害加成",
+  "attribute.extend.damage_bonus.illager": "灾厄伤害加成",
+  "attribute.extend.damage_bonus.water": "水生物伤害加成"
 }
