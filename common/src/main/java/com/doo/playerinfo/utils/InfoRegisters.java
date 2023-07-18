@@ -5,6 +5,7 @@ import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;
 import com.google.common.collect.Lists;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -33,10 +34,6 @@ public abstract class InfoRegisters {
                     .add(Const.HEALTH, player.getHealth())
                     .add(Attributes.MAX_HEALTH.getDescriptionId(), attributes.getValue(Attributes.MAX_HEALTH))
                     .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount())
-                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), abilities.getWalkingSpeed())
-                    .add(Attributes.FLYING_SPEED.getDescriptionId(), abilities.getFlyingSpeed())
-                    .add(Attributes.LUCK.getDescriptionId(), attributes.getValue(Attributes.LUCK))
-                    .addClientSideFlag(Const.PICK_RANGE)
             );
 
             sorted.add(InfoGroupItems.group("xp")
@@ -46,18 +43,31 @@ public abstract class InfoRegisters {
                     .add(ExtractAttributes.EX_XP.getDescriptionId(), attributes.getValue(ExtractAttributes.EX_XP))
             );
 
+            double knock = EnchantmentHelper.getKnockbackBonus(player);
+            if (attributes.hasAttribute(Attributes.ATTACK_KNOCKBACK)) {
+                knock += attributes.getValue(Attributes.ATTACK_KNOCKBACK);
+            }
             InfoGroupItems damage = InfoGroupItems.group("damage")
                     .add(Attributes.ATTACK_DAMAGE.getDescriptionId(), attributes.getValue(Attributes.ATTACK_DAMAGE))
                     .add(Attributes.ATTACK_SPEED.getDescriptionId(), attributes.getValue(Attributes.ATTACK_SPEED))
+                    .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
+                    .add(ExtractAttributes.ARMOR_PENETRATION.getDescriptionId(), attributes.getValue(ExtractAttributes.ARMOR_PENETRATION))
                     .add(Const.CRITICAL_HITS, 1.5F)
                     .add(ExtractAttributes.CRIT_RATE.getDescriptionId(), attributes.getValue(ExtractAttributes.CRIT_RATE))
-                    .add(ExtractAttributes.CRIT_DAMAGE.getDescriptionId(), attributes.getValue(ExtractAttributes.CRIT_DAMAGE))
-                    .add(Attributes.ARMOR.getDescriptionId(), attributes.getValue(Attributes.ARMOR))
-                    .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), attributes.getValue(Attributes.ARMOR_TOUGHNESS))
-                    .add(Attributes.KNOCKBACK_RESISTANCE.getDescriptionId(), attributes.getValue(Attributes.KNOCKBACK_RESISTANCE));
+                    .add(ExtractAttributes.CRIT_DAMAGE.getDescriptionId(), attributes.getValue(ExtractAttributes.CRIT_DAMAGE));
             // Damage bound
             initDamageBound(player, damage::add);
             sorted.add(damage);
+
+            int armor = player.getArmorValue();
+            float armorT = (float) attributes.getValue(Attributes.ARMOR_TOUGHNESS);
+            double damageR = 1 - CombatRules.getDamageAfterAbsorb(1F, armor, armorT);
+            sorted.add(InfoGroupItems.group("armor")
+                    .add(Attributes.ARMOR.getDescriptionId(), armor)
+                    .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
+                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, damageR)
+                    .add(Attributes.KNOCKBACK_RESISTANCE.getDescriptionId(), attributes.getValue(Attributes.KNOCKBACK_RESISTANCE))
+            );
 
             FoodData foodData = player.getFoodData();
             sorted.add(InfoGroupItems.group("food")
@@ -66,6 +76,12 @@ public abstract class InfoRegisters {
                     .add(Const.SATURATION_LEVEL, foodData.getSaturationLevel())
             );
 
+            sorted.add(InfoGroupItems.group("other")
+                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), abilities.getWalkingSpeed())
+                    .add(Attributes.FLYING_SPEED.getDescriptionId(), abilities.getFlyingSpeed())
+                    .add(Attributes.LUCK.getDescriptionId(), attributes.getValue(Attributes.LUCK))
+                    .addClientSideFlag(Const.PICK_RANGE)
+            );
             return sorted;
         });
     }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "player_info",
+  "id": "x_player_info",
   "version": "${version}",
 
   "name": "X-PlayerInfo",

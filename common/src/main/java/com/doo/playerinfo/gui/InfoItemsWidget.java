@@ -38,7 +38,7 @@ public class InfoItemsWidget extends AbstractScrollWidget {
         int y = getY();
         String modNameStr = modName.getString();
         attributes.forEach(groupItems -> {
-            String groupKey = modNameStr + ".info." + groupItems.getGroup();
+            String groupKey = modNameStr + ".info.group." + groupItems.getGroup();
             Component component = Component.translatable(groupKey);
             children.add(new StringWidget(x + i.getValue(), y + j.getValue(), width, itemHeight, component, font));
             j.add(itemHeight);

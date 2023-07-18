@@ -50,7 +50,7 @@ public class XPlayerInfoForge {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        ExtractAttributes.registerForge(attr -> ATTRIBUTE_REGISTRY.register(attr.getDescriptionId(), () -> attr));
+        ExtractAttributes.register(attr -> ATTRIBUTE_REGISTRY.register(attr.getDescriptionId(), () -> attr));
         ATTRIBUTE_REGISTRY.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);

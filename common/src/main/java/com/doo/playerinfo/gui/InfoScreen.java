@@ -13,8 +13,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.scores.Team;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -26,10 +28,10 @@ import static com.doo.playerinfo.consts.Const.MINECRAFT_NAME;
 public class InfoScreen extends Screen {
 
     public static final KeyMapping KEY_MAPPING = new KeyMapping(
-            "keybind.category.player_info.name",
+            "keybind.category.x_player_info.name",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_TAB,
-            "keybind.key.player_info.name");
+            "keybind.key.x_player_info.name");
 
     private Map<String, List<InfoGroupItems>> map;
     private Button selected;
@@ -37,6 +39,10 @@ public class InfoScreen extends Screen {
     private LocalPlayer player;
 
     private int refreshTick = 100;
+
+    private PlayerInfo playerInfo;
+
+    private Team team;
 
     public InfoScreen(Component component) {
         super(component);
@@ -47,9 +53,10 @@ public class InfoScreen extends Screen {
         super.init();
 
         refreshTick = minecraft.getFps();
-
         player = minecraft.player;
-        this.map = OtherPlayerInfoFieldInjector.get(player).playerInfo$getInfo();
+        playerInfo = Minecraft.getInstance().getConnection().getPlayerInfo(player.getUUID());
+        team = player.getTeam();
+        map = OtherPlayerInfoFieldInjector.get(player).playerInfo$getInfo();
 
         int endW = width - 115;
 
@@ -96,9 +103,20 @@ public class InfoScreen extends Screen {
     public void render(GuiGraphics guiGraphics, int i, int j, float f) {
         renderBackground(guiGraphics);
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, 40, 80, 30, (float) (51) - i, (float) (75 - 50) - j, this.minecraft.player);
+        int minY = 80;
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, 40, minY, 30, (float) (51) - i, (float) (75 - 50) - j, player);
 
-        guiGraphics.drawCenteredString(font, player.getName(), 40, 100, 0XFFFFFF);
+        minY += 20;
+        guiGraphics.drawCenteredString(font, player.getName(), 40, minY, 0XFFFFFF);
+        if (playerInfo != null) {
+            minY += 20;
+            guiGraphics.drawCenteredString(font, playerInfo.getGameMode().getLongDisplayName(), 40, minY, 0XFFFFFF);
+        }
+        if (team != null) {
+            minY += 20;
+            guiGraphics.drawCenteredString(font, team.getName() + ": " + team.getPlayers().size(), 40, minY, 0XFFFFFF);
+        }
+
 
         RenderSystem.disableDepthTest();
 

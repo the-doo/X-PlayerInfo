@@ -37,7 +37,7 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
 
     @Inject(method = "createAttributes", at = @At(value = "RETURN"))
     private static void injectedCreateAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
-        cir.getReturnValue().add(ExtractAttributes.EX_XP);
+        ExtractAttributes.createAttrToPlayer(cir.getReturnValue());
     }
 
     @ModifyVariable(method = "attack", at = @At(value = "STORE", ordinal = 3), ordinal = 0)

@@ -17,6 +17,7 @@ public final class Const {
     public static final String FOOD_LEVEL = "attribute.extend.food_level";
     public static final String EXHAUSTION_LEVEL = "attribute.extend.exhaustion_level";
     public static final String SATURATION_LEVEL = "attribute.extend.saturation_level";
+    public static final String DAMAGE_REDUCTION_BY_ARMOR = "attribute.extend.damage_reduction_by_armor";
 
 
     private Const() {

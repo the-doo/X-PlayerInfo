@@ -11,6 +11,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 
 public class XPlayerInfoFabric implements ModInitializer {
@@ -22,7 +24,7 @@ public class XPlayerInfoFabric implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(InfoItemCollector::start);
 
-        ExtractAttributes.initFabric();
+        ExtractAttributes.register(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, a.getDescriptionId(), a));
 
         InfoItemCollector.setSender((player, packet) -> ServerPlayNetworking.send(player, new FabricInfoPack(packet)));
     }
