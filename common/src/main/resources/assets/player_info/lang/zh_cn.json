@@ -1,0 +1,48 @@
+{
+  "keybind.key.player_info.name": "玩家信息",
+  "keybind.category.player_info.name": "展示",
+
+  "Minecraft.info.base": "基本信息",
+  "Minecraft.info.damage": "伤害与护甲",
+  "Minecraft.info.food": "食物",
+
+  "attribute.name.generic.max_health.tip": "代表生物的最大生命值，即能回复到的最高生命值",
+  "attribute.name.generic.knockback_resistance.tip": "击退抗性（Knockback resistance）是生物抵抗击退效果的能力。当生物受到击退效果时，实际的击退距离会按照击退抗性被直接减少。1代表完全抵抗击退",
+  "attribute.name.generic.movement_speed.tip": "基础移动加速度",
+  "attribute.name.generic.flying_speed.tip": "飞行时的移动加速度",
+  "attribute.name.generic.attack_damage.tip": "近战攻击伤害",
+  "attribute.name.generic.attack_speed.tip": "每秒可以进行全力攻击的次数",
+  "attribute.name.generic.attack_knockback.tip": "生物攻击的击退效果。击退造成的失控不容小觑，生物也许会因此被击落悬崖或是坠入熔岩中。",
+  "attribute.name.generic.armor.tip": "盔甲值，用于抵挡伤害，是直接降低伤害的属性。更高的伤害会导致同样的护甲值提供更低的防护。该值上限为30。",
+  "attribute.name.generic.armor_toughness.tip": "盔甲韧性，用于抵挡伤害，是对护甲值效果受伤害降低的防护。该值上限为20。",
+  "attribute.name.generic.luck.tip": "幸运（Luck）是一种能提升获得高质量战利品概率的状态效果。",
+
+  "attribute.extend.health": "生命值",
+  "attribute.extend.health.tip": "生命（Health）是生物的基础生命健康。生物的生命值决定了其对抗危害时的生存能力，生命值归零后生物便会死亡。在Minecraft中，生命的测量和监控基于一排红心图标，每颗红心包含两半，每个为1点，每颗红心代表2点生命值。",
+  "attribute.extend.absorption_amount": "伤害吸收",
+  "attribute.extend.absorption_amount.tip": "伤害吸收（Absorption）是一种能为生物添加伤害吸收生命值的状态效果。生物拥有伤害吸收生命值时，受到伤害而扣除生命值时会先扣除伤害吸收生命值。伤害吸收生命值不能用普通的生命恢复或其他效果来补充。",
+  "attribute.extend.food_level": "饥饿值",
+  "attribute.extend.food_level.tip": "饥饿（Hunger）是一种代表玩家进食需求的指标，是生存模式中随玩家活动而消耗的重要资源。玩家目前的饥饿值（Hunger Value），会直接显示在平视显示器上，取值范围是从0到20。初始值为20。玩家食用食物会直接恢复饥饿值；疾跑、跳跃、破坏方块等多种动作会间接消耗饥饿值。",
+  "attribute.extend.exhaustion_level": "消耗度",
+  "attribute.extend.exhaustion_level.tip": "玩家目前的消耗度（Exhaustion），取值范围是从0到4，在玩家从事特定活动时会增加（见#饥饿因素）。消耗度的初始数值为0，当消耗度到达4时，就会重置为0并扣除1点对应的食物水平。",
+  "attribute.extend.saturation_level": "饱和度",
+  "attribute.extend.saturation_level.tip": "玩家目前的饱和度（Saturation），在饥饿值被消耗前会首先被消耗，其值不能超过目前的饥饿值，最低值为0。初始值为5。这是一项隐藏变量，无法被玩家直接监测具体值。",
+  "attribute.extend.experience_level": "等级",
+  "attribute.extend.total_experience": "经验值",
+  "attribute.extend.experience_progress": "等级进度",
+  "attribute.extend.pick_range": "触及范围",
+
+  "attribute.extend.critical_hits": "跳斩伤害加成",
+  "attribute.extend.critical_hits.tip": "跳跃攻击所造成的伤害，即原版暴击伤害",
+  "attribute.name.extend.attack.crit_rate": "暴击几率",
+  "attribute.name.extend.attack.crit_rate.tip": "造成暴击伤害加成的几率",
+  "attribute.name.extend.attack.crit_damage": "暴击伤害加成",
+  "attribute.name.extend.attack.crit_damage.tip": "基于所有伤害(包括附魔及跳斩)的额外伤害加成。如果该属性值为0.25, 则最终伤害为1.25(=1 + 1 * 0.25)。",
+
+  "attribute.extend.damage_bound.undefined": "伤害加成",
+  "attribute.extend.damage_bound.undefined.tip": "对所有生物造成的额外伤害",
+  "attribute.extend.damage_bound.undead": "亡灵伤害加成",
+  "attribute.extend.damage_bound.arthropod": "节肢伤害加成",
+  "attribute.extend.damage_bound.illager": "灾厄伤害加成",
+  "attribute.extend.damage_bound.water": "水生物伤害加成"
+}
