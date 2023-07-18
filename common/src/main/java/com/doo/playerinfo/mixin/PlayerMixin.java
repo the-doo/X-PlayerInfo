@@ -4,7 +4,6 @@ import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.google.common.collect.Maps;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -32,20 +31,17 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
 
     @ModifyVariable(method = "giveExperiencePoints", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     private int modifyXp(int value) {
-        return value < 0 ? value : (int) (value * (1 + getAttributeValue(ExtractAttributes.EX_XP)));
+        return value < 0 ? value : (int) (value * (1 + getAttributeValue(ExtractAttributes.XP_BONUS)));
+    }
+
+    @ModifyVariable(method = "setAbsorptionAmount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getEntityData()Lnet/minecraft/network/syncher/SynchedEntityData;"), ordinal = 0, argsOnly = true)
+    private float modifyAbsorptionBonus(float value) {
+        return value <= 0 ? value : (int) (value * (1 + getAttributeValue(ExtractAttributes.ABSORPTION_BONUS)));
     }
 
     @Inject(method = "createAttributes", at = @At(value = "RETURN"))
     private static void injectedCreateAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         ExtractAttributes.createAttrToPlayer(cir.getReturnValue());
-    }
-
-    @ModifyVariable(method = "attack", at = @At(value = "STORE", ordinal = 3), ordinal = 0)
-    private float injectOtherCriticalHits(float value) {
-        if (level() instanceof ServerLevel && random.nextInt(0, 10000) / 100d <= getAttributeValue(ExtractAttributes.CRIT_RATE)) {
-            value *= (1 + (float) (getAttributeValue(ExtractAttributes.CRIT_DAMAGE)));
-        }
-        return value;
     }
 
     @Override

@@ -30,44 +30,46 @@ public abstract class InfoRegisters {
             AttributeMap attributes = player.getAttributes();
             Abilities abilities = player.getAbilities();
 
-            sorted.add(InfoGroupItems.group("base")
+            sorted.add(InfoGroupItems.group("base").attrMap(attributes)
                     .add(Const.HEALTH, player.getHealth())
                     .add(Attributes.MAX_HEALTH.getDescriptionId(), attributes.getValue(Attributes.MAX_HEALTH))
+                    .addAttr(ExtractAttributes.HEALING_BONUS)
                     .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount())
             );
 
-            sorted.add(InfoGroupItems.group("xp")
+            sorted.add(InfoGroupItems.group("xp").attrMap(attributes)
                     .add(Const.EXPERIENCE_LEVEL, player.experienceLevel)
                     .add(Const.TOTAL_EXPERIENCE, player.totalExperience)
                     .add(Const.EXPERIENCE_PROGRESS, player.experienceProgress)
-                    .add(ExtractAttributes.EX_XP.getDescriptionId(), attributes.getValue(ExtractAttributes.EX_XP))
+                    .addAttr(ExtractAttributes.XP_BONUS)
             );
 
             double knock = EnchantmentHelper.getKnockbackBonus(player);
             if (attributes.hasAttribute(Attributes.ATTACK_KNOCKBACK)) {
                 knock += attributes.getValue(Attributes.ATTACK_KNOCKBACK);
             }
-            InfoGroupItems damage = InfoGroupItems.group("damage")
-                    .add(Attributes.ATTACK_DAMAGE.getDescriptionId(), attributes.getValue(Attributes.ATTACK_DAMAGE))
-                    .add(Attributes.ATTACK_SPEED.getDescriptionId(), attributes.getValue(Attributes.ATTACK_SPEED))
+            InfoGroupItems damage = InfoGroupItems.group("damage").attrMap(attributes)
+                    .addAttr(Attributes.ATTACK_DAMAGE)
+                    .addAttr(Attributes.ATTACK_SPEED)
                     .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
-                    .add(ExtractAttributes.ARMOR_PENETRATION.getDescriptionId(), attributes.getValue(ExtractAttributes.ARMOR_PENETRATION))
+                    .addAttr(ExtractAttributes.ARMOR_PENETRATION)
+                    .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS)
                     .add(Const.CRITICAL_HITS, 1.5F)
-                    .add(ExtractAttributes.CRIT_RATE.getDescriptionId(), attributes.getValue(ExtractAttributes.CRIT_RATE))
-                    .add(ExtractAttributes.CRIT_DAMAGE.getDescriptionId(), attributes.getValue(ExtractAttributes.CRIT_DAMAGE));
+                    .addAttr(ExtractAttributes.CRIT_RATE)
+                    .addAttr(ExtractAttributes.CRIT_DAMAGE);
             // Damage bound
-            initDamageBound(player, damage::add);
+            getDamageBound(player, damage::add);
             sorted.add(damage);
 
-            int armor = player.getArmorValue();
+            int armorValue = player.getArmorValue();
             float armorT = (float) attributes.getValue(Attributes.ARMOR_TOUGHNESS);
-            double damageR = 1 - CombatRules.getDamageAfterAbsorb(1F, armor, armorT);
-            sorted.add(InfoGroupItems.group("armor")
-                    .add(Attributes.ARMOR.getDescriptionId(), armor)
+            double damageR = 1 - CombatRules.getDamageAfterAbsorb(1F, armorValue, armorT);
+            InfoGroupItems armor = InfoGroupItems.group("armor").attrMap(attributes)
+                    .add(Attributes.ARMOR.getDescriptionId(), armorValue)
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
                     .add(Const.DAMAGE_REDUCTION_BY_ARMOR, damageR)
-                    .add(Attributes.KNOCKBACK_RESISTANCE.getDescriptionId(), attributes.getValue(Attributes.KNOCKBACK_RESISTANCE))
-            );
+                    .addAttr(Attributes.KNOCKBACK_RESISTANCE);
+            sorted.add(armor);
 
             FoodData foodData = player.getFoodData();
             sorted.add(InfoGroupItems.group("food")
@@ -76,17 +78,17 @@ public abstract class InfoRegisters {
                     .add(Const.SATURATION_LEVEL, foodData.getSaturationLevel())
             );
 
-            sorted.add(InfoGroupItems.group("other")
+            sorted.add(InfoGroupItems.group("other").attrMap(attributes)
                     .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), abilities.getWalkingSpeed())
                     .add(Attributes.FLYING_SPEED.getDescriptionId(), abilities.getFlyingSpeed())
-                    .add(Attributes.LUCK.getDescriptionId(), attributes.getValue(Attributes.LUCK))
+                    .addAttr(Attributes.LUCK)
                     .addClientSideFlag(Const.PICK_RANGE)
             );
             return sorted;
         });
     }
 
-    private static void initDamageBound(Player player, BiConsumer<String, Object> consumer) {
+    private static void getDamageBound(Player player, BiConsumer<String, Object> consumer) {
         consumer.accept("attribute.extend.damage_bonus.undefined", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED));
         consumer.accept("attribute.extend.damage_bonus.undead", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEAD));
         consumer.accept("attribute.extend.damage_bonus.arthropod", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ARTHROPOD));

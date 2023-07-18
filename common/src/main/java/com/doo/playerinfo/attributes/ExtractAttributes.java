@@ -11,25 +11,36 @@ public class ExtractAttributes {
     private ExtractAttributes() {
     }
 
-    public static final Attribute CRIT_DAMAGE = new RangedAttribute("attribute.name.extend.attack.crit_damage", 0, 0, 1024);
-    public static final Attribute CRIT_RATE = new RangedAttribute("attribute.name.extend.attack.crit_rate", 0, 0, 100);
-    public static final Attribute EX_XP = new RangedAttribute("attribute.name.extend.xp_bonus", 0, 0, 1024);
-    public static final Attribute ARMOR_PENETRATION = new RangedAttribute("attribute.name.extend.armor_penetration", 0, 0, 100);
+    public static final Attribute CRIT_DAMAGE = new RangedAttribute("attribute.name.extend.attack.crit_damage", 0.5, 0, 1024);
+    public static final Attribute CRIT_RATE = new RangedAttribute("attribute.name.extend.attack.crit_rate", 0, 0, 1);
+    public static final Attribute XP_BONUS = new RangedAttribute("attribute.name.extend.xp_bonus", 0, 0, 1024);
+    public static final Attribute ARMOR_PENETRATION = new RangedAttribute("attribute.name.extend.armor_penetration", 0, 0, 1);
+    public static final Attribute HEALING_BONUS = new RangedAttribute("attribute.name.extend.healing_bonus", 0, 0, 1024);
+    public static final Attribute ABSORPTION_BONUS = new RangedAttribute("attribute.name.extend.absorption_bonus", 0, 0, 1024);
+    public static final Attribute DAMAGE_PERCENTAGE_BONUS = new RangedAttribute("attribute.name.extend.attack.damage_percentage_bonus", 0, 0, 1);
 
     public static void register(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(CRIT_RATE);
         attributeConsumer.accept(CRIT_DAMAGE);
-        attributeConsumer.accept(EX_XP);
+        attributeConsumer.accept(XP_BONUS);
         attributeConsumer.accept(ARMOR_PENETRATION);
+        attributeConsumer.accept(HEALING_BONUS);
+        attributeConsumer.accept(ABSORPTION_BONUS);
+        attributeConsumer.accept(DAMAGE_PERCENTAGE_BONUS);
     }
 
     public static void createAttrToLiving(AttributeSupplier.Builder builder) {
-        builder.add(ExtractAttributes.CRIT_DAMAGE)
-                .add(ExtractAttributes.CRIT_RATE)
-                .add(ExtractAttributes.ARMOR_PENETRATION);
+        builder.add(CRIT_DAMAGE)
+                .add(CRIT_RATE)
+                .add(DAMAGE_PERCENTAGE_BONUS)
+                .add(ARMOR_PENETRATION)
+                .add(HEALING_BONUS)
+        ;
     }
 
     public static void createAttrToPlayer(AttributeSupplier.Builder builder) {
-        builder.add(ExtractAttributes.EX_XP);
+        builder.add(XP_BONUS)
+                .add(ABSORPTION_BONUS)
+        ;
     }
 }

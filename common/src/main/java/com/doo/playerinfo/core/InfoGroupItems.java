@@ -6,6 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -22,6 +24,7 @@ public class InfoGroupItems {
     private static final DecimalFormat FORMAT = new DecimalFormat("#.###");
 
     private final String group;
+    private AttributeMap attributes;
     private final List<Pair<String, Object>> sortedItems = Lists.newArrayList();
 
     private InfoGroupItems(String groupName) {
@@ -32,8 +35,18 @@ public class InfoGroupItems {
         return new InfoGroupItems(group);
     }
 
+    public InfoGroupItems attrMap(AttributeMap attributes) {
+        this.attributes = attributes;
+        return this;
+    }
+
     public InfoGroupItems add(String key, Object value) {
         sortedItems.add(Pair.of(key, value));
+        return this;
+    }
+
+    public InfoGroupItems addAttr(Attribute attribute) {
+        add(attribute.getDescriptionId(), attributes.getValue(attribute));
         return this;
     }
 
