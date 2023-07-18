@@ -68,15 +68,10 @@ public abstract class InfoRegisters {
     }
 
     private static void initDamageBound(Player player, BiConsumer<String, Object> consumer) {
-        String key;
-        MobType type = MobType.UNDEFINED;
-        for (Field field : MobType.class.getFields()) {
-            try {
-                type = (MobType) field.get(type);
-                key = "attribute.extend.damage_bound." + field.getName().toLowerCase();
-                consumer.accept(key, EnchantmentHelper.getDamageBonus(player.getMainHandItem(), type));
-            } catch (Exception ignored) {
-            }
-        }
+        consumer.accept("attribute.extend.damage_bound.undefined", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED));
+        consumer.accept("attribute.extend.damage_bound.undead", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEAD));
+        consumer.accept("attribute.extend.damage_bound.arthropod", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ARTHROPOD));
+        consumer.accept("attribute.extend.damage_bound.illager", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ILLAGER));
+        consumer.accept("attribute.extend.damage_bound.water", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.WATER));
     }
 }
