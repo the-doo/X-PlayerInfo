@@ -9,7 +9,7 @@ public interface LivingEntityAccessor {
         return XPlayerInfo.get(player);
     }
 
-    float getDamageAfterArmorAbsorb(DamageSource arg, float g);
+    float x_PlayerInfo$getDamageAfterArmorAbsorb(DamageSource arg, float g);
 
-    float getDamageAfterMagicAbsorb(DamageSource arg, float g);
+    float x_PlayerInfo$getDamageAfterMagicAbsorb(DamageSource arg, float g);
 }

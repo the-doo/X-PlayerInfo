@@ -77,7 +77,7 @@ public abstract class InfoRegisters {
                     .add(Attributes.ARMOR.getDescriptionId(), armorValue)
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
                     .addAttr(Attributes.KNOCKBACK_RESISTANCE)
-                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - LivingEntityAccessor.get(player).getDamageAfterArmorAbsorb(damageTest, 1));
+                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - LivingEntityAccessor.get(player).x_PlayerInfo$getDamageAfterArmorAbsorb(damageTest, 1));
             addMagicArmor(player, (name, value) -> armor.add("attribute.extend.armor_bonus." + name, value));
             sorted.add(armor);
 
@@ -102,21 +102,21 @@ public abstract class InfoRegisters {
         DamageSources sources = player.level().damageSources();
         LivingEntityAccessor accessor = LivingEntityAccessor.get(player);
         DamageSource source = sources.magic();
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.fall();
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.inFire();
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.freeze();
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.lightningBolt();
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.explosion(null, null);
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.wither();
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.drown();
-        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
     }
 
     private static void getDamageBound(Player player, BiConsumer<String, Object> consumer) {

@@ -25,6 +25,12 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
     @Shadow
     public abstract float getMaxHealth();
 
+    @Shadow
+    protected abstract float getDamageAfterArmorAbsorb(DamageSource damageSource, float f);
+
+    @Shadow
+    protected abstract float getDamageAfterMagicAbsorb(DamageSource damageSource, float f);
+
     @Unique
     private DamageSource x_PlayerInfo$currentDamageSource;
 
@@ -47,5 +53,15 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
     @ModifyVariable(method = "heal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"), argsOnly = true)
     private float injectedHealAttributes(float f) {
         return f * (1 + (float) getAttributeValue(ExtractAttributes.HEALING_BONUS));
+    }
+
+    @Override
+    public float x_PlayerInfo$getDamageAfterArmorAbsorb(DamageSource arg, float g) {
+        return getDamageAfterArmorAbsorb(arg, g);
+    }
+
+    @Override
+    public float x_PlayerInfo$getDamageAfterMagicAbsorb(DamageSource arg, float g) {
+        return getDamageAfterMagicAbsorb(arg, g);
     }
 }

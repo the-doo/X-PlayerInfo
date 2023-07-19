@@ -67,9 +67,9 @@ public class XPlayerInfoForge {
     public void onServerStarting(ServerStartingEvent event) {
         InfoRegisters.initMinecraft();
 
-        InfoItemCollector.start(event.getServer());
-
-        InfoItemCollector.setSender((player, packet) -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet));
+        InfoItemCollector.start(event.getServer().getPlayerList().getPlayers(), (player, packet) -> {
+            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
+        });
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
