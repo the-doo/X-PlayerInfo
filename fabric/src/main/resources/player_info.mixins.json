@@ -4,16 +4,14 @@
   "package": "com.doo.playerinfo.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LivingEntityMixin",
-    "PlayerMixin"
   ],
   "client": [
-    "GameRendererMixin",
-    "LocalPlayerMixin"
+    "GameRendererMixin"
   ],
   "server": [
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "player_info.mixins.remap.json"
 }

@@ -60,6 +60,7 @@ public abstract class InfoRegisters {
             InfoGroupItems damage = InfoGroupItems.group("damage").attrMap(attributes)
                     .addAttr(Attributes.ATTACK_DAMAGE)
                     .addAttr(Attributes.ATTACK_SPEED)
+                    .addClientSideFlag(Const.ATTACK_RANGE)
                     .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
                     .addAttr(ExtractAttributes.ARMOR_PENETRATION)
                     .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS)
@@ -105,6 +106,8 @@ public abstract class InfoRegisters {
         source = sources.fall();
         consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
         source = sources.inFire();
+        consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
+        source = sources.freeze();
         consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));
         source = sources.lightningBolt();
         consumer.accept(source.getMsgId(), 1 - accessor.getDamageAfterMagicAbsorb(source, 1));

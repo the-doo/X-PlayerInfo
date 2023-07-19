@@ -46,7 +46,7 @@ public class XPlayerInfoForge {
     );
 
     public XPlayerInfoForge() {
-        XPlayerInfo.init();
+        XPlayerInfo.init(0);
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -81,7 +81,8 @@ public class XPlayerInfoForge {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> minecraft.gameMode == null ? 0 : minecraft.gameMode.getPickRange());
+            InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> minecraft.player == null ? 0 : minecraft.player.getBlockReach());
+            InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft -> minecraft.player == null ? 0 : minecraft.player.getEntityReach());
         }
 
         // Key mapping is lazily initialized so it doesn't exist until it is registered

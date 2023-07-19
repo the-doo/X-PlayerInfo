@@ -44,6 +44,8 @@
   "attribute.name.extend.xp_bonus.tip": "Extra experience bonus, applies to all experience sources. If the attribute value is 0.5, and final xp is 3(= 2 + 2 * 0.5). Special Note, the final xp ignores decimal(won't round), like 1(= 1 + 1 * 0.5).Only available to players.",
   "attribute.extend.pick_range": "Pick Range",
   "attribute.extend.pick_range.tip": "Pick Range",
+  "attribute.extend.attack_range": "Attack Range",
+  "attribute.extend.attack_range.tip": "Attack Range. Normally, the value is 3.",
 
   "attribute.name.extend.armor_reduction": "Ignore Armor",
   "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 100, ignoring 100% armor.Works on all living entity.",
@@ -75,6 +77,8 @@
   "attribute.extend.armor_bonus.fall.tip": "Fall Damage Reduction.The maximum value is 1(completely reduction).",
   "attribute.extend.armor_bonus.inFire": "Fire Damage Reduction",
   "attribute.extend.armor_bonus.inFire.tip": "Fire Damage Reduction.The maximum value is 1(completely reduction).",
+  "attribute.extend.armor_bonus.freeze": "Freeze Damage Reduction",
+  "attribute.extend.armor_bonus.freeze.tip": "Freeze Damage Reduction.The maximum value is 1(completely reduction).",
   "attribute.extend.armor_bonus.lightningBolt": "LightningBolt Damage Reduction",
   "attribute.extend.armor_bonus.lightningBolt.tip": "LightningBolt Damage Reduction.The maximum value is 1(completely reduction).",
   "attribute.extend.armor_bonus.explosion": "Explosion Damage Reduction",

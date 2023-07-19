@@ -1,5 +1,6 @@
 package com.doo.playerinfo.fabric.client;
 
+import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.ClientSideHandler;
 import com.doo.playerinfo.core.InfoGroupItems;
@@ -11,6 +12,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 
 @Environment(EnvType.CLIENT)
 public class XPlayerInfoClient implements ClientModInitializer {
@@ -30,5 +32,15 @@ public class XPlayerInfoClient implements ClientModInitializer {
         });
 
         InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> minecraft.gameMode.getPickRange());
+        InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft -> {
+            boolean isCreative = minecraft.player.isCreative();
+            AttributeMap attributes = minecraft.player.getAttributes();
+            if (attributes.hasAttribute(ExtractAttributes.ATTACK_RANGE)) {
+                return minecraft.player.getAttributeValue(ExtractAttributes.ATTACK_RANGE) + (isCreative ? minecraft.gameMode.getPickRange() : 3);
+            } else if (isCreative) {
+                return minecraft.gameMode.getPickRange();
+            }
+            return 3;
+        });
     }
 }

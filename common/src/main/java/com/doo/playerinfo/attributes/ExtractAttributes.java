@@ -1,5 +1,7 @@
 package com.doo.playerinfo.attributes;
 
+import com.doo.playerinfo.XPlayerInfo;
+import com.doo.playerinfo.consts.Const;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
@@ -18,6 +20,7 @@ public class ExtractAttributes {
     public static final Attribute HEALING_BONUS = new RangedAttribute("attribute.name.extend.healing_bonus", 0, 0, 1024);
     public static final Attribute ABSORPTION_BONUS = new RangedAttribute("attribute.name.extend.absorption_bonus", 0, 0, 1024);
     public static final Attribute DAMAGE_PERCENTAGE_BONUS = new RangedAttribute("attribute.name.extend.attack.damage_percentage_bonus", 0, 0, 1);
+    public static final Attribute ATTACK_RANGE = new RangedAttribute(Const.ATTACK_RANGE, 0, 0, 1024);
 
     public static void register(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(CRIT_RATE);
@@ -42,5 +45,17 @@ public class ExtractAttributes {
         builder.add(XP_BONUS)
                 .add(ABSORPTION_BONUS)
         ;
+
+        if (XPlayerInfo.isFabric()) {
+            fabricCreateAttrToPlayer(builder);
+        }
+    }
+
+    public static void fabricRegister(Consumer<Attribute> attributeConsumer) {
+        attributeConsumer.accept(ATTACK_RANGE);
+    }
+
+    public static void fabricCreateAttrToPlayer(AttributeSupplier.Builder builder) {
+        builder.add(ATTACK_RANGE);
     }
 }

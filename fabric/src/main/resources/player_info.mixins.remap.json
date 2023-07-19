@@ -1,0 +1,7 @@
+{
+  "mappings": {
+    "com/doo/playerinfo/mixin/GameRendererMixin": {
+      "pick": "Lnet/minecraft/class_757;method_3190(F)V"
+    }
+  }
+}

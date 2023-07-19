@@ -18,13 +18,14 @@ import net.minecraft.network.FriendlyByteBuf;
 public class XPlayerInfoFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        XPlayerInfo.init();
+        XPlayerInfo.init(1);
 
         InfoRegisters.initMinecraft();
 
         ServerLifecycleEvents.SERVER_STARTED.register(InfoItemCollector::start);
 
         ExtractAttributes.register(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, a.getDescriptionId(), a));
+        ExtractAttributes.fabricRegister(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, a.getDescriptionId(), a));
 
         InfoItemCollector.setSender((player, packet) -> ServerPlayNetworking.send(player, new FabricInfoPack(packet)));
     }
