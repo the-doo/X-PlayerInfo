@@ -14,7 +14,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.food.FoodData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.List;
@@ -26,6 +29,10 @@ public abstract class InfoRegisters {
 
     private static DamageSource damageTest;
 
+    private static final ItemStack ARROW = Items.ARROW.getDefaultInstance();
+
+    private static DamageSource arrowTest;
+
     private InfoRegisters() {
     }
 
@@ -33,6 +40,9 @@ public abstract class InfoRegisters {
         InfoItemCollector.register(MINECRAFT_NAME, player -> {
             if (damageTest == null) {
                 damageTest = player.level().damageSources().mobAttack(null);
+                Arrow arrow = new Arrow(player.level(), player);
+                arrow.setBaseDamage(1);
+                arrowTest = player.level().damageSources().arrow(arrow, null);
             }
 
             List<InfoGroupItems> sorted = Lists.newArrayList();
@@ -63,6 +73,8 @@ public abstract class InfoRegisters {
                     .addAttr(Attributes.ATTACK_SPEED)
                     .addClientSideFlag(Const.ATTACK_RANGE)
                     .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
+                    .addAttr(ExtractAttributes.BOW_USING_SPEED)
+                    .addAttr(ExtractAttributes.BOW_DAMAGE_BONUS)
                     .addAttr(ExtractAttributes.ARMOR_PENETRATION)
                     .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS)
                     .add(Const.CRITICAL_HITS, 1.5F)
@@ -102,7 +114,9 @@ public abstract class InfoRegisters {
     private static void addMagicArmor(Player player, BiConsumer<String, Object> consumer) {
         DamageSources sources = player.level().damageSources();
         LivingEntityAccessor accessor = LivingEntityAccessor.get(player);
-        DamageSource source = sources.magic();
+        DamageSource source = arrowTest;
+        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
+        source = sources.magic();
         consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
         source = sources.fall();
         consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));

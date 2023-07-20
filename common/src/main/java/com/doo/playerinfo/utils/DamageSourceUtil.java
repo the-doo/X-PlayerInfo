@@ -44,6 +44,7 @@ public class DamageSourceUtil {
         if (attacker == null) {
             return amount;
         }
+
         AttributeMap attributes = attacker.getAttributes();
         // DAMAGE_PERCENTAGE_BONUS
         if (attributes.hasAttribute(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS)) {

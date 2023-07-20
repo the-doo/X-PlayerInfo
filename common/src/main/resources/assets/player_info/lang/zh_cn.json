@@ -60,7 +60,11 @@
   "attribute.name.extend.attack.crit_rate": "暴击几率",
   "attribute.name.extend.attack.crit_rate.tip": "造成暴击伤害加成的几率",
   "attribute.name.extend.attack.crit_damage": "暴击伤害加成",
-  "attribute.name.extend.attack.crit_damage.tip": "基于大部分伤害(包括附魔及跳斩)的额外加成。如果该属性值为0.25, 则最终伤害为1.25(= 1 + 1 * 0.25)。",
+  "attribute.name.extend.attack.crit_damage.tip": "基于大部分伤害(包括附魔、跳斩、远程等)的额外加成。如果该属性值为0.25, 则最终伤害为1.25(= 1 + 1 * 0.25)。",
+  "attribute.name.extend.attack.bow_using_speed": "拉弓强度",
+  "attribute.name.extend.attack.bow_using_speed.tip": "拉弓强度，加强弓的伤害比例。满弦的情况下可以发射满额伤害的箭，那么在该属性的作用为半弦就能达到该效果。如果该属性值为0.25, 则最终拉弓强度为1.25(= 1 + 1 * 0.25)。",
+  "attribute.name.extend.attack.bow_damage_bonus": "射箭伤害",
+  "attribute.name.extend.attack.bow_damage_bonus.tip": "额外增加箭的基本伤害。如果该属性值为0.25, 则最终伤害为1.25(= 1 + 1 * 0.25)。",
 
   "attribute.extend.damage_bonus.undefined": "伤害加成",
   "attribute.extend.damage_bonus.undefined.tip": "对所有生物造成的额外伤害",
@@ -73,6 +77,8 @@
   "attribute.extend.damage_bonus.water": "水生物伤害加成",
   "attribute.extend.damage_bonus.water.tip": "水生物伤害加成",
 
+  "attribute.extend.armor_bonus.arrow": "弹射物减免",
+  "attribute.extend.armor_bonus.arrow.tip": "弹射物减免。1为最大值，完全减免。",
   "attribute.extend.armor_bonus.magic": "魔法伤害减免",
   "attribute.extend.armor_bonus.magic.tip": "魔法伤害减免。1为最大值，完全减免。",
   "attribute.extend.armor_bonus.fall": "坠落伤害减免",

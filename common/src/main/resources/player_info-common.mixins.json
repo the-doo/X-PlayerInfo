@@ -4,6 +4,7 @@
   "package": "com.doo.playerinfo.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BowMixin",
     "LivingEntityMixin",
     "PlayerMixin"
   ],

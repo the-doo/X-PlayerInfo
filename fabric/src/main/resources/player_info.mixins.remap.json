@@ -2,6 +2,9 @@
   "mappings": {
     "com/doo/playerinfo/mixin/GameRendererMixin": {
       "pick": "Lnet/minecraft/class_757;method_3190(F)V"
+    },
+    "com/doo/playerinfo/mixin/BowMixin": {
+      "releaseUsing": "Lnet/minecraft/class_1753;method_2897(Lbyo;)V"
     }
   }
 }
