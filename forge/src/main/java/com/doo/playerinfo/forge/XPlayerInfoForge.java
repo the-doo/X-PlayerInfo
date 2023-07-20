@@ -67,9 +67,8 @@ public class XPlayerInfoForge {
     public void onServerStarting(ServerStartingEvent event) {
         InfoRegisters.initMinecraft();
 
-        InfoItemCollector.start(event.getServer().getPlayerList().getPlayers(), (player, packet) -> {
-            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
-        });
+        InfoItemCollector.start(event.getServer().getPlayerList().getPlayers(),
+                (player, packet) -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet));
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -82,7 +81,8 @@ public class XPlayerInfoForge {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> minecraft.player == null ? 0 : minecraft.player.getBlockReach());
-            InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft -> minecraft.player == null ? 0 : minecraft.player.getEntityReach());
+            InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft ->
+                    minecraft.player == null ? 0 : Math.max(minecraft.player.getEntityReach(), minecraft.player.getBlockReach()));
         }
 
         // Key mapping is lazily initialized so it doesn't exist until it is registered
