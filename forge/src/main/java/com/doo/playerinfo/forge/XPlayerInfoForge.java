@@ -50,7 +50,7 @@ public class XPlayerInfoForge {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        ExtractAttributes.register(attr -> ATTRIBUTE_REGISTRY.register(attr.getDescriptionId(), () -> attr));
+        ExtractAttributes.forgeRegister(attr -> ATTRIBUTE_REGISTRY.register(attr.getDescriptionId(), () -> attr));
         ATTRIBUTE_REGISTRY.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -80,9 +80,10 @@ public class XPlayerInfoForge {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> minecraft.player == null ? 0 : minecraft.player.getBlockReach());
-            InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft ->
-                    minecraft.player == null ? 0 : Math.max(minecraft.player.getEntityReach(), minecraft.player.getBlockReach()));
+            InfoGroupItems.addClientSideGetter(Const.PICK_RANGE,
+                    minecraft -> minecraft.player == null ? 0 : Math.max(minecraft.player.getEntityReach(), minecraft.player.getBlockReach()));
+            InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft -> minecraft.player.getEntityReach());
+            InfoGroupItems.addClientSideGetter(Const.ATTACK_SWEEP_RANGE, minecraft -> minecraft.player.getEntityReach());
         }
 
         // Key mapping is lazily initialized so it doesn't exist until it is registered

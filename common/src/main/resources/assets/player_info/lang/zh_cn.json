@@ -45,7 +45,9 @@
   "attribute.extend.pick_range": "触及范围",
   "attribute.extend.pick_range.tip": "触及范围",
   "attribute.extend.attack_range": "攻击范围",
-  "attribute.extend.attack_range.tip": "攻击范围，一般情况下，该值为3",
+  "attribute.extend.attack_range.tip": "攻击范围。一般情况下，该值为3",
+  "attribute.extend.attack_sweep_range": "横扫攻击出发距离",
+  "attribute.extend.attack_sweep_range.tip": "横扫攻击出发距离。一般情况下，该值为3",
 
   "attribute.name.extend.armor_penetration": "护甲穿透",
   "attribute.name.extend.armor_penetration.tip": "计算伤害时无视总护甲的百分比。最大值是100，为无视100%护甲。生效于所有生物。",

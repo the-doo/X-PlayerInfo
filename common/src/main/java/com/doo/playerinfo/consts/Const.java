@@ -14,6 +14,7 @@ public final class Const {
     public static final String EXPERIENCE_PROGRESS = "attribute.extend.experience_progress";
     public static final String PICK_RANGE = "attribute.extend.pick_range";
     public static final String ATTACK_RANGE = "attribute.extend.attack_range";
+    public static final String ATTACK_SWEEP_RANGE = "attribute.extend.attack_sweep_range";
     public static final String CRITICAL_HITS = "attribute.extend.critical_hits";
     public static final String FOOD_LEVEL = "attribute.extend.food_level";
     public static final String EXHAUSTION_LEVEL = "attribute.extend.exhaustion_level";

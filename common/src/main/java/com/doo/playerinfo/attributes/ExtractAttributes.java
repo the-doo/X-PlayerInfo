@@ -53,6 +53,12 @@ public class ExtractAttributes {
 
     public static void fabricRegister(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(ATTACK_RANGE);
+
+        register(attributeConsumer);
+    }
+
+    public static void forgeRegister(Consumer<Attribute> attributeConsumer) {
+        register(attributeConsumer);
     }
 
     public static void fabricCreateAttrToPlayer(AttributeSupplier.Builder builder) {

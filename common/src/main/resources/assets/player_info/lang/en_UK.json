@@ -46,6 +46,8 @@
   "attribute.extend.pick_range.tip": "Pick Range",
   "attribute.extend.attack_range": "Attack Range",
   "attribute.extend.attack_range.tip": "Attack Range. Normally, the value is 3.",
+  "attribute.extend.attack_sweep_range": "Sweep Attack Range",
+  "attribute.extend.attack_sweep_range.tip": "Trigger sweep attack effect in range. Normally, the value is 3.",
 
   "attribute.name.extend.armor_reduction": "Ignore Armor",
   "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 100, ignoring 100% armor.Works on all living entity.",

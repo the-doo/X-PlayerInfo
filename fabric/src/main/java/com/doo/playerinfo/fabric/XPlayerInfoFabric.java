@@ -24,7 +24,6 @@ public class XPlayerInfoFabric implements ModInitializer {
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> InfoItemCollector.start(server.getPlayerList().getPlayers(), (player, packet) -> ServerPlayNetworking.send(player, new FabricInfoPack(packet))));
 
-        ExtractAttributes.register(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, a.getDescriptionId(), a));
         ExtractAttributes.fabricRegister(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, a.getDescriptionId(), a));
     }
 
