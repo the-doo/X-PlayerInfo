@@ -6,6 +6,7 @@ import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;
 import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.google.common.collect.Lists;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.MobType;
@@ -77,7 +78,7 @@ public abstract class InfoRegisters {
                     .add(Attributes.ARMOR.getDescriptionId(), armorValue)
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
                     .addAttr(Attributes.KNOCKBACK_RESISTANCE)
-                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - LivingEntityAccessor.get(player).x_PlayerInfo$getDamageAfterArmorAbsorb(damageTest, 1));
+                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - CombatRules.getDamageAfterAbsorb(1, armorValue, armorT));
             addMagicArmor(player, (name, value) -> armor.add("attribute.extend.armor_bonus." + name, value));
             sorted.add(armor);
 
