@@ -31,8 +31,13 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
     @Shadow
     protected abstract float getDamageAfterMagicAbsorb(DamageSource damageSource, float f);
 
+    @Shadow
+    public abstract void heal(float f);
+
     @Unique
     private DamageSource x_PlayerInfo$currentDamageSource;
+    @Unique
+    private float x_PlayerInfo$lastDamageHealing;
 
     @Inject(method = "createLivingAttributes", at = @At(value = "RETURN"))
     private static void injectedCreateAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
@@ -43,6 +48,12 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
     private float x_PlayerInfo$damageAmount(float amount, DamageSource source) {
         x_PlayerInfo$currentDamageSource = source;
         return DamageSourceUtil.additionDamage(source, amount, getMaxHealth());
+    }
+
+    @ModifyVariable(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/CombatTracker;recordDamage(Lnet/minecraft/world/damagesource/DamageSource;F)V"), argsOnly = true)
+    private float x_PlayerInfo$damageAmountHealing(float amount, DamageSource source) {
+        DamageSourceUtil.setHealingAddition(source, amount);
+        return amount;
     }
 
     @ModifyArg(method = "getDamageAfterArmorAbsorb", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/CombatRules;getDamageAfterAbsorb(FFF)F"), index = 1)
@@ -56,12 +67,24 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
     }
 
     @Override
-    public float x_PlayerInfo$getDamageAfterArmorAbsorb(DamageSource arg, float g) {
-        return getDamageAfterArmorAbsorb(arg, g);
+    public float x_PlayerInfo$getDamageAfterMagicAbsorb(DamageSource arg, float g) {
+        return getDamageAfterMagicAbsorb(arg, g);
     }
 
     @Override
-    public float x_PlayerInfo$getDamageAfterMagicAbsorb(DamageSource arg, float g) {
-        return getDamageAfterMagicAbsorb(arg, g);
+    public void x_PlayerInfo$addDamageHealing(float healing) {
+        x_PlayerInfo$lastDamageHealing += healing;
+    }
+
+    @Override
+    public void x_PlayerInfo$healingPlayer() {
+        if (x_PlayerInfo$lastDamageHealing >= 0.001) {
+            heal(x_PlayerInfo$lastDamageHealing);
+        }
+    }
+
+    @Override
+    public void x_PlayerInfo$resetHealing() {
+        x_PlayerInfo$lastDamageHealing = 0;
     }
 }

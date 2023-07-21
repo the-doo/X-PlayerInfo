@@ -50,7 +50,7 @@
   "attribute.extend.attack_sweep_range.tip": "Trigger sweep attack effect in range. Normally, the value is 3.",
 
   "attribute.name.extend.armor_reduction": "Ignore Armor",
-  "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 100, ignoring 100% armor.Works on all living entity.",
+  "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 1, ignoring 100% armor.Works on all living entity.",
   "attribute.extend.damage_reduction_by_armor": "Damage Reduction",
   "attribute.extend.damage_reduction_by_armor.tip": "Usually, only damage reduced by armor and toughness.The maximum value is 1(completely reduction).",
   "attribute.extend.critical_hits": "Jump Damage Bonus",
@@ -66,6 +66,10 @@
   "attribute.name.extend.attack.bow_using_speed.tip": "Bow Strength, enhanced bow damage ratio. In the case of full string, arrows with full damage can be fired, so the effect can be achieved if the attribute is half string. If the attribute value is 0.25, and final value is 1.25(= 1 + 1 * 0.25).",
   "attribute.name.extend.attack.bow_damage_bonus": "Arrow Damage Bonus",
   "attribute.name.extend.attack.bow_damage_bonus.tip": "Extra basic damage of arrows. If the attribute value is 0.25, and final damage is 1.25(= 1 + 1 * 0.25).",
+  "attribute.name.extend.attack.attack_healing": "Attack Healing",
+  "attribute.name.extend.attack.attack_healing.tip": "Extra recovery from attacks. If the value of this attribute is 1, the final recovery will be 1 health (half a heart). ",
+  "attribute.name.extend.attack.damage_percentage_healing": "Life Steal",
+  "attribute.name.extend.attack.damage_percentage_healing.tip": "Lifesteal effect from actual damage, proportional to damage. If the value of this property is 0.25 and the damage is 1, the final HP restored is 0.25 (= 1 * 0.25).",
 
   "attribute.extend.arrow_damage_reduction_by_armor": "Projectile Damage Reduction",
   "attribute.extend.arrow_damage_reduction_by_armor.tip": "Projectile damage reduction. The maximum value is 1(completely reduction).",

@@ -5,6 +5,7 @@ import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;
 import com.doo.playerinfo.interfaces.LivingEntityAccessor;
+import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.google.common.collect.Lists;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,12 +13,9 @@ import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.food.FoodData;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.List;
@@ -28,8 +26,6 @@ import static com.doo.playerinfo.consts.Const.MINECRAFT_NAME;
 public abstract class InfoRegisters {
 
     private static DamageSource damageTest;
-
-    private static final ItemStack ARROW = Items.ARROW.getDefaultInstance();
 
     private static DamageSource arrowTest;
 
@@ -47,7 +43,6 @@ public abstract class InfoRegisters {
 
             List<InfoGroupItems> sorted = Lists.newArrayList();
             AttributeMap attributes = player.getAttributes();
-            Abilities abilities = player.getAbilities();
 
             sorted.add(InfoGroupItems.group("base").attrMap(attributes)
                     .add(Const.HEALTH, player.getHealth())
@@ -55,6 +50,10 @@ public abstract class InfoRegisters {
                     .addAttr(ExtractAttributes.HEALING_BONUS)
                     .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount())
                     .addAttr(ExtractAttributes.ABSORPTION_BONUS)
+                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), player.getSpeed())
+                    .add(Attributes.FLYING_SPEED.getDescriptionId(), OtherPlayerInfoFieldInjector.get(player).playerInfo$getFlySpeed())
+                    .addAttr(Attributes.LUCK)
+                    .addClientSideFlag(Const.PICK_RANGE)
             );
 
             sorted.add(InfoGroupItems.group("xp").attrMap(attributes)
@@ -71,15 +70,17 @@ public abstract class InfoRegisters {
             InfoGroupItems damage = InfoGroupItems.group("damage").attrMap(attributes)
                     .addAttr(Attributes.ATTACK_DAMAGE)
                     .addAttr(Attributes.ATTACK_SPEED)
+                    .add(Const.CRITICAL_HITS, 1.5F)
                     .addClientSideFlag(Const.ATTACK_RANGE)
+                    .addAttr(ExtractAttributes.ATTACK_HEALING)
+                    .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_HEALING)
+                    .addAttr(ExtractAttributes.CRIT_RATE)
+                    .addAttr(ExtractAttributes.CRIT_DAMAGE)
                     .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
                     .addAttr(ExtractAttributes.BOW_USING_SPEED)
                     .addAttr(ExtractAttributes.BOW_DAMAGE_BONUS)
                     .addAttr(ExtractAttributes.ARMOR_PENETRATION)
-                    .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS)
-                    .add(Const.CRITICAL_HITS, 1.5F)
-                    .addAttr(ExtractAttributes.CRIT_RATE)
-                    .addAttr(ExtractAttributes.CRIT_DAMAGE);
+                    .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS);
             // Damage bound
             getDamageBound(player, damage::add);
             sorted.add(damage);
@@ -101,12 +102,6 @@ public abstract class InfoRegisters {
                     .add(Const.SATURATION_LEVEL, foodData.getSaturationLevel())
             );
 
-            sorted.add(InfoGroupItems.group("other").attrMap(attributes)
-                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), abilities.getWalkingSpeed())
-                    .add(Attributes.FLYING_SPEED.getDescriptionId(), abilities.getFlyingSpeed())
-                    .addAttr(Attributes.LUCK)
-                    .addClientSideFlag(Const.PICK_RANGE)
-            );
             return sorted;
         });
     }

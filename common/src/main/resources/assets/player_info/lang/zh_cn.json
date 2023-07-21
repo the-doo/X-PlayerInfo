@@ -50,7 +50,7 @@
   "attribute.extend.attack_sweep_range.tip": "横扫攻击出发距离。一般情况下，该值为3",
 
   "attribute.name.extend.armor_penetration": "护甲穿透",
-  "attribute.name.extend.armor_penetration.tip": "计算伤害时无视总护甲的百分比。最大值是100，为无视100%护甲。生效于所有生物。",
+  "attribute.name.extend.armor_penetration.tip": "计算伤害时无视总护甲的百分比。最大值是1，为无视100%护甲。生效于所有生物。",
   "attribute.extend.damage_reduction_by_armor": "护甲减免",
   "attribute.extend.damage_reduction_by_armor.tip": "通常情况下，护甲及韧性所减免的伤害。1为最大值，完全减免。",
   "attribute.extend.critical_hits": "跳斩伤害加成",
@@ -65,6 +65,10 @@
   "attribute.name.extend.attack.bow_using_speed.tip": "拉弓强度，加强弓的伤害比例。满弦的情况下可以发射满额伤害的箭，那么在该属性的作用为半弦就能达到该效果。如果该属性值为0.25, 则最终拉弓强度为1.25(= 1 + 1 * 0.25)。",
   "attribute.name.extend.attack.bow_damage_bonus": "射箭伤害",
   "attribute.name.extend.attack.bow_damage_bonus.tip": "额外增加箭的基本伤害。如果该属性值为0.25, 则最终伤害为1.25(= 1 + 1 * 0.25)。",
+  "attribute.name.extend.attack.attack_healing": "攻击回复",
+  "attribute.name.extend.attack.attack_healing.tip": "攻击产生的额外回复效果。如果该属性值为1, 则最终回复为1生命值（半颗心）。",
+  "attribute.name.extend.attack.damage_percentage_healing": "生命偷取",
+  "attribute.name.extend.attack.damage_percentage_healing.tip": "实际伤害带来的生命偷取效果，与伤害成正比。如果该属性值为0.25，伤害为1, 则最终回复的生命值为0.25(= 1 * 0.25)。",
 
   "attribute.extend.damage_bonus.undefined": "伤害加成",
   "attribute.extend.damage_bonus.undefined.tip": "对所有生物造成的额外伤害",

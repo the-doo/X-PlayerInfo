@@ -23,6 +23,8 @@ public class ExtractAttributes {
     public static final Attribute ATTACK_RANGE = new RangedAttribute(Const.ATTACK_RANGE, 0, 0, 1024).setSyncable(true);
     public static final Attribute BOW_USING_SPEED = new RangedAttribute("attribute.name.extend.attack.bow_using_speed", 0, 0, 1024);
     public static final Attribute BOW_DAMAGE_BONUS = new RangedAttribute("attribute.name.extend.attack.bow_damage_bonus", 0, 0, 1024);
+    public static final Attribute ATTACK_HEALING = new RangedAttribute("attribute.name.extend.attack.attack_healing", 0, 0, 1024);
+    public static final Attribute DAMAGE_PERCENTAGE_HEALING = new RangedAttribute("attribute.name.extend.attack.damage_percentage_healing", 0, 0, 1024);
 
     public static void register(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(CRIT_RATE);
@@ -34,6 +36,8 @@ public class ExtractAttributes {
         attributeConsumer.accept(DAMAGE_PERCENTAGE_BONUS);
         attributeConsumer.accept(BOW_USING_SPEED);
         attributeConsumer.accept(BOW_DAMAGE_BONUS);
+        attributeConsumer.accept(ATTACK_HEALING);
+        attributeConsumer.accept(DAMAGE_PERCENTAGE_HEALING);
     }
 
     public static void createAttrToLiving(AttributeSupplier.Builder builder) {
@@ -44,6 +48,8 @@ public class ExtractAttributes {
                 .add(HEALING_BONUS)
                 .add(BOW_USING_SPEED)
                 .add(BOW_DAMAGE_BONUS)
+                .add(ATTACK_HEALING)
+                .add(DAMAGE_PERCENTAGE_HEALING)
         ;
     }
 

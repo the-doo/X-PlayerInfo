@@ -11,6 +11,8 @@ public interface OtherPlayerInfoFieldInjector {
 
     Map<String, List<InfoGroupItems>> playerInfo$getInfo();
 
+    float playerInfo$getFlySpeed();
+
     static OtherPlayerInfoFieldInjector get(Player player) {
         return XPlayerInfo.get(player);
     }
