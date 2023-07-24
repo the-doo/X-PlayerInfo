@@ -13,6 +13,9 @@ public final class Const {
     public static final String TOTAL_EXPERIENCE = "attribute.extend.total_experience";
     public static final String EXPERIENCE_PROGRESS = "attribute.extend.experience_progress";
     public static final String PICK_RANGE = "attribute.extend.pick_range";
+    public static final String DIGGER_LEVEL = "attribute.extend.digger_level";
+    public static final String DIGGER_SPEED = "attribute.extend.digger_speed";
+    public static final String DIGGER_EFFICIENCY = "attribute.extend.digger_effect";
     public static final String ATTACK_RANGE = "attribute.extend.attack_range";
     public static final String ATTACK_SWEEP_RANGE = "attribute.extend.attack_sweep_range";
     public static final String CRITICAL_HITS = "attribute.extend.critical_hits";

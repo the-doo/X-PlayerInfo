@@ -44,7 +44,7 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
         ExtractAttributes.createAttrToLiving(cir.getReturnValue());
     }
 
-    @ModifyVariable(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getDamageAfterArmorAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F"), argsOnly = true)
+    @ModifyVariable(method = "actuallyHurt", at = @At(value = "LOAD", target = "Lnet/minecraft/world/entity/LivingEntity;getDamageAfterArmorAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", ordinal = 0), argsOnly = true)
     private float x_PlayerInfo$damageAmount(float amount, DamageSource source) {
         x_PlayerInfo$currentDamageSource = source;
         return DamageSourceUtil.additionDamage(source, amount, getMaxHealth());

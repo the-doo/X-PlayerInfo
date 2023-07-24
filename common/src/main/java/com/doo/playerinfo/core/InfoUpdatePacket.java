@@ -5,6 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 import java.util.List;
 import java.util.Map;
@@ -27,9 +29,11 @@ public class InfoUpdatePacket {
 
     static InfoUpdatePacket create(BiConsumer<Consumer<InfoGroupItems>, Consumer<String>> builder) {
         InfoUpdatePacket packet = new InfoUpdatePacket();
-        ListTag items = new ListTag();
-        builder.accept(groupItems -> items.add(groupItems.toNBT()),
-                modName -> packet.nbt.put(modName, items));
+        Mutable<ListTag> items = new MutableObject<>(new ListTag());
+        builder.accept(groupItems -> items.getValue().add(groupItems.toNBT()), modName -> {
+            packet.nbt.put(modName, items.getValue());
+            items.setValue(new ListTag());
+        });
         return packet;
     }
 

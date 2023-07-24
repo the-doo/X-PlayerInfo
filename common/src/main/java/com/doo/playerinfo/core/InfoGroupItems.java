@@ -24,15 +24,21 @@ public class InfoGroupItems {
     private static final DecimalFormat FORMAT = new DecimalFormat("#.###");
 
     private final String group;
+    private final boolean isKey;
     private AttributeMap attributes;
     private final List<Pair<String, Object>> sortedItems = Lists.newArrayList();
 
-    private InfoGroupItems(String groupName) {
-        this.group = groupName;
+    private InfoGroupItems(String group, boolean isKey) {
+        this.group = group;
+        this.isKey = isKey;
     }
 
     public static InfoGroupItems group(String group) {
-        return new InfoGroupItems(group);
+        return new InfoGroupItems(group, false);
+    }
+
+    public static InfoGroupItems groupKey(String group) {
+        return new InfoGroupItems(group, true);
     }
 
     public InfoGroupItems attrMap(AttributeMap attributes) {
@@ -40,25 +46,34 @@ public class InfoGroupItems {
         return this;
     }
 
-    public InfoGroupItems add(String key, Object value) {
-        sortedItems.add(Pair.of(key, value));
+    public InfoGroupItems add(String key, Object value, boolean isPercentage) {
+        if (isPercentage && value instanceof Number n) {
+            sortedItems.add(Pair.of(key, FORMAT.format(n.doubleValue() * 100) + "%"));
+        } else {
+            sortedItems.add(Pair.of(key, value));
+        }
         return this;
     }
 
-    public InfoGroupItems addAttr(Attribute attribute) {
-        add(attribute.getDescriptionId(), attributes.getValue(attribute));
+    public InfoGroupItems addAttr(Attribute attribute, boolean isPercentage) {
+        add(attribute.getDescriptionId(), attributes.getValue(attribute), isPercentage);
         return this;
     }
 
     public CompoundTag toNBT() {
         CompoundTag tag = new CompoundTag();
         ListTag items = new ListTag();
-        CompoundTag item;
-        String value;
+        CompoundTag item = new CompoundTag();
+        item.putBoolean("isKey", isKey);
+        items.add(item);
         for (Pair<String, Object> sortedItem : sortedItems) {
             item = new CompoundTag();
-            value = sortedItem.getValue().toString();
-            item.putString(sortedItem.getKey(), NumberUtils.isCreatable(value) ? FORMAT.format(sortedItem.getValue()) : value);
+            Object v = sortedItem.getValue();
+            if (v instanceof String) {
+                item.putString(sortedItem.getKey(), v.toString());
+            } else if (v instanceof Number) {
+                item.putString(sortedItem.getKey(), FORMAT.format(v));
+            }
             items.add(item);
         }
         tag.put(group, items);
@@ -67,17 +82,19 @@ public class InfoGroupItems {
 
     public static InfoGroupItems fromNBT(CompoundTag tag) {
         String group = tag.getAllKeys().stream().findFirst().orElse("");
-        InfoGroupItems items = InfoGroupItems.group(group);
+        ListTag list = tag.getList(group, Tag.TAG_COMPOUND);
+        boolean isKey = ((CompoundTag) list.remove(0)).getBoolean("isKey");
+        InfoGroupItems items = isKey ? InfoGroupItems.groupKey(group) : InfoGroupItems.group(group);
         CompoundTag ct;
         String key;
-        for (Tag t : tag.getList(group, Tag.TAG_COMPOUND)) {
+        for (Tag t : list) {
             ct = (CompoundTag) t;
             key = ct.getAllKeys().stream().findFirst().orElse("");
             String value = ct.getString(key);
             if (value.equals(CLIENT_SIZE_FLAG)) {
                 value = getFromClient(key).toString();
             }
-            items.add(key, value);
+            items.add(key, value, false);
         }
         return items;
     }
@@ -94,7 +111,7 @@ public class InfoGroupItems {
     }
 
     public InfoGroupItems addClientSideFlag(String key) {
-        add(key, CLIENT_SIZE_FLAG);
+        add(key, CLIENT_SIZE_FLAG, false);
         return this;
     }
 

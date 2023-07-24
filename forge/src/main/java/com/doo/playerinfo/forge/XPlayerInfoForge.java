@@ -13,6 +13,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -84,6 +85,11 @@ public class XPlayerInfoForge {
                     minecraft -> minecraft.player == null ? 0 : Math.max(minecraft.player.getEntityReach(), minecraft.player.getBlockReach()));
             InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft -> minecraft.player.getEntityReach());
             InfoGroupItems.addClientSideGetter(Const.ATTACK_SWEEP_RANGE, minecraft -> minecraft.player.getEntityReach());
+
+            InfoGroupItems.addClientSideGetter(Const.DIGGER_LEVEL, minecraft ->
+                    minecraft.player.getMainHandItem().getItem() instanceof TieredItem ti ? ti.getTier().getLevel() : 0);
+            InfoGroupItems.addClientSideGetter(Const.DIGGER_SPEED, minecraft ->
+                    minecraft.player.getMainHandItem().getItem() instanceof TieredItem ti ? ti.getTier().getSpeed() : 0);
         }
 
         // Key mapping is lazily initialized so it doesn't exist until it is registered

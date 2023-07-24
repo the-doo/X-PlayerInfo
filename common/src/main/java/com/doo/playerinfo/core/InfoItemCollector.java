@@ -29,7 +29,9 @@ public class InfoItemCollector {
                 players.forEach(player -> {
                     try {
                         InfoUpdatePacket packet = InfoUpdatePacket.create((consumer, finished) -> GETTERS.forEach((modName, list) -> {
+                            // collect
                             list.forEach(getter -> getter.get(player).forEach(consumer));
+                            // finished
                             finished.accept(modName);
                         }));
                         sender.sender(player, packet);
