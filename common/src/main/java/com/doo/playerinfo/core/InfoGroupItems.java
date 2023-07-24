@@ -103,6 +103,10 @@ public class InfoGroupItems {
         return isKey ? group : prefix + group;
     }
 
+    public boolean isEmpty() {
+        return sortedItems.isEmpty();
+    }
+
     public void fallbackForeach(BiConsumer<String, String> consumer, IntPredicate test, Runnable run) {
         sortedItems.forEach(i -> consumer.accept(i.getKey(), i.getValue().toString()));
         if (test.test(sortedItems.size())) {
