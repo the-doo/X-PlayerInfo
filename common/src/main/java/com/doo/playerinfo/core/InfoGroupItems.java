@@ -99,8 +99,8 @@ public class InfoGroupItems {
         return items;
     }
 
-    public String getGroup() {
-        return group;
+    public String getGroup(String prefix) {
+        return isKey ? group : prefix + group;
     }
 
     public void fallbackForeach(BiConsumer<String, String> consumer, IntPredicate test, Runnable run) {
