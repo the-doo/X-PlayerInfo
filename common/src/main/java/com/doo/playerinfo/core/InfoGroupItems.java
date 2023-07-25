@@ -73,6 +73,8 @@ public class InfoGroupItems {
                 item.putString(sortedItem.getKey(), v.toString());
             } else if (v instanceof Number) {
                 item.putString(sortedItem.getKey(), FORMAT.format(v));
+            } else if (v instanceof Boolean b) {
+                item.putBoolean(sortedItem.getKey(), b);
             }
             items.add(item);
         }
@@ -90,9 +92,11 @@ public class InfoGroupItems {
         for (Tag t : list) {
             ct = (CompoundTag) t;
             key = ct.getAllKeys().stream().findFirst().orElse("");
-            String value = ct.getString(key);
+            Object value = ct.getString(key);
             if (value.equals(CLIENT_SIZE_FLAG)) {
                 value = getFromClient(key).toString();
+            } else if (((String) value).isEmpty()) {
+                value = ct.getBoolean(key);
             }
             items.add(key, value, false);
         }
