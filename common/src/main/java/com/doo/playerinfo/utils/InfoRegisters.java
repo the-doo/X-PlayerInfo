@@ -50,7 +50,7 @@ public abstract class InfoRegisters {
 
             sorted.add(InfoGroupItems.group("base").attrMap(attributes)
                     .add(Const.HEALTH, player.getHealth(), false)
-                    .add(Attributes.MAX_HEALTH.getDescriptionId(), attributes.getValue(Attributes.MAX_HEALTH), false)
+                    .addAttr(Attributes.MAX_HEALTH, false)
                     .addAttr(ExtractAttributes.HEALING_BONUS, true)
                     .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount(), false)
                     .addAttr(ExtractAttributes.ABSORPTION_BONUS, true)
@@ -61,11 +61,12 @@ public abstract class InfoRegisters {
                     .addClientSideFlag(Const.PICK_RANGE)
             );
 
+            double extraJump = player.getAttributes().hasAttribute(ExtractAttributes.JUMP_COUNT) ? player.getAttributeValue(ExtractAttributes.JUMP_COUNT) : 0;
             sorted.add(InfoGroupItems.group("movement").attrMap(attributes)
                     .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), player.getSpeed(), false)
                     .add(Attributes.FLYING_SPEED.getDescriptionId(), OtherPlayerInfoFieldInjector.get(player).playerInfo$getFlySpeed(), false)
                     .add(Const.JUMP_POWER, LivingEntityAccessor.get(player).x_PlayerInfo$getJumpPower(), false)
-                    .add(Const.JUMP_COUNT, 1 + player.getAttributeValue(ExtractAttributes.JUMP_COUNT), false)
+                    .add(Const.JUMP_COUNT, 1 + extraJump, false)
             );
 
             sorted.add(InfoGroupItems.group("xp").attrMap(attributes)

@@ -39,18 +39,17 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
 
     @ModifyVariable(method = "giveExperiencePoints", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     private int modifyXp(int value) {
-        return value < 0 ? value : (int) (value * (1 + getAttributeValue(ExtractAttributes.XP_BONUS)));
+        return value <= 0 ? value : (int) (value * (1 + ExtractAttributes.get(getAttributes(), ExtractAttributes.XP_BONUS)));
     }
 
     @ModifyVariable(method = "setAbsorptionAmount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getEntityData()Lnet/minecraft/network/syncher/SynchedEntityData;"), ordinal = 0, argsOnly = true)
     private float modifyAbsorptionBonus(float value) {
-        return value <= 0 ? value : (int) (value * (1 + getAttributeValue(ExtractAttributes.ABSORPTION_BONUS)));
+        return value <= 0 ? value : (int) (value * (1 + ExtractAttributes.get(getAttributes(), ExtractAttributes.ABSORPTION_BONUS)));
     }
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;doPostDamageEffects(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/Entity;)V"))
     private void injectedAttackHealing(Entity entity, CallbackInfo ci) {
         DamageSourceUtil.healingIfPlayerHasAttr(XPlayerInfo.get(this));
-
     }
 
     @Inject(method = "createAttributes", at = @At(value = "RETURN"))

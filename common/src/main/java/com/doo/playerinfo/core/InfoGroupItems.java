@@ -56,6 +56,10 @@ public class InfoGroupItems {
     }
 
     public InfoGroupItems addAttr(Attribute attribute, boolean isPercentage) {
+        if (!attributes.hasAttribute(attribute)) {
+            add(attribute.getDescriptionId(), 0, isPercentage);
+            return this;
+        }
         add(attribute.getDescriptionId(), attributes.getValue(attribute), isPercentage);
         return this;
     }

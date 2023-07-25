@@ -12,7 +12,6 @@ import com.doo.playerinfo.utils.InfoRegisters;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -28,15 +27,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(XPlayerInfo.MOD_ID)
 public class XPlayerInfoForge {
-
-    // Attribute Register
-    public static final DeferredRegister<Attribute> ATTRIBUTE_REGISTRY =
-            DeferredRegister.create(ForgeRegistries.ATTRIBUTES, XPlayerInfo.MOD_ID);
 
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -51,8 +46,7 @@ public class XPlayerInfoForge {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        ExtractAttributes.forgeRegister(attr -> ATTRIBUTE_REGISTRY.register(attr.getDescriptionId(), () -> attr));
-        ATTRIBUTE_REGISTRY.register(modEventBus);
+        modEventBus.addListener(this::register);
 
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -60,6 +54,11 @@ public class XPlayerInfoForge {
             contextSupplier.get().enqueueWork(() -> ClientSideHandler.handle(packet));
             contextSupplier.get().setPacketHandled(true);
         }));
+    }
+
+    @SubscribeEvent
+    public void register(RegisterEvent event) {
+        event.register(ForgeRegistries.Keys.ATTRIBUTES, helper -> ExtractAttributes.forgeRegister(a -> helper.register(a.getDescriptionId(), a)));
     }
 
 

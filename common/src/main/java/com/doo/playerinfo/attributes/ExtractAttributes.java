@@ -3,6 +3,7 @@ package com.doo.playerinfo.attributes;
 import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.consts.Const;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
@@ -78,5 +79,9 @@ public class ExtractAttributes {
 
     public static void fabricCreateAttrToPlayer(AttributeSupplier.Builder builder) {
         builder.add(ATTACK_RANGE);
+    }
+
+    public static double get(AttributeMap attributes, Attribute attribute) {
+        return attributes.hasAttribute(attribute)  ? attributes.getValue(attribute) : 0;
     }
 }

@@ -88,11 +88,20 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
 
     @ModifyVariable(method = "heal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"), argsOnly = true)
     private float injectedHealAttributes(float f) {
+        if (!getAttributes().hasAttribute(ExtractAttributes.HEALING_BONUS)) {
+            return f;
+        }
+
         return f * (1 + (float) getAttributeValue(ExtractAttributes.HEALING_BONUS));
     }
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V", ordinal = 2))
     private void jumpAttach(CallbackInfo ci) {
+        if (!getAttributes().hasAttribute(ExtractAttributes.JUMP_COUNT)) {
+            x_PlayerInfo$usedJumpCount = 0;
+            return;
+        }
+
         if (this.jumping && this.isAffectedByFluids()) {
             if (noJumpDelay == 0 && !onGround() && getAttributeValue(ExtractAttributes.JUMP_COUNT) > x_PlayerInfo$usedJumpCount) {
                 jumpFromGround();
