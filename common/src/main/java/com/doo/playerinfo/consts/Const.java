@@ -23,6 +23,8 @@ public final class Const {
     public static final String EXHAUSTION_LEVEL = "attribute.extend.exhaustion_level";
     public static final String SATURATION_LEVEL = "attribute.extend.saturation_level";
     public static final String DAMAGE_REDUCTION_BY_ARMOR = "attribute.extend.damage_reduction_by_armor";
+    public static final String JUMP_POWER = "attribute.extend.jump_power";
+    public static final String JUMP_COUNT = "attribute.extend.jump_count";
 
 
     private Const() {

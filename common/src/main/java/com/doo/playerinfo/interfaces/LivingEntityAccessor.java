@@ -16,4 +16,6 @@ public interface LivingEntityAccessor {
     void x_PlayerInfo$healingPlayer();
 
     void x_PlayerInfo$resetHealing();
+
+    float x_PlayerInfo$getJumpPower();
 }

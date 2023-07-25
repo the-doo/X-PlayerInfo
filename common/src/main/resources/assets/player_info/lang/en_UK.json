@@ -3,6 +3,7 @@
   "keybind.category.x_player_info.name": "Open Screen",
 
   "Minecraft.info.group.base": "Basic Info",
+  "Minecraft.info.group.movement": "Movement",
   "Minecraft.info.group.xp": "Experience & Level",
   "Minecraft.info.group.damage": "Damage",
   "Minecraft.info.group.armor": "Armor",
@@ -31,6 +32,13 @@
   "attribute.name.extend.healing_bonus.tip": "Takes effect when the mob begins to regenerate health.",
   "attribute.name.extend.absorption_bonus": "Absorption Bonus",
   "attribute.name.extend.absorption_bonus.tip": "Takes effect when the player gets the damage absorption (i.e. yellow heart) effect.",
+
+
+  "attribute.extend.jump_power": "Jump power",
+  "attribute.extend.jump_power.tip": "Indicates the take-off force in the current state. Due to the influence of gravity or other factors, under normal circumstances, the approximate jump height can be directly multiplied by 3.",
+  "attribute.extend.jump_count": "Jump Count",
+  "attribute.extend.jump_count.tip": "Normally only 1 jump",
+
   "attribute.extend.health": "Health",
   "attribute.extend.health.tip": "The health gauge and monitor in Minecraft displays how much damage the player is able to take before dying. It is usually based on a single row of 10 heart icons. Each full heart contains two halves, one health point each (the player has normally 20 maximum health points).Hearts make up the health meter for the player in the Survival, Hardcore\u200C[Java Edition only] (different texture), and Adventure modes, also for mobs. Each heart represents two hit points. ",
   "attribute.extend.absorption_amount": "Absorption Amount",

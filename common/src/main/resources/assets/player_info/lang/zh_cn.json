@@ -3,6 +3,7 @@
   "keybind.category.x_player_info.name": "展示",
 
   "Minecraft.info.group.base": "基本信息",
+  "Minecraft.info.group.movement": "移动",
   "Minecraft.info.group.xp": "经验与等级",
   "Minecraft.info.group.damage": "伤害",
   "Minecraft.info.group.armor": "护甲",
@@ -24,6 +25,11 @@
   "attribute.name.extend.healing_bonus.tip": "生物开始恢复生命时生效",
   "attribute.name.extend.absorption_bonus": "伤害吸收加成",
   "attribute.name.extend.absorption_bonus.tip": "玩家获得伤害吸收（即黄色的心）效果时生效",
+
+  "attribute.extend.jump_power": "起跳力度",
+  "attribute.extend.jump_power.tip": "表示当前状态下的起跳力量。因为受重力或其他因素影响，通常情况下，可直接乘以3得到近似的跳跃高度。",
+  "attribute.extend.jump_count": "跳跃次数",
+  "attribute.extend.jump_count.tip": "通常情况下只能跳跃1次",
 
   "attribute.extend.digger_level": "挖掘等级",
   "attribute.extend.digger_level.tip": "部分方块需要一定的挖掘等级才能开采。如黑曜石、哭泣的黑曜石、下界合金块、重生锚和远古残骸需要挖掘等级3或以上的镐才能开采。",
@@ -77,6 +83,10 @@
   "attribute.name.extend.attack.attack_healing.tip": "攻击产生的额外回复效果。如果该属性值为1, 则最终回复为1生命值（半颗心）。",
   "attribute.name.extend.attack.damage_percentage_healing": "生命偷取",
   "attribute.name.extend.attack.damage_percentage_healing.tip": "实际伤害带来的生命偷取效果，与伤害成正比",
+
+  "attribute.name.extend.jump.extra_count": "额外跳跃次数",
+  "attribute.name.extend.jump.extra_count.tip": "基于本身跳跃的额外跳跃次数",
+
 
   "attribute.extend.damage_bonus.undefined": "伤害加成",
   "attribute.extend.damage_bonus.undefined.tip": "对所有生物造成的额外伤害",

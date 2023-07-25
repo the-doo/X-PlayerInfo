@@ -54,13 +54,18 @@ public abstract class InfoRegisters {
                     .addAttr(ExtractAttributes.HEALING_BONUS, true)
                     .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount(), false)
                     .addAttr(ExtractAttributes.ABSORPTION_BONUS, true)
-                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), player.getSpeed(), false)
-                    .add(Attributes.FLYING_SPEED.getDescriptionId(), OtherPlayerInfoFieldInjector.get(player).playerInfo$getFlySpeed(), false)
                     .addAttr(Attributes.LUCK, false)
                     .add(Const.DIGGER_EFFICIENCY, player.getDestroySpeed(STONE) / 45, false)
                     .addClientSideFlag(Const.DIGGER_LEVEL)
                     .addClientSideFlag(Const.DIGGER_SPEED)
                     .addClientSideFlag(Const.PICK_RANGE)
+            );
+
+            sorted.add(InfoGroupItems.group("movement").attrMap(attributes)
+                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), player.getSpeed(), false)
+                    .add(Attributes.FLYING_SPEED.getDescriptionId(), OtherPlayerInfoFieldInjector.get(player).playerInfo$getFlySpeed(), false)
+                    .add(Const.JUMP_POWER, LivingEntityAccessor.get(player).x_PlayerInfo$getJumpPower(), false)
+                    .add(Const.JUMP_COUNT, 1 + player.getAttributeValue(ExtractAttributes.JUMP_COUNT), false)
             );
 
             sorted.add(InfoGroupItems.group("xp").attrMap(attributes)

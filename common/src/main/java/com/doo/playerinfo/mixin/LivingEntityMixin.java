@@ -4,9 +4,13 @@ import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.utils.DamageSourceUtil;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -14,10 +18,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LivingEntity.class)
-public abstract class LivingEntityMixin implements LivingEntityAccessor {
+public abstract class LivingEntityMixin extends Entity implements LivingEntityAccessor {
+
+    protected LivingEntityMixin(EntityType<?> entityType, Level level) {
+        super(entityType, level);
+    }
 
     @Shadow
     public abstract double getAttributeValue(Attribute attribute);
@@ -26,18 +35,34 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
     public abstract float getMaxHealth();
 
     @Shadow
-    protected abstract float getDamageAfterArmorAbsorb(DamageSource damageSource, float f);
-
-    @Shadow
     protected abstract float getDamageAfterMagicAbsorb(DamageSource damageSource, float f);
 
     @Shadow
     public abstract void heal(float f);
 
+    @Shadow
+    protected abstract float getJumpPower();
+
+    @Shadow
+    public abstract AttributeMap getAttributes();
+
+    @Shadow
+    protected abstract void jumpFromGround();
+
+    @Shadow
+    private int noJumpDelay;
+    @Shadow
+    protected boolean jumping;
+
+    @Shadow
+    protected abstract boolean isAffectedByFluids();
+
     @Unique
     private DamageSource x_PlayerInfo$currentDamageSource;
     @Unique
     private float x_PlayerInfo$lastDamageHealing;
+    @Unique
+    private int x_PlayerInfo$usedJumpCount;
 
     @Inject(method = "createLivingAttributes", at = @At(value = "RETURN"))
     private static void injectedCreateAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
@@ -66,6 +91,19 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
         return f * (1 + (float) getAttributeValue(ExtractAttributes.HEALING_BONUS));
     }
 
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V", ordinal = 2))
+    private void jumpAttach(CallbackInfo ci) {
+        if (this.jumping && this.isAffectedByFluids()) {
+            if (noJumpDelay == 0 && !onGround() && getAttributeValue(ExtractAttributes.JUMP_COUNT) > x_PlayerInfo$usedJumpCount) {
+                jumpFromGround();
+                noJumpDelay = 10;
+                x_PlayerInfo$usedJumpCount++;
+            }
+        } else if (onGround() && noJumpDelay <= 0) {
+            x_PlayerInfo$usedJumpCount = 0;
+        }
+    }
+
     @Override
     public float x_PlayerInfo$getDamageAfterMagicAbsorb(DamageSource arg, float g) {
         return getDamageAfterMagicAbsorb(arg, g);
@@ -86,5 +124,10 @@ public abstract class LivingEntityMixin implements LivingEntityAccessor {
     @Override
     public void x_PlayerInfo$resetHealing() {
         x_PlayerInfo$lastDamageHealing = 0;
+    }
+
+    @Override
+    public float x_PlayerInfo$getJumpPower() {
+        return getJumpPower();
     }
 }

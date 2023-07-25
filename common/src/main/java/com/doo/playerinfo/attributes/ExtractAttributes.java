@@ -13,7 +13,7 @@ public class ExtractAttributes {
     private ExtractAttributes() {
     }
 
-    public static final Attribute CRIT_DAMAGE = new RangedAttribute("attribute.name.extend.attack.crit_damage", 0.5, 0, 1024);
+    public static final Attribute CRIT_DAMAGE = new RangedAttribute("attribute.name.extend.attack.crit_damage", 0, 0, 1024);
     public static final Attribute CRIT_RATE = new RangedAttribute("attribute.name.extend.attack.crit_rate", 0, 0, 1);
     public static final Attribute XP_BONUS = new RangedAttribute("attribute.name.extend.xp_bonus", 0, 0, 1024);
     public static final Attribute ARMOR_PENETRATION = new RangedAttribute("attribute.name.extend.armor_penetration", 0, 0, 1);
@@ -25,6 +25,7 @@ public class ExtractAttributes {
     public static final Attribute BOW_DAMAGE_BONUS = new RangedAttribute("attribute.name.extend.attack.bow_damage_bonus", 0, 0, 1024);
     public static final Attribute ATTACK_HEALING = new RangedAttribute("attribute.name.extend.attack.attack_healing", 0, 0, 1024);
     public static final Attribute DAMAGE_PERCENTAGE_HEALING = new RangedAttribute("attribute.name.extend.attack.damage_percentage_healing", 0, 0, 1024);
+    public static final Attribute JUMP_COUNT = new RangedAttribute("attribute.name.extend.jump.extra_count", 0, 0, 1024);
 
     public static void register(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(CRIT_RATE);
@@ -38,6 +39,7 @@ public class ExtractAttributes {
         attributeConsumer.accept(BOW_DAMAGE_BONUS);
         attributeConsumer.accept(ATTACK_HEALING);
         attributeConsumer.accept(DAMAGE_PERCENTAGE_HEALING);
+        attributeConsumer.accept(JUMP_COUNT);
     }
 
     public static void createAttrToLiving(AttributeSupplier.Builder builder) {
@@ -50,6 +52,7 @@ public class ExtractAttributes {
                 .add(BOW_DAMAGE_BONUS)
                 .add(ATTACK_HEALING)
                 .add(DAMAGE_PERCENTAGE_HEALING)
+                .add(JUMP_COUNT)
         ;
     }
 
