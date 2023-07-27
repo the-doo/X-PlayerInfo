@@ -30,9 +30,23 @@ public class InfoUpdatePacket {
     static InfoUpdatePacket create(BiConsumer<Consumer<InfoGroupItems>, Consumer<String>> builder) {
         InfoUpdatePacket packet = new InfoUpdatePacket();
         Mutable<ListTag> items = new MutableObject<>(new ListTag());
-        builder.accept(groupItems -> items.getValue().add(groupItems.toNBT()), modName -> {
-            packet.nbt.put(modName, items.getValue());
-            items.setValue(new ListTag());
+        builder.accept(
+                // item foreach
+                group -> items.getValue().add(group.toNBT()),
+                // mod collect finish
+                modName -> {
+                    packet.nbt.put(modName, items.getValue());
+                    items.setValue(new ListTag());
+                });
+        return packet;
+    }
+
+    public static InfoUpdatePacket create(Consumer<BiConsumer<String, List<InfoGroupItems>>> builder) {
+        InfoUpdatePacket packet = new InfoUpdatePacket();
+        builder.accept((modName, list) -> {
+            ListTag tags = new ListTag();
+            list.forEach(i -> tags.add(i.toNBT()));
+            packet.nbt.put(modName, tags);
         });
         return packet;
     }

@@ -1,17 +1,20 @@
 package com.doo.playerinfo.core;
 
+import com.doo.playerinfo.utils.InfoRegisters;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -26,6 +29,9 @@ public class InfoGroupItems {
     private final String group;
     private final boolean isKey;
     private AttributeMap attributes;
+    private ServerPlayer player;
+    private boolean hasAttach;
+    private Map<String, List<InfoRegisters.ValueAttach>> attaches;
     private final List<Pair<String, Object>> sortedItems = Lists.newArrayList();
 
     private InfoGroupItems(String group, boolean isKey) {
@@ -41,18 +47,57 @@ public class InfoGroupItems {
         return new InfoGroupItems(group, true);
     }
 
+    public static List<InfoGroupItems> merge(List<String> keys, Map<String, List<InfoGroupItems>> map) {
+        List<InfoGroupItems> items = Lists.newArrayList();
+        keys.forEach(k -> {
+            List<InfoGroupItems> list = map.getOrDefault(k, Collections.emptyList());
+            if (list.isEmpty()) {
+                return;
+            }
+
+            InfoGroupItems source = list.get(0);
+            items.add(source);
+            if (list.size() < 2) {
+                return;
+            }
+
+            // merge other
+            for (int i = 1; i < list.size(); i++) {
+                source.sortedItems.addAll(list.get(i).sortedItems);
+            }
+        });
+        return items;
+    }
+
     public InfoGroupItems attrMap(AttributeMap attributes) {
         this.attributes = attributes;
         return this;
     }
 
     public InfoGroupItems add(String key, Object value, boolean isPercentage) {
+        if (hasAttach && value instanceof Number n){
+            value = addAttach(key, n.doubleValue());
+        }
+
         if (isPercentage && value instanceof Number n) {
             sortedItems.add(Pair.of(key, FORMAT.format(n.doubleValue() * 100) + "%"));
         } else {
             sortedItems.add(Pair.of(key, value));
         }
         return this;
+    }
+
+    private double addAttach(String key, double v) {
+        if (player == null) {
+            return v;
+        }
+
+        List<InfoRegisters.ValueAttach> attachList = attaches.getOrDefault(key, Collections.emptyList());
+        if (attachList.isEmpty()) {
+            return v;
+        }
+
+        return v + attachList.stream().mapToDouble(attach -> attach.get(player)).sum();
     }
 
     public InfoGroupItems addAttr(Attribute attribute, boolean isPercentage) {
@@ -107,6 +152,10 @@ public class InfoGroupItems {
         return items;
     }
 
+    public String getGroup() {
+        return group;
+    }
+
     public String getGroup(String prefix) {
         return isKey ? group : prefix + group;
     }
@@ -132,6 +181,17 @@ public class InfoGroupItems {
     }
 
     private static final Map<String, InfoItemClientGetter> CLIENT_GETTER_MAP = Maps.newHashMap();
+
+    public InfoGroupItems canAttach(ServerPlayer player, Map<String, List<InfoRegisters.ValueAttach>> attaches) {
+        if (attaches == null || attaches.isEmpty()) {
+            return this;
+        }
+
+        this.player = player;
+        hasAttach = true;
+        this.attaches = attaches;
+        return this;
+    }
 
 
     /**

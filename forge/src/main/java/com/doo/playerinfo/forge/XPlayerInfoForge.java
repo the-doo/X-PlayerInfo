@@ -15,9 +15,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -66,6 +68,15 @@ public class XPlayerInfoForge {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         InfoRegisters.initMinecraft();
+
+
+        InfoRegisters.infoForgeAttach(p -> {
+            CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
+            if (hit != null) {
+                return hit.getDamageModifier() - hit.getOldDamageModifier();
+            }
+            return 0;
+        });
 
         InfoItemCollector.start(event.getServer().getPlayerList().getPlayers(),
                 (player, packet) -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet));

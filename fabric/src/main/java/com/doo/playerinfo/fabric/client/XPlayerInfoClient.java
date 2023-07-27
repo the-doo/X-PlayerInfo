@@ -48,5 +48,6 @@ public class XPlayerInfoClient implements ClientModInitializer {
             }
             return 3;
         });
+        InfoGroupItems.addClientSideGetter(Const.ATTACK_SWEEP_RANGE, minecraft -> 3);
     }
 }

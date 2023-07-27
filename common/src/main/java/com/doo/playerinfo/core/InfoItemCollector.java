@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InfoItemCollector {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -28,12 +29,22 @@ public class InfoItemCollector {
 
                 players.forEach(player -> {
                     try {
-                        InfoUpdatePacket packet = InfoUpdatePacket.create((consumer, finished) -> GETTERS.forEach((modName, list) -> {
-                            // collect
-                            list.forEach(getter -> getter.get(player).forEach(consumer));
-                            // finished
-                            finished.accept(modName);
+                        InfoUpdatePacket packet = InfoUpdatePacket.create(append -> GETTERS.forEach((modName, list) -> {
+                            // collect and sort
+                            List<String> keys = Lists.newArrayList();
+                            Map<String, List<InfoGroupItems>> info = list.stream()
+                                    .flatMap(getter -> getter.get(player).stream())
+                                    .peek(l -> {
+                                        if (!keys.contains(l.getGroup())) {
+                                            keys.add(l.getGroup());
+                                        }
+                                    })
+                                    .collect(Collectors.groupingBy(InfoGroupItems::getGroup));
+
+                            List<InfoGroupItems> items = InfoGroupItems.merge(keys, info);
+                            append.accept(modName, items);
                         }));
+
                         sender.sender(player, packet);
                     } catch (Exception ex) {
                         LOGGER.warn("Send info to player {} error: ", player, ex);
