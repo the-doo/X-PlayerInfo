@@ -26,7 +26,7 @@ public class ExtractAttributes {
     public static final Attribute BOW_DAMAGE_BONUS = new RangedAttribute("attribute.name.extend.attack.bow_damage_bonus", 0, 0, 1024);
     public static final Attribute ATTACK_HEALING = new RangedAttribute("attribute.name.extend.attack.attack_healing", 0, 0, 1024);
     public static final Attribute DAMAGE_PERCENTAGE_HEALING = new RangedAttribute("attribute.name.extend.attack.damage_percentage_healing", 0, 0, 1024);
-    public static final Attribute JUMP_COUNT = new RangedAttribute("attribute.name.extend.jump.extra_count", 0, 0, 1024);
+    public static final Attribute JUMP_COUNT = new RangedAttribute("attribute.name.extend.jump.extra_count", 0, 0, 1024).setSyncable(true);
 
     public static void register(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(CRIT_RATE);
