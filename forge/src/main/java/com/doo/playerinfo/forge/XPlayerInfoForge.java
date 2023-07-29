@@ -70,7 +70,7 @@ public class XPlayerInfoForge {
         InfoRegisters.initMinecraft();
 
 
-        InfoRegisters.infoForgeAttach(p -> {
+        InfoRegisters.infoForgeAttach("damage", Const.CRITICAL_HITS, p -> {
             CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
             if (hit != null) {
                 return hit.getDamageModifier() - hit.getOldDamageModifier();

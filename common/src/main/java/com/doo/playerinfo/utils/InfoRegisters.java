@@ -108,7 +108,7 @@ public abstract class InfoRegisters {
                     .addAttr(ExtractAttributes.ARMOR_PENETRATION, true)
                     .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS, true);
             // Damage bound
-            getDamageBound(player, (k, v) -> damage.add(k, v, false));
+            getDamageBound(player, (k, v) -> damage.add("attribute.extend.damage_bonus.%s".formatted(k), v, false));
             sorted.add(damage);
 
             group = "armor";
@@ -119,7 +119,7 @@ public abstract class InfoRegisters {
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT, false)
                     .addAttr(Attributes.KNOCKBACK_RESISTANCE, true)
                     .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - CombatRules.getDamageAfterAbsorb(1, armorValue, armorT), true);
-            addMagicArmor(player, (name, value) -> armor.add("attribute.extend.armor_bonus." + name, value, true));
+            addMagicArmor(player, (name, value) -> armor.add("attribute.extend.armor_bonus.%s".formatted(name), value, true));
             sorted.add(armor);
 
             group = "food";
@@ -158,15 +158,15 @@ public abstract class InfoRegisters {
     }
 
     private static void getDamageBound(Player player, ObjDoubleConsumer<String> consumer) {
-        consumer.accept("attribute.extend.damage_bonus.undefined", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED));
-        consumer.accept("attribute.extend.damage_bonus.undead", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEAD));
-        consumer.accept("attribute.extend.damage_bonus.arthropod", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ARTHROPOD));
-        consumer.accept("attribute.extend.damage_bonus.illager", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ILLAGER));
-        consumer.accept("attribute.extend.damage_bonus.water", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.WATER));
+        consumer.accept("undefined", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED));
+        consumer.accept("undead", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEAD));
+        consumer.accept("arthropod", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ARTHROPOD));
+        consumer.accept("illager", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ILLAGER));
+        consumer.accept("water", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.WATER));
     }
 
-    public static void infoForgeAttach(ToDoubleFunction<Player> valueGetter) {
-        regisAttach("Minecraft", "damage", Const.CRITICAL_HITS, valueGetter::applyAsDouble);
+    public static void infoForgeAttach(String group, String key, ToDoubleFunction<Player> valueGetter) {
+        regisAttach("Minecraft", group, key, valueGetter::applyAsDouble);
     }
 
     public static void regisAttach(String modName, String group, String key, ValueAttach attach) {
