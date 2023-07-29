@@ -6,6 +6,7 @@ public final class Const {
     public static final String MINECRAFT_NAME = "Minecraft";
     public static final String ID = "player_info";
     public static final ResourceLocation CHANNEL = new ResourceLocation(ID + ":info_packet");
+    public static final ResourceLocation CONFIG_CHANNEL = new ResourceLocation(ID + ":config");
 
     public static final String HEALTH = "attribute.extend.health";
     public static final String ABSORPTION_AMOUNT = "attribute.extend.absorption_amount";

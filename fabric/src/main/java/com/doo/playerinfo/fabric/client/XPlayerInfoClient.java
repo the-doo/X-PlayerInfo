@@ -2,7 +2,7 @@ package com.doo.playerinfo.fabric.client;
 
 import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
-import com.doo.playerinfo.core.ClientSideHandler;
+import com.doo.playerinfo.utils.ClientSideHandler;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoUpdatePacket;
 import com.doo.playerinfo.gui.InfoScreen;

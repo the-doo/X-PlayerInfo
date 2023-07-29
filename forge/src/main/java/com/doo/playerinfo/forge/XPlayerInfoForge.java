@@ -3,7 +3,7 @@ package com.doo.playerinfo.forge;
 import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
-import com.doo.playerinfo.core.ClientSideHandler;
+import com.doo.playerinfo.utils.ClientSideHandler;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;
 import com.doo.playerinfo.core.InfoUpdatePacket;

@@ -1,5 +1,6 @@
-package com.doo.playerinfo.core;
+package com.doo.playerinfo.utils;
 
+import com.doo.playerinfo.core.InfoUpdatePacket;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
