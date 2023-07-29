@@ -3,14 +3,18 @@ package com.doo.playerinfo.mixin;
 import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.core.InfoGroupItems;
+import com.doo.playerinfo.interfaces.FoodDataAccessor;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.doo.playerinfo.utils.DamageSourceUtil;
 import com.google.common.collect.Maps;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,11 +34,21 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
     @Shadow
     protected abstract float getFlyingSpeed();
 
+    @Shadow public abstract FoodData getFoodData();
+
     @Unique
     private final Map<String, List<InfoGroupItems>> x_PlayerInfo$otherPlayerInfo = Maps.newConcurrentMap();
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
+    }
+
+    @Inject(method = "<init>", at = @At(value = "TAIL"))
+    private void initSetFoodBonus(Level level, BlockPos blockPos, float f, GameProfile gameProfile, CallbackInfo ci) {
+        if (level.isClientSide()) {
+            return;
+        }
+        FoodDataAccessor.setFoodBonus(getFoodData(), () -> ExtractAttributes.get(getAttributes(), ExtractAttributes.FOOD_BONUS));
     }
 
     @ModifyVariable(method = "giveExperiencePoints", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)

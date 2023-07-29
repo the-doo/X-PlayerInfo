@@ -86,6 +86,10 @@
   "attribute.name.extend.attack.attack_healing.tip": "Extra recovery from attacks. If the value of this attribute is 1, the final recovery will be 1 health (half a heart). ",
   "attribute.name.extend.attack.damage_percentage_healing": "Life Steal",
   "attribute.name.extend.attack.damage_percentage_healing.tip": "Lifesteal effect from actual damage, proportional to damage.",
+  "attribute.name.extend.jump.extra_count": "Extra Jumps",
+  "attribute.name.extend.jump.extra_count.tip": "Extra jumps based on own jumps.",
+  "attribute.name.extend.food_bonus": "Extra Food Bonus",
+  "attribute.name.extend.food_bonus.tip": "Bonus hunger gained when eating.",
 
   "attribute.extend.arrow_damage_reduction_by_armor": "Projectile Damage Reduction",
   "attribute.extend.arrow_damage_reduction_by_armor.tip": "Projectile damage reduction. The maximum value is 1(completely reduction).",
@@ -100,6 +104,8 @@
   "attribute.extend.damage_bonus.water": "Water Damage Bonus",
   "attribute.extend.damage_bonus.water.tip": "Water Damage Bonus",
 
+  "attribute.extend.armor_bonus.arrow": "Projectile Relief",
+  "attribute.extend.armor_bonus.arrow.tip": "Projectile Relief",
   "attribute.extend.armor_bonus.magic": "Magic Damage Reduction",
   "attribute.extend.armor_bonus.magic.tip": "Magic Damage Reduction.",
   "attribute.extend.armor_bonus.fall": "Fall Damage Reduction",
@@ -113,5 +119,7 @@
   "attribute.extend.armor_bonus.explosion": "Explosion Damage Reduction",
   "attribute.extend.armor_bonus.explosion.tip": "Explosion Damage Reduction.",
   "attribute.extend.armor_bonus.wither": "Wither Damage Reduction",
-  "attribute.extend.armor_bonus.wither.tip": "Wither Damage Reduction."
+  "attribute.extend.armor_bonus.wither.tip": "Wither Damage Reduction.",
+  "attribute.extend.armor_bonus.drown": "Drowning Damage Reduction",
+  "attribute.extend.armor_bonus.drown.tip": "Drowning Damage Reduction."
 }

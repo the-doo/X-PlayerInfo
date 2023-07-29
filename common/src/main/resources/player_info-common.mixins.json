@@ -5,11 +5,12 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BowMixin",
+    "FoodDataMixin",
     "LivingEntityMixin",
     "PlayerMixin"
   ],
   "client": [
-    "GameRendererMixin",
+    "GameRendererMixin"
   ],
   "server": [
   ],

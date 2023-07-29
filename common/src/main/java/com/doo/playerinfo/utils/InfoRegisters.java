@@ -124,10 +124,11 @@ public abstract class InfoRegisters {
 
             group = "food";
             FoodData foodData = player.getFoodData();
-            sorted.add(InfoGroupItems.group(group).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
+            sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
                     .add(Const.FOOD_LEVEL, foodData.getFoodLevel(), false)
                     .add(Const.EXHAUSTION_LEVEL, foodData.getExhaustionLevel(), false)
                     .add(Const.SATURATION_LEVEL, foodData.getSaturationLevel(), false)
+                    .addAttr(ExtractAttributes.FOOD_BONUS, true)
             );
 
             return sorted;
