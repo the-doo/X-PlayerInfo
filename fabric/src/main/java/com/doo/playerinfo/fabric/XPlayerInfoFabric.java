@@ -23,6 +23,7 @@ public class XPlayerInfoFabric implements ModInitializer {
         InfoRegisters.initMinecraft();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> InfoItemCollector.start(server.getPlayerList().getPlayers(), (player, packet) -> ServerPlayNetworking.send(player, new FabricInfoPack(packet))));
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> InfoItemCollector.clean());
 
         ExtractAttributes.fabricRegister(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, a.getDescriptionId(), a));
     }

@@ -20,7 +20,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -66,9 +68,8 @@ public class XPlayerInfoForge {
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
+    public void onServerStarted(ServerStartedEvent event) {
         InfoRegisters.initMinecraft();
-
 
         InfoRegisters.infoForgeAttach("damage", Const.CRITICAL_HITS, p -> {
             CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
@@ -80,6 +81,13 @@ public class XPlayerInfoForge {
 
         InfoItemCollector.start(event.getServer().getPlayerList().getPlayers(),
                 (player, packet) -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet));
+    }
+
+
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    @SubscribeEvent
+    public void onServerStop(ServerStoppedEvent event) {
+        InfoItemCollector.clean();
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

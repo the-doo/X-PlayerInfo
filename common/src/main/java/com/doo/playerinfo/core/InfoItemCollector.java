@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ public class InfoItemCollector {
     private static final Map<String, List<InfoItemServerGetter>> GETTERS = new TreeMap<>(String::compareTo);
 
     private static final ScheduledExecutorService EXE = Executors.newScheduledThreadPool(10);
+    private static ScheduledFuture<?> current;
 
     public static void start(List<ServerPlayer> players, PacketSender sender) {
         if (sender == null) {
@@ -25,7 +27,7 @@ public class InfoItemCollector {
             return;
         }
 
-        EXE.scheduleAtFixedRate(() -> {
+        current = EXE.scheduleAtFixedRate(() -> {
             if (GETTERS.isEmpty()) {
                 return;
             }
@@ -57,6 +59,14 @@ public class InfoItemCollector {
         }, 0, 1, TimeUnit.SECONDS);
 
         LOGGER.debug("Player info Collector is started!");
+    }
+
+    public static void clean() {
+        GETTERS.clear();
+
+        if (current != null) {
+            current.cancel(true);
+        }
     }
 
     public interface InfoItemServerGetter {
