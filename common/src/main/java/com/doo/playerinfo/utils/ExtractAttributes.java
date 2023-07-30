@@ -1,4 +1,4 @@
-package com.doo.playerinfo.attributes;
+package com.doo.playerinfo.utils;
 
 import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.consts.Const;
@@ -27,7 +27,7 @@ public class ExtractAttributes {
     public static final Attribute ATTACK_HEALING = new RangedAttribute("attribute.name.extend.attack.attack_healing", 0, 0, 1024);
     public static final Attribute DAMAGE_PERCENTAGE_HEALING = new RangedAttribute("attribute.name.extend.attack.damage_percentage_healing", 0, 0, 1024);
     public static final Attribute JUMP_COUNT = new RangedAttribute("attribute.name.extend.jump.extra_count", 0, 0, 1024).setSyncable(true);
-    public static final Attribute FOOD_BONUS = new RangedAttribute("attribute.name.extend.food_bonus", 0, 0, 1024);
+    public static final Attribute FOOD_BONUS = new RangedAttribute("attribute.name.extend.food_bonus", 1, 0, 1024);
 
     public static void register(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(CRIT_RATE);
@@ -85,6 +85,6 @@ public class ExtractAttributes {
     }
 
     public static double get(AttributeMap attributes, Attribute attribute) {
-        return attributes.hasAttribute(attribute)  ? attributes.getValue(attribute) : 0;
+        return attributes.hasAttribute(attribute) ? attributes.getValue(attribute) : 0;
     }
 }

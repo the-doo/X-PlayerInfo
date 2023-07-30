@@ -1,6 +1,5 @@
 package com.doo.playerinfo.utils;
 
-import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;

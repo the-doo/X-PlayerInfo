@@ -1,13 +1,13 @@
 package com.doo.playerinfo.forge;
 
 import com.doo.playerinfo.XPlayerInfo;
-import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
-import com.doo.playerinfo.utils.ClientSideHandler;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;
 import com.doo.playerinfo.core.InfoUpdatePacket;
 import com.doo.playerinfo.gui.InfoScreen;
+import com.doo.playerinfo.utils.ClientSideHandler;
+import com.doo.playerinfo.utils.ExtractAttributes;
 import com.doo.playerinfo.utils.InfoRegisters;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

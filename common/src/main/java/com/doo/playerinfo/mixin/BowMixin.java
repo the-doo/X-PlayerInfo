@@ -1,6 +1,6 @@
 package com.doo.playerinfo.mixin;
 
-import com.doo.playerinfo.attributes.ExtractAttributes;
+import com.doo.playerinfo.utils.ExtractAttributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;

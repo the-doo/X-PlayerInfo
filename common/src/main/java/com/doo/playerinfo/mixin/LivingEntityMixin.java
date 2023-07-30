@@ -1,8 +1,8 @@
 package com.doo.playerinfo.mixin;
 
-import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.utils.DamageSourceUtil;
+import com.doo.playerinfo.utils.ExtractAttributes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

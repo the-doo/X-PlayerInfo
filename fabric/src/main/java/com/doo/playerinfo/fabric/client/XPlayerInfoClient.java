@@ -1,11 +1,11 @@
 package com.doo.playerinfo.fabric.client;
 
-import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
-import com.doo.playerinfo.utils.ClientSideHandler;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoUpdatePacket;
 import com.doo.playerinfo.gui.InfoScreen;
+import com.doo.playerinfo.utils.ClientSideHandler;
+import com.doo.playerinfo.utils.ExtractAttributes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

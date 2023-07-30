@@ -1,6 +1,5 @@
 package com.doo.playerinfo.utils;
 
-import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;

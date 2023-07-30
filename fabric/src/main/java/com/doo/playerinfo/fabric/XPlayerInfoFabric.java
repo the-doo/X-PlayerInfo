@@ -1,10 +1,10 @@
 package com.doo.playerinfo.fabric;
 
 import com.doo.playerinfo.XPlayerInfo;
-import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoItemCollector;
 import com.doo.playerinfo.core.InfoUpdatePacket;
+import com.doo.playerinfo.utils.ExtractAttributes;
 import com.doo.playerinfo.utils.InfoRegisters;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;

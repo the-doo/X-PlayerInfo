@@ -1,11 +1,11 @@
 package com.doo.playerinfo.mixin;
 
 import com.doo.playerinfo.XPlayerInfo;
-import com.doo.playerinfo.attributes.ExtractAttributes;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.interfaces.FoodDataAccessor;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.doo.playerinfo.utils.DamageSourceUtil;
+import com.doo.playerinfo.utils.ExtractAttributes;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
@@ -34,7 +34,8 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
     @Shadow
     protected abstract float getFlyingSpeed();
 
-    @Shadow public abstract FoodData getFoodData();
+    @Shadow
+    public abstract FoodData getFoodData();
 
     @Unique
     private final Map<String, List<InfoGroupItems>> x_PlayerInfo$otherPlayerInfo = Maps.newConcurrentMap();

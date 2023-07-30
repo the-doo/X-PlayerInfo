@@ -75,7 +75,7 @@ public class InfoGroupItems {
     }
 
     public InfoGroupItems add(String key, Object value, boolean isPercentage) {
-        if (hasAttach && value instanceof Number n){
+        if (hasAttach && value instanceof Number n) {
             value = addAttach(key, n.doubleValue());
         }
 

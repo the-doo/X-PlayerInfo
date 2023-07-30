@@ -1,6 +1,6 @@
 package com.doo.playerinfo.mixin;
 
-import com.doo.playerinfo.attributes.ExtractAttributes;
+import com.doo.playerinfo.utils.ExtractAttributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Final;
