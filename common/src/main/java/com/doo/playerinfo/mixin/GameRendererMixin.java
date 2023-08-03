@@ -21,10 +21,11 @@ public class GameRendererMixin {
      */
     @ModifyVariable(method = "pick", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
     private double x_PlayerInfo$attackRange(double value) {
-        if (!minecraft.player.getAttributes().hasAttribute(ExtractAttributes.ATTACK_RANGE)) {
+        double v = ExtractAttributes.get(minecraft.player.getAttributes(), ExtractAttributes.ATTACK_RANGE);
+        if (v <= 0) {
             return value;
         }
-        double attackRange = minecraft.player.getAttributeValue(ExtractAttributes.ATTACK_RANGE);
-        return value - attackRange * attackRange;
+
+        return value - v * v;
     }
 }

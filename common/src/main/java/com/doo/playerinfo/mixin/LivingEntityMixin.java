@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
@@ -69,8 +70,16 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         ExtractAttributes.createAttrToLiving(cir.getReturnValue());
     }
 
+    @Inject(method = "getJumpPower", at = @At(value = "RETURN"), cancellable = true)
+    private void injectedGetJumpPower(CallbackInfoReturnable<Float> cir) {
+        double v = ExtractAttributes.get(getAttributes(), ExtractAttributes.JUMP_STRENGTH_BONUS);
+        if (v != 0) {
+            cir.setReturnValue((float) (cir.getReturnValue() * (1 + v)));
+        }
+    }
+
     @ModifyVariable(method = "actuallyHurt", at = @At(value = "LOAD", target = "Lnet/minecraft/world/entity/LivingEntity;getDamageAfterArmorAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", ordinal = 0), argsOnly = true)
-    private float x_PlayerInfo$damageAmount(float amount, DamageSource source) {
+    private float modifyVariableDamageAmount(float amount, DamageSource source) {
         x_PlayerInfo$currentDamageSource = source;
         return DamageSourceUtil.additionDamage(source, amount, getMaxHealth());
     }

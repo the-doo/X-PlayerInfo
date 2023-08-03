@@ -3,6 +3,7 @@ package com.doo.playerinfo.mixin;
 import com.doo.playerinfo.interfaces.FoodDataAccessor;
 import net.minecraft.world.food.FoodData;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
@@ -11,6 +12,7 @@ import java.util.function.DoubleSupplier;
 @Mixin(FoodData.class)
 public abstract class FoodDataMixin implements FoodDataAccessor {
 
+    @Unique
     private DoubleSupplier extraFoodBonusGetter;
 
     @ModifyArg(method = {

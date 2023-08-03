@@ -74,12 +74,12 @@ public class InfoGroupItems {
         return this;
     }
 
-    public InfoGroupItems add(String key, Object value, boolean isPercentage) {
+    public InfoGroupItems add(String key, Object value, boolean percentageable) {
         if (hasAttach && value instanceof Number n) {
             value = addAttach(key, n.doubleValue());
         }
 
-        if (isPercentage && value instanceof Number n) {
+        if (percentageable && value instanceof Number n) {
             sortedItems.add(Pair.of(key, FORMAT.format(n.doubleValue() * 100) + "%"));
         } else {
             sortedItems.add(Pair.of(key, value));
@@ -100,12 +100,12 @@ public class InfoGroupItems {
         return v + attachList.stream().mapToDouble(attach -> attach.get(player)).sum();
     }
 
-    public InfoGroupItems addAttr(Attribute attribute, boolean isPercentage) {
+    public InfoGroupItems addAttr(Attribute attribute, boolean percentageable) {
         if (!attributes.hasAttribute(attribute)) {
-            add(attribute.getDescriptionId(), 0, isPercentage);
+            add(attribute.getDescriptionId(), 0, percentageable);
             return this;
         }
-        add(attribute.getDescriptionId(), attributes.getValue(attribute), isPercentage);
+        add(attribute.getDescriptionId(), attributes.getValue(attribute), percentageable);
         return this;
     }
 

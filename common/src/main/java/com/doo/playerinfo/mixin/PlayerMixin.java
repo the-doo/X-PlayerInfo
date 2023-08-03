@@ -16,11 +16,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -70,6 +72,12 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
     @Inject(method = "createAttributes", at = @At(value = "RETURN"))
     private static void injectedCreateAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         ExtractAttributes.createAttrToPlayer(cir.getReturnValue());
+    }
+
+    @ModifyArg(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"), index = 1)
+    private AABB injectedTickItemsBox(AABB box) {
+        ExtractAttributes.playerTouchItems(XPlayerInfo.get(this), box);
+        return box;
     }
 
     @Override

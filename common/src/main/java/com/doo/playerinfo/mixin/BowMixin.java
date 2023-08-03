@@ -15,11 +15,16 @@ public abstract class BowMixin {
 
     @ModifyVariable(method = "releaseUsing", at = @At(value = "STORE", target = "Lnet/minecraft/world/item/BowItem;getPowerForTime(I)F", ordinal = 0), ordinal = 0)
     private float x_PlayerInfo$bowStrengthAttr(float amount, ItemStack itemStack, Level level, LivingEntity livingEntity, int i) {
-        if (level.isClientSide() || !livingEntity.getAttributes().hasAttribute(ExtractAttributes.BOW_USING_SPEED)) {
+        if (level.isClientSide()){
             return amount;
         }
 
-        return Math.min(1, amount * (1 + (float) livingEntity.getAttributeValue(ExtractAttributes.BOW_USING_SPEED)));
+        double v = ExtractAttributes.get(livingEntity.getAttributes(), ExtractAttributes.BOW_USING_SPEED);
+        if (v == 0) {
+            return amount;
+        }
+
+        return Math.min(1, amount * (1 + (float) v));
     }
 
     @ModifyVariable(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;shootFromRotation(Lnet/minecraft/world/entity/Entity;FFFFF)V", ordinal = 0), ordinal = 0)

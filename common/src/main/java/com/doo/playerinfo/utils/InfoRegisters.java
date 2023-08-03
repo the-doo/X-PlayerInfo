@@ -26,18 +26,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.ObjDoubleConsumer;
 import java.util.function.ToDoubleFunction;
+import java.util.stream.Stream;
 
 import static com.doo.playerinfo.consts.Const.MINECRAFT_NAME;
 
 public abstract class InfoRegisters {
 
-    private static DamageSource damageTest;
-
-    private static DamageSource arrowTest;
+    private static final String DAMAGE_BONUS_KEY_FORMAT = "attribute.extend.damage_bonus.%s";
+    private static final String ARMOR_BONUS_KEY_FORMAT = "attribute.extend.armor_bonus.%s";
 
     private static final BlockState STONE = Blocks.STONE.defaultBlockState();
 
     private static final Map<String, Map<String, Map<String, List<ValueAttach>>>> MOD_GROUPS_ATTACH_MAP = Maps.newHashMap();
+
+    private static DamageSource damageTest;
+
+    private static DamageSource arrowTest;
 
     private InfoRegisters() {
     }
@@ -63,10 +67,8 @@ public abstract class InfoRegisters {
                     .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount(), false)
                     .addAttr(ExtractAttributes.ABSORPTION_BONUS, true)
                     .addAttr(Attributes.LUCK, false)
-                    .add(Const.DIGGER_EFFICIENCY, player.getDestroySpeed(STONE) / 45, false)
-                    .addClientSideFlag(Const.DIGGER_LEVEL)
-                    .addClientSideFlag(Const.DIGGER_SPEED)
                     .addClientSideFlag(Const.PICK_RANGE)
+                    .addAttr(ExtractAttributes.TOUCH_RANGE_BONUS, false)
             );
 
             group = "movement";
@@ -76,21 +78,11 @@ public abstract class InfoRegisters {
                     .add(Attributes.FLYING_SPEED.getDescriptionId(), OtherPlayerInfoFieldInjector.get(player).playerInfo$getFlySpeed(), false)
                     .add(Const.JUMP_POWER, LivingEntityAccessor.get(player).x_PlayerInfo$getJumpPower(), false)
                     .add(Const.JUMP_COUNT, 1 + extraJump, false)
-            );
-
-            group = "xp";
-            sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Const.EXPERIENCE_LEVEL, player.experienceLevel, false)
-                    .add(Const.TOTAL_EXPERIENCE, player.totalExperience, false)
-                    .add(Const.EXPERIENCE_PROGRESS, player.experienceProgress, true)
-                    .addAttr(ExtractAttributes.XP_BONUS, true)
+                    .addAttr(ExtractAttributes.JUMP_STRENGTH_BONUS, false)
             );
 
             group = "damage";
-            double knock = EnchantmentHelper.getKnockbackBonus(player);
-            if (attributes.hasAttribute(Attributes.ATTACK_KNOCKBACK)) {
-                knock += attributes.getValue(Attributes.ATTACK_KNOCKBACK);
-            }
+            double knock = EnchantmentHelper.getKnockbackBonus(player) + ExtractAttributes.get(attributes, Attributes.ATTACK_KNOCKBACK);
             InfoGroupItems damage = InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
                     .addAttr(Attributes.ATTACK_DAMAGE, false)
                     .addAttr(Attributes.ATTACK_SPEED, false)
@@ -107,7 +99,7 @@ public abstract class InfoRegisters {
                     .addAttr(ExtractAttributes.ARMOR_PENETRATION, true)
                     .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS, true);
             // Damage bound
-            getDamageBound(player, (k, v) -> damage.add("attribute.extend.damage_bonus.%s".formatted(k), v, false));
+            getDamageBound(player, (k, v) -> damage.add(DAMAGE_BONUS_KEY_FORMAT.formatted(k), v, false));
             sorted.add(damage);
 
             group = "armor";
@@ -118,8 +110,23 @@ public abstract class InfoRegisters {
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT, false)
                     .addAttr(Attributes.KNOCKBACK_RESISTANCE, true)
                     .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - CombatRules.getDamageAfterAbsorb(1, armorValue, armorT), true);
-            addMagicArmor(player, (name, value) -> armor.add("attribute.extend.armor_bonus.%s".formatted(name), value, true));
+            addMagicArmor(player, (name, value) -> armor.add(ARMOR_BONUS_KEY_FORMAT.formatted(name), value, true));
             sorted.add(armor);
+
+            group = "digger";
+            sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
+                    .add(Const.DIGGER_EFFICIENCY, player.getDestroySpeed(STONE) / 45, false)
+                    .addClientSideFlag(Const.DIGGER_LEVEL)
+                    .addClientSideFlag(Const.DIGGER_SPEED)
+            );
+
+            group = "xp";
+            sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
+                    .add(Const.EXPERIENCE_LEVEL, player.experienceLevel, false)
+                    .add(Const.TOTAL_EXPERIENCE, player.totalExperience, false)
+                    .add(Const.EXPERIENCE_PROGRESS, player.experienceProgress, true)
+                    .addAttr(ExtractAttributes.XP_BONUS, true)
+            );
 
             group = "food";
             FoodData foodData = player.getFoodData();
@@ -137,32 +144,18 @@ public abstract class InfoRegisters {
     private static void addMagicArmor(Player player, ObjDoubleConsumer<String> consumer) {
         DamageSources sources = player.level().damageSources();
         LivingEntityAccessor accessor = LivingEntityAccessor.get(player);
-        DamageSource source = arrowTest;
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.magic();
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.fall();
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.inFire();
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.freeze();
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.lightningBolt();
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.explosion(null, null);
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.wither();
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
-        source = sources.drown();
-        consumer.accept(source.getMsgId(), 1 - accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1));
+
+        Stream.of(
+                arrowTest, sources.magic(), sources.fall(), sources.inFire(), sources.freeze(), sources.lightningBolt(),
+                sources.explosion(null, null), sources.wither(), sources.drown(), sources.starve()
+        ).forEach(source -> consumer.accept(source.getMsgId(),
+                1 - (player.isInvulnerableTo(source) ? 0 : accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1))));
     }
 
     private static void getDamageBound(Player player, ObjDoubleConsumer<String> consumer) {
-        consumer.accept("undefined", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED));
-        consumer.accept("undead", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEAD));
-        consumer.accept("arthropod", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ARTHROPOD));
-        consumer.accept("illager", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.ILLAGER));
-        consumer.accept("water", EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.WATER));
+        Stream.of(
+                "undefined", "undead", "arthropod", "illager", "water"
+        ).forEach(key -> consumer.accept(key, EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED)));
     }
 
     public static void infoForgeAttach(String group, String key, ToDoubleFunction<Player> valueGetter) {

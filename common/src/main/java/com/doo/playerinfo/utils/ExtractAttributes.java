@@ -2,10 +2,14 @@ package com.doo.playerinfo.utils;
 
 import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.consts.Const;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 
 import java.util.function.Consumer;
 
@@ -26,8 +30,10 @@ public class ExtractAttributes {
     public static final Attribute BOW_DAMAGE_BONUS = new RangedAttribute("attribute.name.extend.attack.bow_damage_bonus", 0, 0, 1024);
     public static final Attribute ATTACK_HEALING = new RangedAttribute("attribute.name.extend.attack.attack_healing", 0, 0, 1024);
     public static final Attribute DAMAGE_PERCENTAGE_HEALING = new RangedAttribute("attribute.name.extend.attack.damage_percentage_healing", 0, 0, 1024);
+    public static final Attribute JUMP_STRENGTH_BONUS = new RangedAttribute("attribute.name.extend.jump.strength_bonus", 0, 0, 1024).setSyncable(true);
     public static final Attribute JUMP_COUNT = new RangedAttribute("attribute.name.extend.jump.extra_count", 0, 0, 1024).setSyncable(true);
     public static final Attribute FOOD_BONUS = new RangedAttribute("attribute.name.extend.food_bonus", 0, 0, 1024);
+    public static final Attribute TOUCH_RANGE_BONUS = new RangedAttribute("attribute.name.extend.touch_range_bonus", 0, 0, 1024);
 
     public static void register(Consumer<Attribute> attributeConsumer) {
         attributeConsumer.accept(CRIT_RATE);
@@ -41,8 +47,10 @@ public class ExtractAttributes {
         attributeConsumer.accept(BOW_DAMAGE_BONUS);
         attributeConsumer.accept(ATTACK_HEALING);
         attributeConsumer.accept(DAMAGE_PERCENTAGE_HEALING);
+        attributeConsumer.accept(JUMP_STRENGTH_BONUS);
         attributeConsumer.accept(JUMP_COUNT);
         attributeConsumer.accept(FOOD_BONUS);
+        attributeConsumer.accept(TOUCH_RANGE_BONUS);
     }
 
     public static void createAttrToLiving(AttributeSupplier.Builder builder) {
@@ -55,6 +63,7 @@ public class ExtractAttributes {
                 .add(BOW_DAMAGE_BONUS)
                 .add(ATTACK_HEALING)
                 .add(DAMAGE_PERCENTAGE_HEALING)
+                .add(JUMP_STRENGTH_BONUS)
                 .add(JUMP_COUNT)
         ;
     }
@@ -63,6 +72,7 @@ public class ExtractAttributes {
         builder.add(XP_BONUS)
                 .add(ABSORPTION_BONUS)
                 .add(FOOD_BONUS)
+                .add(TOUCH_RANGE_BONUS)
         ;
 
         if (XPlayerInfo.isFabric()) {
@@ -86,5 +96,21 @@ public class ExtractAttributes {
 
     public static double get(AttributeMap attributes, Attribute attribute) {
         return attributes.hasAttribute(attribute) ? attributes.getValue(attribute) : 0;
+    }
+
+    public static void playerTouchItems(Player player, AABB box) {
+        double range = get(player.getAttributes(), ExtractAttributes.TOUCH_RANGE_BONUS);
+        if (range != 0) {
+            return;
+        }
+
+        range += 1;
+        AABB newBox = box.inflate(range, 0, range);
+        for (Entity item : player.level().getEntities(player, newBox)) {
+            if (item instanceof Monster) {
+                continue;
+            }
+            item.playerTouch(player);
+        }
     }
 }

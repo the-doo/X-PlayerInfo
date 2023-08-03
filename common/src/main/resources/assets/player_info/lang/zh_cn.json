@@ -87,6 +87,10 @@
   "attribute.name.extend.jump.extra_count.tip": "基于本身跳跃的额外跳跃次数",
   "attribute.name.extend.food_bonus": "额外食物加成",
   "attribute.name.extend.food_bonus.tip": "进食时获得的额外饥饿值加成",
+  "attribute.name.extend.touch_range_bonus": "额外拾取加成",
+  "attribute.name.extend.touch_range_bonus.tip": "额外拾取加成，通常情况下拾取距离为1。",
+  "attribute.name.extend.jump.strength_bonus": "额外起跳加成",
+  "attribute.name.extend.jump.strength_bonus.tip": "额外起跳加成，起跳力度计算后的加成",
 
 
   "attribute.extend.damage_bonus.undefined": "伤害加成",
@@ -118,8 +122,6 @@
   "attribute.extend.armor_bonus.wither.tip": "凋灵伤害减免",
   "attribute.extend.armor_bonus.drown": "溺水伤害减免",
   "attribute.extend.armor_bonus.drown.tip": "溺水伤害减免",
-  "attribute.name.extend.armor_reduction": "Ignore Armor",
-  "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 1, ignoring 100% armor.Works on all living entity.",
-  "attribute.extend.arrow_damage_reduction_by_armor": "Projectile Damage Reduction",
-  "attribute.extend.arrow_damage_reduction_by_armor.tip": "Projectile damage reduction. The maximum value is 1(completely reduction)."
+  "attribute.extend.armor_bonus.starve": "饥饿伤害减免",
+  "attribute.extend.armor_bonus.starve.tip": "饥饿伤害减免"
 }

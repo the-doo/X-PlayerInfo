@@ -66,8 +66,6 @@
 
   "attribute.name.extend.armor_penetration": "Armor Penetration",
   "attribute.name.extend.armor_penetration.tip": "Ignores percentage of total armor when calculating damage.",
-  "attribute.name.extend.armor_reduction": "Ignore Armor",
-  "attribute.name.extend.armor_reduction.tip": "Ignores percentage of total armor when calculating damage. The maximum value is 1, ignoring 100% armor.Works on all living entity.",
   "attribute.extend.damage_reduction_by_armor": "Damage Reduction",
   "attribute.extend.damage_reduction_by_armor.tip": "Usually, only damage reduced by armor and toughness.",
   "attribute.extend.critical_hits": "Jump Damage Bonus",
@@ -90,9 +88,11 @@
   "attribute.name.extend.jump.extra_count.tip": "Extra jumps based on own jumps.",
   "attribute.name.extend.food_bonus": "Extra Food Bonus",
   "attribute.name.extend.food_bonus.tip": "Bonus hunger gained when eating.",
+  "attribute.name.extend.touch_range_bonus": "Extra Pick Bonus",
+  "attribute.name.extend.touch_range_bonus.tip": "Additional pick bonus, usually the pick distance is 1.",
+  "attribute.name.extend.jump.strength_bonus": "Extra Jump Bonus",
+  "attribute.name.extend.jump.strength_bonus.tip": "Bonus to the jump, the bonus after the starting force is calculated.",
 
-  "attribute.extend.arrow_damage_reduction_by_armor": "Projectile Damage Reduction",
-  "attribute.extend.arrow_damage_reduction_by_armor.tip": "Projectile damage reduction. The maximum value is 1(completely reduction).",
   "attribute.extend.damage_bonus.undefined": "Normal Damage Bonus",
   "attribute.extend.damage_bonus.undefined.tip": "Works on all living entitiy",
   "attribute.extend.damage_bonus.undead": "Undead Damage Bonus",
@@ -121,5 +121,7 @@
   "attribute.extend.armor_bonus.wither": "Wither Damage Reduction",
   "attribute.extend.armor_bonus.wither.tip": "Wither Damage Reduction.",
   "attribute.extend.armor_bonus.drown": "Drowning Damage Reduction",
-  "attribute.extend.armor_bonus.drown.tip": "Drowning Damage Reduction."
+  "attribute.extend.armor_bonus.drown.tip": "Drowning Damage Reduction.",
+  "attribute.extend.armor_bonus.starve": "Starve Damage Reduction",
+  "attribute.extend.armor_bonus.starve.tip": "Starve Damage Reduction"
 }

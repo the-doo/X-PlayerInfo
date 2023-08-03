@@ -19,12 +19,8 @@ public class DamageSourceUtil {
             return armor;
         }
 
-        if (attacker.getAttributes().hasAttribute(ExtractAttributes.ARMOR_PENETRATION)) {
-            float v = (float) attacker.getAttributeValue(ExtractAttributes.ARMOR_PENETRATION);
-            return v < 0 ? armor : armor * (1 - v);
-        }
-
-        return armor;
+        double v = ExtractAttributes.get(attacker.getAttributes(), ExtractAttributes.ARMOR_PENETRATION);
+        return v > 0 ? (float) (armor * (1 - v)) : armor;
     }
 
     private static LivingEntity get(DamageSource source) {
@@ -48,15 +44,13 @@ public class DamageSourceUtil {
 
         AttributeMap attributes = attacker.getAttributes();
         // DAMAGE_PERCENTAGE_BONUS
-        if (attributes.hasAttribute(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS)) {
-            float v = (float) attacker.getAttributeValue(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS);
-            amount = v <= 0 ? amount : amount + maxHealth * v;
-        }
+        double v = ExtractAttributes.get(attributes, ExtractAttributes.DAMAGE_PERCENTAGE_BONUS);
+        amount = v <= 0 ? amount : (float) (amount + maxHealth * v);
 
         // DAMAGE_PERCENTAGE_BONUS
-        if (attributes.hasAttribute(ExtractAttributes.CRIT_RATE) && attacker.getRandom().nextDouble() < attributes.getValue(ExtractAttributes.CRIT_RATE)) {
-            amount *= (1 + (float) attacker.getAttributeValue(ExtractAttributes.CRIT_DAMAGE));
-        }
+        v = ExtractAttributes.get(attributes, ExtractAttributes.CRIT_RATE);
+        amount = attacker.getRandom().nextDouble() >= v ||
+                (v = ExtractAttributes.get(attributes, ExtractAttributes.CRIT_DAMAGE)) != 0 ? amount : amount * (1 + (float) v);
         return amount;
     }
 
@@ -97,13 +91,9 @@ public class DamageSourceUtil {
 
     public static void healingIfPlayerHasAttr(LivingEntity entity) {
         // Player ATTACK_HEALING
-        float healing = 0;
-        float v;
         AttributeMap attributes = entity.getAttributes();
-        if (attributes.hasAttribute(ExtractAttributes.ATTACK_HEALING)) {
-            v = (float) entity.getAttributeValue(ExtractAttributes.ATTACK_HEALING);
-            healing = v <= 0 ? 0 : v;
-        }
+        float v = (float) ExtractAttributes.get(attributes, ExtractAttributes.ATTACK_HEALING);
+        float healing = v <= 0 ? 0 : v;
         LivingEntityAccessor accessor = LivingEntityAccessor.get(entity);
         if (healing >= 0.001) {
             accessor.x_PlayerInfo$addDamageHealing(healing);
