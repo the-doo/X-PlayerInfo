@@ -1,5 +1,6 @@
 package com.doo.playerinfo.mixin;
 
+import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.utils.DamageSourceUtil;
 import com.doo.playerinfo.utils.ExtractAttributes;
@@ -8,7 +9,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
@@ -58,6 +58,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     @Shadow
     protected abstract boolean isAffectedByFluids();
 
+    @Shadow
+    public abstract boolean isAlive();
+
     @Unique
     private DamageSource x_PlayerInfo$currentDamageSource;
     @Unique
@@ -68,6 +71,19 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     @Inject(method = "createLivingAttributes", at = @At(value = "RETURN"))
     private static void injectedCreateAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
         ExtractAttributes.createAttrToLiving(cir.getReturnValue());
+    }
+
+    @Inject(method = "tickEffects", at = @At(value = "HEAD"))
+    private void injectedEndTick(CallbackInfo ci) {
+        if (level().isClientSide() || !isAlive()) {
+            return;
+        }
+
+        LivingEntity entity = XPlayerInfo.get(this);
+        double v;
+        if (entity.tickCount % 10 == 0 && (v = ExtractAttributes.get(getAttributes(), ExtractAttributes.HEALING_PER_BONUS)) > 0) {
+            heal((float) (v / 2));
+        }
     }
 
     @Inject(method = "getJumpPower", at = @At(value = "RETURN"), cancellable = true)

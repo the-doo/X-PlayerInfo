@@ -7,10 +7,17 @@ import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.Util;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.ServerStatsCounter;
+import net.minecraft.stats.Stat;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -43,11 +50,16 @@ public abstract class InfoRegisters {
 
     private static DamageSource arrowTest;
 
+    private static final Stat<ResourceLocation> DEATH_STAT = Stats.CUSTOM.get(Stats.DEATHS);
+    private static final Stat<ResourceLocation> PLAYER_KILLS_STAT = Stats.CUSTOM.get(Stats.PLAYER_KILLS);
+    private static final Stat<ResourceLocation> MOB_KILLS_STAT = Stats.CUSTOM.get(Stats.MOB_KILLS);
+
     private InfoRegisters() {
     }
 
     public static void initMinecraft() {
         InfoItemCollector.register(MINECRAFT_NAME, player -> {
+            long time = Util.getEpochMillis();
             if (damageTest == null) {
                 damageTest = player.level().damageSources().mobAttack(null);
                 Arrow arrow = new Arrow(player.level(), player);
@@ -61,53 +73,54 @@ public abstract class InfoRegisters {
 
             String group = "base";
             sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Const.HEALTH, player.getHealth(), false)
-                    .addAttr(Attributes.MAX_HEALTH, false)
+                    .add(Const.HEALTH, player.getHealth())
+                    .addAttr(Attributes.MAX_HEALTH)
                     .addAttr(ExtractAttributes.HEALING_BONUS, true)
-                    .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount(), false)
+                    .addAttr(ExtractAttributes.HEALING_PER_BONUS)
+                    .add(Const.ABSORPTION_AMOUNT, player.getAbsorptionAmount())
                     .addAttr(ExtractAttributes.ABSORPTION_BONUS, true)
-                    .addAttr(Attributes.LUCK, false)
+                    .addAttr(Attributes.LUCK)
                     .addClientSideFlag(Const.PICK_RANGE)
-                    .addAttr(ExtractAttributes.TOUCH_RANGE_BONUS, false)
+                    .addAttr(ExtractAttributes.TOUCH_RANGE_BONUS)
             );
 
             group = "movement";
             double extraJump = player.getAttributes().hasAttribute(ExtractAttributes.JUMP_COUNT) ? player.getAttributeValue(ExtractAttributes.JUMP_COUNT) : 0;
             sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), player.getSpeed(), false)
-                    .add(Attributes.FLYING_SPEED.getDescriptionId(), OtherPlayerInfoFieldInjector.get(player).playerInfo$getFlySpeed(), false)
-                    .add(Const.JUMP_POWER, LivingEntityAccessor.get(player).x_PlayerInfo$getJumpPower(), false)
-                    .add(Const.JUMP_COUNT, 1 + extraJump, false)
-                    .addAttr(ExtractAttributes.JUMP_STRENGTH_BONUS, false)
+                    .add(Attributes.MOVEMENT_SPEED.getDescriptionId(), player.getSpeed())
+                    .add(Attributes.FLYING_SPEED.getDescriptionId(), OtherPlayerInfoFieldInjector.get(player).playerInfo$getFlySpeed())
+                    .add(Const.JUMP_POWER, LivingEntityAccessor.get(player).x_PlayerInfo$getJumpPower())
+                    .add(Const.JUMP_COUNT, 1 + extraJump)
+                    .addAttr(ExtractAttributes.JUMP_STRENGTH_BONUS)
             );
 
             group = "damage";
             double knock = EnchantmentHelper.getKnockbackBonus(player) + ExtractAttributes.get(attributes, Attributes.ATTACK_KNOCKBACK);
             InfoGroupItems damage = InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .addAttr(Attributes.ATTACK_DAMAGE, false)
-                    .addAttr(Attributes.ATTACK_SPEED, false)
+                    .addAttr(Attributes.ATTACK_DAMAGE)
+                    .addAttr(Attributes.ATTACK_SPEED)
                     .add(Const.CRITICAL_HITS, 1.5F, true)
                     .addClientSideFlag(Const.ATTACK_RANGE)
                     .addClientSideFlag(Const.ATTACK_SWEEP_RANGE)
-                    .addAttr(ExtractAttributes.ATTACK_HEALING, false)
+                    .addAttr(ExtractAttributes.ATTACK_HEALING)
                     .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_HEALING, true)
                     .addAttr(ExtractAttributes.CRIT_RATE, true)
                     .addAttr(ExtractAttributes.CRIT_DAMAGE, true)
-                    .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock, false)
+                    .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
                     .addAttr(ExtractAttributes.BOW_USING_SPEED, true)
                     .addAttr(ExtractAttributes.BOW_DAMAGE_BONUS, true)
                     .addAttr(ExtractAttributes.ARMOR_PENETRATION, true)
                     .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_BONUS, true);
             // Damage bound
-            getDamageBound(player, (k, v) -> damage.add(DAMAGE_BONUS_KEY_FORMAT.formatted(k), v, false));
+            getDamageBound(player, (k, v) -> damage.add(DAMAGE_BONUS_KEY_FORMAT.formatted(k), v));
             sorted.add(damage);
 
             group = "armor";
             int armorValue = player.getArmorValue();
             float armorT = (float) attributes.getValue(Attributes.ARMOR_TOUGHNESS);
             InfoGroupItems armor = InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Attributes.ARMOR.getDescriptionId(), armorValue, false)
-                    .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT, false)
+                    .add(Attributes.ARMOR.getDescriptionId(), armorValue)
+                    .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
                     .addAttr(Attributes.KNOCKBACK_RESISTANCE, true)
                     .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - CombatRules.getDamageAfterAbsorb(1, armorValue, armorT), true);
             addMagicArmor(player, (name, value) -> armor.add(ARMOR_BONUS_KEY_FORMAT.formatted(name), value, true));
@@ -115,15 +128,15 @@ public abstract class InfoRegisters {
 
             group = "digger";
             sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Const.DIGGER_EFFICIENCY, player.getDestroySpeed(STONE) / 45, false)
+                    .add(Const.DIGGER_EFFICIENCY, player.getDestroySpeed(STONE) / 45)
                     .addClientSideFlag(Const.DIGGER_LEVEL)
                     .addClientSideFlag(Const.DIGGER_SPEED)
             );
 
             group = "xp";
             sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Const.EXPERIENCE_LEVEL, player.experienceLevel, false)
-                    .add(Const.TOTAL_EXPERIENCE, player.totalExperience, false)
+                    .add(Const.EXPERIENCE_LEVEL, player.experienceLevel)
+                    .add(Const.TOTAL_EXPERIENCE, player.totalExperience)
                     .add(Const.EXPERIENCE_PROGRESS, player.experienceProgress, true)
                     .addAttr(ExtractAttributes.XP_BONUS, true)
             );
@@ -131,13 +144,35 @@ public abstract class InfoRegisters {
             group = "food";
             FoodData foodData = player.getFoodData();
             sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Const.FOOD_LEVEL, foodData.getFoodLevel(), false)
-                    .add(Const.EXHAUSTION_LEVEL, foodData.getExhaustionLevel(), false)
-                    .add(Const.SATURATION_LEVEL, foodData.getSaturationLevel(), false)
+                    .add(Const.FOOD_LEVEL, foodData.getFoodLevel())
+                    .add(Const.EXHAUSTION_LEVEL, foodData.getExhaustionLevel())
+                    .add(Const.SATURATION_LEVEL, foodData.getSaturationLevel())
                     .addAttr(ExtractAttributes.FOOD_BONUS, true)
             );
 
+            group = "stats";
+            ServerStatsCounter stats = player.getStats();
+            sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
+                    .add(Const.SCORE, player.getScore())
+                    .add(Const.DEATH_COUNT, stats.getValue(DEATH_STAT))
+                    .add(Const.PLAYER_KILL_COUNT, stats.getValue(PLAYER_KILLS_STAT))
+                    .add(Const.MOB_KILL_COUNT, stats.getValue(MOB_KILLS_STAT))
+            );
+
+            group = "other";
+            sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
+                    .add(Const.COLLECT_TIME, (Util.getEpochMillis() - time) + "ms")
+            );
+
             return sorted;
+        });
+
+        regisAttach("Minecraft", "base", ExtractAttributes.HEALING_PER_BONUS.getDescriptionId(), player -> {
+            MobEffectInstance effect = player.getEffect(MobEffects.REGENERATION);
+            if (effect != null) {
+                return 20D / (50 >> effect.getAmplifier());
+            }
+            return 0;
         });
     }
 

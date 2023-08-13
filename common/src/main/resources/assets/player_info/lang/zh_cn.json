@@ -2,12 +2,20 @@
   "keybind.key.x_player_info.name": "玩家信息",
   "keybind.category.x_player_info.name": "展示",
 
+
+  "info.world.day": "白天",
+  "info.world.night": "夜晚",
+  "info.world.noon": "中午",
+  "info.world.midnight": "午夜",
+
   "Minecraft.info.group.base": "基本信息",
   "Minecraft.info.group.movement": "移动",
   "Minecraft.info.group.xp": "经验与等级",
+  "Minecraft.info.group.digger": "挖掘",
   "Minecraft.info.group.damage": "伤害",
   "Minecraft.info.group.armor": "护甲",
   "Minecraft.info.group.food": "食物",
+  "Minecraft.info.group.stats": "统计",
   "Minecraft.info.group.other": "其他",
 
   "attribute.name.generic.max_health.tip": "代表生物的最大生命值，即能回复到的最高生命值",
@@ -21,6 +29,8 @@
   "attribute.name.generic.armor_toughness.tip": "盔甲韧性，用于抵挡伤害，是对护甲值效果受伤害降低的防护。该值上限为20。",
   "attribute.name.generic.luck.tip": "幸运（Luck）是一种能提升获得高质量战利品概率的状态效果。",
 
+  "attribute.name.extend.healing_per_bonus": "每秒再生",
+  "attribute.name.extend.healing_per_bonus.tip": "生物每秒钟回复的生命值",
   "attribute.name.extend.healing_bonus": "生命恢复加成",
   "attribute.name.extend.healing_bonus.tip": "生物开始恢复生命时生效",
   "attribute.name.extend.absorption_bonus": "伤害吸收加成",
@@ -71,10 +81,10 @@
   "attribute.extend.critical_hits.tip": "跳跃攻击所造成的伤害，即原版暴击伤害",
   "attribute.name.extend.attack.damage_percentage_bonus": "百分比伤害",
   "attribute.name.extend.attack.damage_percentage_bonus.tip": "基于最大生命值的百分比伤害加成",
-  "attribute.name.extend.attack.crit_rate": "终极暴击几率",
+  "attribute.name.extend.attack.crit_rate": "终伤几率",
   "attribute.name.extend.attack.crit_rate.tip": "造成终极暴击伤害加成的几率",
-  "attribute.name.extend.attack.crit_damage": "终极暴击伤害加成",
-  "attribute.name.extend.attack.crit_damage.tip": "基于绝大部分伤害(包括附魔、跳斩、远程等)的额外加成",
+  "attribute.name.extend.attack.crit_damage": "终伤加成",
+  "attribute.name.extend.attack.crit_damage.tip": "终极暴击伤害加成，基于绝大部分伤害(包括附魔、跳斩、远程等)的额外加成",
   "attribute.name.extend.attack.bow_using_speed": "拉弓强度",
   "attribute.name.extend.attack.bow_using_speed.tip": "拉弓强度，加强弓的伤害比例。满弦的情况下可以发射满额伤害的箭，那么在该属性的作用为半弦就能达到该效果",
   "attribute.name.extend.attack.bow_damage_bonus": "射箭伤害",
@@ -123,5 +133,18 @@
   "attribute.extend.armor_bonus.drown": "溺水伤害减免",
   "attribute.extend.armor_bonus.drown.tip": "溺水伤害减免",
   "attribute.extend.armor_bonus.starve": "饥饿伤害减免",
-  "attribute.extend.armor_bonus.starve.tip": "饥饿伤害减免"
+  "attribute.extend.armor_bonus.starve.tip": "饥饿伤害减免",
+
+
+  "info.stat.score": "得分",
+  "info.stat.score.tip": "得分",
+  "info.stat.death_count": "死亡次数",
+  "info.stat.death_count.tip": "死亡次数",
+  "info.stat.player_killed": "杀死玩家",
+  "info.stat.player_killed.tip": "杀死玩家",
+  "info.stat.mob_killed": "杀死生物",
+  "info.stat.mob_killed.tip": "杀死生物",
+
+  "info.collect.time": "收集时间",
+  "info.collect.time.tip": "收集时间"
 }

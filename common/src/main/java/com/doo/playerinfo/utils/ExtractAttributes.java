@@ -23,6 +23,7 @@ public class ExtractAttributes {
     public static final Attribute XP_BONUS = new RangedAttribute("attribute.name.extend.xp_bonus", 0, 0, 1024);
     public static final Attribute ARMOR_PENETRATION = new RangedAttribute("attribute.name.extend.armor_penetration", 0, 0, 1);
     public static final Attribute HEALING_BONUS = new RangedAttribute("attribute.name.extend.healing_bonus", 0, 0, 1024);
+    public static final Attribute HEALING_PER_BONUS = new RangedAttribute("attribute.name.extend.healing_per_bonus", 0, 0, 1024);
     public static final Attribute ABSORPTION_BONUS = new RangedAttribute("attribute.name.extend.absorption_bonus", 0, 0, 1024);
     public static final Attribute DAMAGE_PERCENTAGE_BONUS = new RangedAttribute("attribute.name.extend.attack.damage_percentage_bonus", 0, 0, 1);
     public static final Attribute ATTACK_RANGE = new RangedAttribute(Const.ATTACK_RANGE, 0, 0, 1024).setSyncable(true);
@@ -41,6 +42,7 @@ public class ExtractAttributes {
         attributeConsumer.accept(XP_BONUS);
         attributeConsumer.accept(ARMOR_PENETRATION);
         attributeConsumer.accept(HEALING_BONUS);
+        attributeConsumer.accept(HEALING_PER_BONUS);
         attributeConsumer.accept(ABSORPTION_BONUS);
         attributeConsumer.accept(DAMAGE_PERCENTAGE_BONUS);
         attributeConsumer.accept(BOW_USING_SPEED);
@@ -59,6 +61,7 @@ public class ExtractAttributes {
                 .add(DAMAGE_PERCENTAGE_BONUS)
                 .add(ARMOR_PENETRATION)
                 .add(HEALING_BONUS)
+                .add(HEALING_PER_BONUS)
                 .add(BOW_USING_SPEED)
                 .add(BOW_DAMAGE_BONUS)
                 .add(ATTACK_HEALING)

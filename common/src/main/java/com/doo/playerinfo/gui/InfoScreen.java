@@ -1,5 +1,6 @@
 package com.doo.playerinfo.gui;
 
+import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.google.common.collect.Lists;
@@ -16,7 +17,9 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.scores.Team;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -33,7 +36,16 @@ public class InfoScreen extends Screen {
             GLFW.GLFW_KEY_TAB,
             "keybind.key.x_player_info.name");
 
-    private Map<String, List<InfoGroupItems>> map;
+
+    private static final int START_X = 40;
+
+    private static final int FONT_COLOR = 0XFFFFFF;
+
+    public static final Component DAY = Component.translatable(Const.DAY);
+    public static final Component NOON = Component.translatable(Const.NOON);
+    public static final Component NIGHT = Component.translatable(Const.NIGHT);
+    public static final Component MIDNIGHT = Component.translatable(Const.MIDNIGHT);
+
     private Button selected;
 
     private LocalPlayer player;
@@ -56,7 +68,8 @@ public class InfoScreen extends Screen {
         player = minecraft.player;
         playerInfo = Minecraft.getInstance().getConnection().getPlayerInfo(player.getUUID());
         team = player.getTeam();
-        map = OtherPlayerInfoFieldInjector.get(player).playerInfo$getInfo();
+
+        Map<String, List<InfoGroupItems>> map = OtherPlayerInfoFieldInjector.get(player).playerInfo$getInfo();
 
         int endW = width - 115;
 
@@ -103,30 +116,50 @@ public class InfoScreen extends Screen {
     public void render(GuiGraphics guiGraphics, int i, int j, float f) {
         renderBackground(guiGraphics);
 
-        int minY = 80;
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, 40, minY, 30, (float) (51) - i, (float) (75 - 50) - j, player);
+        MutableInt minY = new MutableInt(80);
+        int interval = 12;
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, START_X, minY.getAndAdd(interval), 30, (float) (51) - i, (float) (75 - 50) - j, player);
 
-        minY += 20;
-        guiGraphics.drawCenteredString(font, player.getName(), 40, minY, 0XFFFFFF);
+        printString(guiGraphics, player.getName().copy().append(": " + InfoGroupItems.FORMAT.format(player.getBbHeight())), minY.getAndAdd(interval));
         if (playerInfo != null) {
-            minY += 20;
-            guiGraphics.drawCenteredString(font, playerInfo.getGameMode().getLongDisplayName(), 40, minY, 0XFFFFFF);
+            MutableComponent component = playerInfo.getGameMode().getLongDisplayName().copy().append(": ").append(day());
+            printString(guiGraphics, component, minY.getAndAdd(interval));
         }
         if (team != null) {
-            minY += 20;
-            guiGraphics.drawCenteredString(font, team.getName() + ": " + team.getPlayers().size(), 40, minY, 0XFFFFFF);
+            printString(guiGraphics, team.getName() + ": " + team.getPlayers().size(), minY.getAndAdd(interval));
         }
-
 
         RenderSystem.disableDepthTest();
 
-        if (refreshTick-- < 0 && selected != null) {
+        if (minecraft != null && refreshTick-- < 0 && selected != null) {
             minecraft.doRunTask(() -> selected.onPress());
             refreshTick = minecraft.getFps();
         }
 
         super.render(guiGraphics, i + 50, j + 50, f);
+    }
 
-        RenderSystem.enableDepthTest();
+    private Component day() {
+        if (minecraft == null) {
+            return DAY;
+        }
+        long time = minecraft.level.getDayTime() % 24000;
+        if (time >= 18000) {
+            return MIDNIGHT;
+        } else if (time >= 13000) {
+            return NIGHT;
+        } else if (time >= 6000) {
+            return NOON;
+        } else {
+            return DAY;
+        }
+    }
+
+    private void printString(GuiGraphics guiGraphics, String string, int minY) {
+        guiGraphics.drawCenteredString(font, string, START_X, minY, FONT_COLOR);
+    }
+
+    private void printString(GuiGraphics guiGraphics, Component component, int minY) {
+        guiGraphics.drawCenteredString(font, component, START_X, minY, FONT_COLOR);
     }
 }

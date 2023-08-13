@@ -15,7 +15,7 @@ public abstract class BowMixin {
 
     @ModifyVariable(method = "releaseUsing", at = @At(value = "STORE", target = "Lnet/minecraft/world/item/BowItem;getPowerForTime(I)F", ordinal = 0), ordinal = 0)
     private float x_PlayerInfo$bowStrengthAttr(float amount, ItemStack itemStack, Level level, LivingEntity livingEntity, int i) {
-        if (level.isClientSide()){
+        if (level.isClientSide()) {
             return amount;
         }
 

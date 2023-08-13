@@ -2,12 +2,19 @@
   "keybind.key.x_player_info.name": "Player Info",
   "keybind.category.x_player_info.name": "Open Screen",
 
+  "info.world.day": "Day",
+  "info.world.night": "Night",
+  "info.world.noon": "Noon",
+  "info.world.midnight": "Midnight",
+
   "Minecraft.info.group.base": "Basic Info",
   "Minecraft.info.group.movement": "Movement",
   "Minecraft.info.group.xp": "Experience & Level",
+  "Minecraft.info.group.digger": "Digger",
   "Minecraft.info.group.damage": "Damage",
   "Minecraft.info.group.armor": "Armor",
   "Minecraft.info.group.food": "Food",
+  "Minecraft.info.group.stats": "Stats",
   "Minecraft.info.group.other": "Other",
 
   "attribute.extend.digger_level": "Digger Level",
@@ -28,13 +35,15 @@
   "attribute.name.generic.armor_toughness.tip": "Armor can further protect the player through a second attribute, armor toughness. Normally, armor nullifies a lesser portion of damage from attacks that deal greater damage.[2] Armor toughness resists this effect, mitigating the power of strong attacks.[3] By default, only diamond and netherite armor provide toughness, with each piece granting +2 toughness for diamond and +3 for netherite.",
   "attribute.name.generic.luck.tip": "Luck is a status effect that makes it more likely to receive better loot from certain loot tables, contrary to Bad Luck.Adds 1 × level to attribute luck, making loot table entries with a high quality score more likely, and entries with negative quality less likely. It also increases the chances of bonus_rolls occurring. Currently, only fishing uses quality.",
 
+  "attribute.name.extend.healing_per_bonus": "Regenerate Per Second",
+  "attribute.name.extend.healing_per_bonus.tip": "The creature's health points are restored every second",
   "attribute.name.extend.healing_bonus": "Healing Bonus",
   "attribute.name.extend.healing_bonus.tip": "Takes effect when the mob begins to regenerate health.",
   "attribute.name.extend.absorption_bonus": "Absorption Bonus",
   "attribute.name.extend.absorption_bonus.tip": "Takes effect when the player gets the damage absorption (i.e. yellow heart) effect.",
 
 
-  "attribute.extend.jump_power": "Jump power",
+  "attribute.extend.jump_power": "Jump Power",
   "attribute.extend.jump_power.tip": "Indicates the take-off force in the current state. Due to the influence of gravity or other factors, under normal circumstances, the approximate jump height can be directly multiplied by 3.",
   "attribute.extend.jump_count": "Jump Count",
   "attribute.extend.jump_count.tip": "Normally only 1 jump",
@@ -123,5 +132,18 @@
   "attribute.extend.armor_bonus.drown": "Drowning Damage Reduction",
   "attribute.extend.armor_bonus.drown.tip": "Drowning Damage Reduction.",
   "attribute.extend.armor_bonus.starve": "Starve Damage Reduction",
-  "attribute.extend.armor_bonus.starve.tip": "Starve Damage Reduction"
+  "attribute.extend.armor_bonus.starve.tip": "Starve Damage Reduction",
+
+
+  "info.stat.score": "Score",
+  "info.stat.score.tip": "Score",
+  "info.stat.death_count": "Death Count",
+  "info.stat.death_count.tip": "Death Count",
+  "info.stat.player_killed": "Kill Player",
+  "info.stat.player_killed.tip": "Kill Player",
+  "info.stat.mob_killed": "Kill Mob",
+  "info.stat.mob_killed.tip": "Kill Mob",
+
+  "info.collect.time": "Collect Time",
+  "info.collect.time.tip": "Collect Time"
 }

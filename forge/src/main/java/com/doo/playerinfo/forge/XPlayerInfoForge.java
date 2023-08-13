@@ -46,6 +46,13 @@ public class XPlayerInfoForge {
 
     public XPlayerInfoForge() {
         XPlayerInfo.init(0);
+        InfoRegisters.infoForgeAttach("damage", Const.CRITICAL_HITS, p -> {
+            CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
+            if (hit != null) {
+                return hit.getDamageModifier() - hit.getOldDamageModifier();
+            }
+            return 0;
+        });
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -68,16 +75,6 @@ public class XPlayerInfoForge {
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarted(ServerStartedEvent event) {
-        InfoRegisters.initMinecraft();
-
-        InfoRegisters.infoForgeAttach("damage", Const.CRITICAL_HITS, p -> {
-            CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
-            if (hit != null) {
-                return hit.getDamageModifier() - hit.getOldDamageModifier();
-            }
-            return 0;
-        });
-
         InfoItemCollector.start(event.getServer().getPlayerList().getPlayers(),
                 (player, packet) -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet));
     }

@@ -39,7 +39,9 @@ public class TabListWidget extends AbstractWidget {
         for (String key : keys) {
             ww = font.width(key);
             button = new PlainTextButton(x + prevW, y, ww, h, Component.literal(key), b -> {
-                selectedButton.setFocused(false);
+                if (selectedButton != null) {
+                    selectedButton.setFocused(false);
+                }
                 b.setFocused(true);
                 selectedButton = b;
                 press.onPress(b);

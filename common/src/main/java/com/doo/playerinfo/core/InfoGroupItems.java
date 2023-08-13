@@ -24,7 +24,7 @@ public class InfoGroupItems {
 
     private static final String CLIENT_SIZE_FLAG = "$CLIENT_SIDE$";
 
-    private static final DecimalFormat FORMAT = new DecimalFormat("#.###");
+    public static final DecimalFormat FORMAT = new DecimalFormat("#.###");
 
     private final String group;
     private final boolean isKey;
@@ -74,6 +74,10 @@ public class InfoGroupItems {
         return this;
     }
 
+    public InfoGroupItems add(String key, Object value) {
+        return add(key, value, false);
+    }
+
     public InfoGroupItems add(String key, Object value, boolean percentageable) {
         if (hasAttach && value instanceof Number n) {
             value = addAttach(key, n.doubleValue());
@@ -98,6 +102,10 @@ public class InfoGroupItems {
         }
 
         return v + attachList.stream().mapToDouble(attach -> attach.get(player)).sum();
+    }
+
+    public InfoGroupItems addAttr(Attribute attribute) {
+        return addAttr(attribute, false);
     }
 
     public InfoGroupItems addAttr(Attribute attribute, boolean percentageable) {
@@ -147,7 +155,7 @@ public class InfoGroupItems {
             } else if (((String) value).isEmpty()) {
                 value = ct.getBoolean(key);
             }
-            items.add(key, value, false);
+            items.add(key, value);
         }
         return items;
     }

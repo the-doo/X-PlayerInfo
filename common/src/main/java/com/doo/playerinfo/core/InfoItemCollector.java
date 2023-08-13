@@ -62,8 +62,6 @@ public class InfoItemCollector {
     }
 
     public static void clean() {
-        GETTERS.clear();
-
         if (current != null) {
             current.cancel(true);
         }
