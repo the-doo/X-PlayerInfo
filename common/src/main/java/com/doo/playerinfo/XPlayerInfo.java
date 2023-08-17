@@ -19,7 +19,7 @@ public class XPlayerInfo {
         return (T) t;
     }
 
-    public static boolean isFabric() {
-        return LOADER_FLAG == 1;
+    public static boolean isForge() {
+        return LOADER_FLAG == 0;
     }
 }

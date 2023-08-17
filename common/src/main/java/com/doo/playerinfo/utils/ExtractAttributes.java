@@ -78,7 +78,7 @@ public class ExtractAttributes {
                 .add(TOUCH_RANGE_BONUS)
         ;
 
-        if (XPlayerInfo.isFabric()) {
+        if (!XPlayerInfo.isForge()) {
             fabricCreateAttrToPlayer(builder);
         }
     }

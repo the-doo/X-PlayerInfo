@@ -17,6 +17,19 @@ public class GameRendererMixin {
     private Minecraft minecraft;
 
     /**
+     * modify target is double d = this.minecraft.gameMode.getPickRange();
+     */
+    @ModifyVariable(method = "pick", at = @At(value = "STORE", ordinal = 0), ordinal = 0)
+    private double x_PlayerInfo$pickRange(double value) {
+        double v = ExtractAttributes.get(minecraft.player.getAttributes(), ExtractAttributes.ATTACK_RANGE);
+        if (v == 0) {
+            return value;
+        }
+
+        return value + v;
+    }
+
+    /**
      * modify target is double h = vec3.distanceToSqr(vec34);
      */
     @ModifyVariable(method = "pick", at = @At(value = "STORE", ordinal = 0), ordinal = 2)
@@ -26,6 +39,6 @@ public class GameRendererMixin {
             return value;
         }
 
-        return value - v * v;
+        return value - (v * v + 6 * v);
     }
 }

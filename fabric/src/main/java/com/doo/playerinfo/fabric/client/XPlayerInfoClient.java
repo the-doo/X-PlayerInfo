@@ -37,16 +37,10 @@ public class XPlayerInfoClient implements ClientModInitializer {
         InfoGroupItems.addClientSideGetter(Const.DIGGER_SPEED, minecraft ->
                 minecraft.player.getMainHandItem().getItem() instanceof TieredItem ti ? ti.getTier().getSpeed() : 0);
 
-        InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> minecraft.gameMode.getPickRange());
+        InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> ExtractAttributes.get(minecraft.player.getAttributes(), ExtractAttributes.ATTACK_RANGE) + minecraft.gameMode.getPickRange());
         InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft -> {
             boolean isCreative = minecraft.player.isCreative();
-            AttributeMap attributes = minecraft.player.getAttributes();
-            if (attributes.hasAttribute(ExtractAttributes.ATTACK_RANGE)) {
-                return minecraft.player.getAttributeValue(ExtractAttributes.ATTACK_RANGE) + (isCreative ? minecraft.gameMode.getPickRange() : 3);
-            } else if (isCreative) {
-                return minecraft.gameMode.getPickRange();
-            }
-            return 3;
+            return ExtractAttributes.get(minecraft.player.getAttributes(), ExtractAttributes.ATTACK_RANGE) + (isCreative ? minecraft.gameMode.getPickRange() : 3);
         });
         InfoGroupItems.addClientSideGetter(Const.ATTACK_SWEEP_RANGE, minecraft -> 3);
     }
