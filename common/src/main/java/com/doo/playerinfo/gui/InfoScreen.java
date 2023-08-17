@@ -77,8 +77,9 @@ public class InfoScreen extends Screen {
         addRenderableWidget(list);
 
         Button.OnPress buttonPress = b -> {
+            boolean toTop = selected != b;
             selected = b;
-            list.update(font, b.getMessage(), map.get(b.getMessage().getString()));
+            list.update(font, b.getMessage(), map.get(b.getMessage().getString()), toTop);
         };
         TabListWidget tags = new TabListWidget(Lists.newArrayList(map.keySet()), MINECRAFT_NAME, buttonPress, font,
                 82, 15, endW, 15, Component.empty());

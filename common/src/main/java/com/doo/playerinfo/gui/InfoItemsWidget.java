@@ -25,7 +25,10 @@ public class InfoItemsWidget extends AbstractScrollWidget {
         this.itemHeight = (int) (font.lineHeight * 2.5);
     }
 
-    public void update(Font font, Component modName, List<InfoGroupItems> attributes) {
+    public void update(Font font, Component modName, List<InfoGroupItems> attributes, boolean toTop) {
+        if (toTop) {
+            setScrollAmount(0);
+        }
         children.clear();
         if (attributes == null || attributes.isEmpty()) {
             return;
