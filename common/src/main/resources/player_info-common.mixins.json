@@ -10,7 +10,6 @@
     "PlayerMixin"
   ],
   "client": [
-    "GameRendererMixin"
   ],
   "server": [
   ],
