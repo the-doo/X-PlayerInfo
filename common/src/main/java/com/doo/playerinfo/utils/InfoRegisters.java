@@ -7,7 +7,6 @@ import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
@@ -59,7 +58,6 @@ public abstract class InfoRegisters {
 
     public static void initMinecraft() {
         InfoItemCollector.register(MINECRAFT_NAME, player -> {
-            long time = Util.getEpochMillis();
             if (damageTest == null) {
                 damageTest = player.level().damageSources().mobAttack(null);
                 Arrow arrow = new Arrow(player.level(), player);
@@ -157,11 +155,6 @@ public abstract class InfoRegisters {
                     .add(Const.DEATH_COUNT, stats.getValue(DEATH_STAT))
                     .add(Const.PLAYER_KILL_COUNT, stats.getValue(PLAYER_KILLS_STAT))
                     .add(Const.MOB_KILL_COUNT, stats.getValue(MOB_KILLS_STAT))
-            );
-
-            group = "other";
-            sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
-                    .add(Const.COLLECT_TIME, (Util.getEpochMillis() - time) + "ms")
             );
 
             return sorted;

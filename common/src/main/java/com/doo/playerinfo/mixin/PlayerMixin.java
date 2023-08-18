@@ -40,6 +40,9 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
     public abstract FoodData getFoodData();
 
     @Unique
+    private long x_PlayerInfo$collectTime;
+
+    @Unique
     private final Map<String, List<InfoGroupItems>> x_PlayerInfo$otherPlayerInfo = Maps.newConcurrentMap();
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
@@ -88,5 +91,15 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
     @Override
     public float playerInfo$getFlySpeed() {
         return getFlyingSpeed();
+    }
+
+    @Override
+    public void playerInfo$setCollectTime(long time) {
+        x_PlayerInfo$collectTime = time;
+    }
+
+    @Override
+    public long playerInfo$getCollectTime() {
+        return x_PlayerInfo$collectTime;
     }
 }

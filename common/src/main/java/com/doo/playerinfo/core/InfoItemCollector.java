@@ -2,6 +2,7 @@ package com.doo.playerinfo.core;
 
 import com.google.common.collect.Lists;
 import com.mojang.logging.LogUtils;
+import net.minecraft.Util;
 import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 
@@ -35,6 +36,7 @@ public class InfoItemCollector {
 
             players.forEach(player -> EXE.execute(() -> {
                 try {
+                    long millis = Util.getEpochMillis();
                     InfoUpdatePacket packet = InfoUpdatePacket.create(append -> GETTERS.forEach((modName, list) -> {
                         // collect and sort
                         List<String> keys = Lists.newArrayList();
@@ -51,6 +53,7 @@ public class InfoItemCollector {
                         append.accept(modName, items);
                     }));
 
+                    packet.time(Util.getEpochMillis() - millis);
                     sender.sender(player, packet);
                 } catch (Exception ex) {
                     LOGGER.warn("Send info to player {} error: ", player, ex);

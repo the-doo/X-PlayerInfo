@@ -16,6 +16,8 @@ public class ClientSideHandler {
             return;
         }
 
-        packet.handle(OtherPlayerInfoFieldInjector.get(player).playerInfo$getInfo());
+        OtherPlayerInfoFieldInjector injector = OtherPlayerInfoFieldInjector.get(player);
+        packet.handle(injector.playerInfo$getInfo());
+        injector.playerInfo$setCollectTime(packet.time());
     }
 }

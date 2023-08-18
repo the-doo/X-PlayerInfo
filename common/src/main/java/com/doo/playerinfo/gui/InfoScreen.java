@@ -12,6 +12,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.PlayerInfo;
@@ -69,7 +70,8 @@ public class InfoScreen extends Screen {
         playerInfo = Minecraft.getInstance().getConnection().getPlayerInfo(player.getUUID());
         team = player.getTeam();
 
-        Map<String, List<InfoGroupItems>> map = OtherPlayerInfoFieldInjector.get(player).playerInfo$getInfo();
+        OtherPlayerInfoFieldInjector injector = OtherPlayerInfoFieldInjector.get(player);
+        Map<String, List<InfoGroupItems>> map = injector.playerInfo$getInfo();
 
         int endW = width - 115;
 
@@ -84,6 +86,12 @@ public class InfoScreen extends Screen {
         TabListWidget tags = new TabListWidget(Lists.newArrayList(map.keySet()), MINECRAFT_NAME, buttonPress, font,
                 82, 15, endW, 15, Component.empty());
         addRenderableWidget(tags);
+
+        PlainTextButton button = new PlainTextButton(0, height - 15, 12, 9,
+                Component.literal(String.format("Collect Time: %sms", injector.playerInfo$getCollectTime())), b -> {
+        }, font);
+        button.active = false;
+        addRenderableOnly(button);
 
         selected = tags.getSelectedButton();
     }

@@ -13,6 +13,10 @@ public interface OtherPlayerInfoFieldInjector {
 
     float playerInfo$getFlySpeed();
 
+    void playerInfo$setCollectTime(long time);
+
+    long playerInfo$getCollectTime();
+
     static OtherPlayerInfoFieldInjector get(Player player) {
         return XPlayerInfo.get(player);
     }

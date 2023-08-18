@@ -17,12 +17,15 @@ import java.util.function.Consumer;
 public class InfoUpdatePacket {
     private final CompoundTag nbt;
 
+    private long time;
+
     private InfoUpdatePacket() {
         this.nbt = new CompoundTag();
     }
 
     public InfoUpdatePacket(FriendlyByteBuf buf) {
         nbt = buf.readNbt();
+        time = buf.readLong();
     }
 
     public static InfoUpdatePacket create(Consumer<BiConsumer<String, List<InfoGroupItems>>> builder) {
@@ -37,6 +40,7 @@ public class InfoUpdatePacket {
 
     public void write(FriendlyByteBuf buf) {
         buf.writeNbt(nbt);
+        buf.writeLong(time);
     }
 
     public void handle(Map<String, List<InfoGroupItems>> map) {
@@ -47,5 +51,13 @@ public class InfoUpdatePacket {
             }
             map.put(modName, items);
         });
+    }
+
+    public void time(long time) {
+        this.time = time;
+    }
+
+    public long time() {
+        return time;
     }
 }
