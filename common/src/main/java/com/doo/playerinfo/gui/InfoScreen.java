@@ -12,7 +12,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.PlainTextButton;
+import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.PlayerInfo;
@@ -21,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.scores.Team;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -70,30 +71,33 @@ public class InfoScreen extends Screen {
         playerInfo = Minecraft.getInstance().getConnection().getPlayerInfo(player.getUUID());
         team = player.getTeam();
 
-        OtherPlayerInfoFieldInjector injector = OtherPlayerInfoFieldInjector.get(player);
-        Map<String, List<InfoGroupItems>> map = injector.playerInfo$getInfo();
+        Map<String, List<InfoGroupItems>> map = OtherPlayerInfoFieldInjector.get(player).playerInfo$getInfo();
 
         int endW = width - 115;
 
         InfoItemsWidget list = new InfoItemsWidget(font, 80, 35, endW, height - 60, Component.empty());
         addRenderableWidget(list);
 
+        StringWidget text = new StringWidget(125, height - 15, 0, 9, collectTime(), font);
         Button.OnPress buttonPress = b -> {
             boolean toTop = selected != b;
             selected = b;
             list.update(font, b.getMessage(), map.get(b.getMessage().getString()), toTop);
+            text.setMessage(collectTime());
         };
         TabListWidget tags = new TabListWidget(Lists.newArrayList(map.keySet()), MINECRAFT_NAME, buttonPress, font,
                 82, 15, endW, 15, Component.empty());
         addRenderableWidget(tags);
 
-        PlainTextButton button = new PlainTextButton(0, height - 15, 12, 9,
-                Component.literal(String.format("Collect Time: %sms", injector.playerInfo$getCollectTime())), b -> {
-        }, font);
-        button.active = false;
-        addRenderableOnly(button);
+        addRenderableOnly(text);
 
         selected = tags.getSelectedButton();
+    }
+
+    @NotNull
+    private static MutableComponent collectTime() {
+        return Component.literal(String.format("Collect Time: %sms",
+                OtherPlayerInfoFieldInjector.get(Minecraft.getInstance().player).playerInfo$getCollectTime()));
     }
 
     @Override

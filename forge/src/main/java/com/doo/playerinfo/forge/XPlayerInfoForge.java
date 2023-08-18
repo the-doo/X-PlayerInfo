@@ -95,8 +95,7 @@ public class XPlayerInfoForge {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            InfoGroupItems.addClientSideGetter(Const.PICK_RANGE,
-                    minecraft -> minecraft.player == null ? 0 : Math.max(minecraft.player.getEntityReach(), minecraft.player.getBlockReach()));
+            InfoGroupItems.addClientSideGetter(Const.PICK_RANGE, minecraft -> minecraft.player.getBlockReach());
             InfoGroupItems.addClientSideGetter(Const.ATTACK_RANGE, minecraft -> minecraft.player.getEntityReach());
             InfoGroupItems.addClientSideGetter(Const.ATTACK_SWEEP_RANGE, minecraft -> minecraft.player.getEntityReach());
 
