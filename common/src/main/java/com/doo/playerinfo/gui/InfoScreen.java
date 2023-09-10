@@ -131,13 +131,19 @@ public class InfoScreen extends Screen {
 
         MutableInt minY = new MutableInt(80);
         int interval = 12;
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, START_X, minY.getAndAdd(interval), 30, (float) (51) - i, (float) (75 - 50) - j, player);
 
-        printString(guiGraphics, player.getName().copy().append(": " + InfoGroupItems.FORMAT.format(player.getBbHeight())), minY.getAndAdd(interval));
+        printString(guiGraphics, player.getName(), 10);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, 40, minY.getAndAdd(interval), 30, (float) (51) - i, (float) (75 - 50) - j, player);
+        printString(guiGraphics, InfoGroupItems.FORMAT.format(player.getBbHeight()), minY.getAndAdd(interval) - 2);
+        printString(guiGraphics, (minecraft.isLocalServer() ? 0 : minecraft.getCurrentServer().ping) + "ms", minY.getAndAdd(interval) - 2);
+
         if (playerInfo != null) {
-            MutableComponent component = playerInfo.getGameMode().getLongDisplayName().copy().append(": ").append(day());
+            MutableComponent component = playerInfo.getGameMode().getShortDisplayName().copy()
+                    .append(" ").append(minecraft.level.getDifficulty().getDisplayName())
+                    .append(" ").append(day());
             printString(guiGraphics, component, minY.getAndAdd(interval));
         }
+
         if (team != null) {
             printString(guiGraphics, team.getName() + ": " + team.getPlayers().size(), minY.getAndAdd(interval));
         }
