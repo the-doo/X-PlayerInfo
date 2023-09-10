@@ -50,13 +50,7 @@ public abstract class InfoRegisters {
 
     private static DamageSource arrowTest;
 
-    private static final Map<String, MobType> MOB_TYPE_MAP = new HashMap<>() {{
-        put("undefined", MobType.UNDEFINED);
-        put("undead", MobType.UNDEAD);
-        put("arthropod", MobType.ARTHROPOD);
-        put("illager", MobType.ILLAGER);
-        put("water", MobType.WATER);
-    }};
+    private static final Map<String, MobType> MOB_TYPE_MAP = new HashMap<>();
 
     private static final Stat<ResourceLocation> DEATH_STAT = Stats.CUSTOM.get(Stats.DEATHS);
     private static final Stat<ResourceLocation> PLAYER_KILLS_STAT = Stats.CUSTOM.get(Stats.PLAYER_KILLS);
@@ -66,6 +60,12 @@ public abstract class InfoRegisters {
     }
 
     public static void initMinecraft() {
+        MOB_TYPE_MAP.put("undefined", MobType.UNDEFINED);
+        MOB_TYPE_MAP.put("undead", MobType.UNDEAD);
+        MOB_TYPE_MAP.put("arthropod", MobType.ARTHROPOD);
+        MOB_TYPE_MAP.put("illager", MobType.ILLAGER);
+        MOB_TYPE_MAP.put("water", MobType.WATER);
+
         InfoItemCollector.register(MINECRAFT_NAME, player -> {
             if (damageTest == null) {
                 damageTest = player.level().damageSources().mobAttack(null);
