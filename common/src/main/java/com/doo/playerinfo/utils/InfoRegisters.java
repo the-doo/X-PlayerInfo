@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.ObjDoubleConsumer;
@@ -48,6 +49,14 @@ public abstract class InfoRegisters {
     private static DamageSource damageTest;
 
     private static DamageSource arrowTest;
+
+    private static final Map<String, MobType> MOB_TYPE_MAP = new HashMap<>() {{
+        put("undefined", MobType.UNDEFINED);
+        put("undead", MobType.UNDEAD);
+        put("arthropod", MobType.ARTHROPOD);
+        put("illager", MobType.ILLAGER);
+        put("water", MobType.WATER);
+    }};
 
     private static final Stat<ResourceLocation> DEATH_STAT = Stats.CUSTOM.get(Stats.DEATHS);
     private static final Stat<ResourceLocation> PLAYER_KILLS_STAT = Stats.CUSTOM.get(Stats.PLAYER_KILLS);
@@ -181,9 +190,7 @@ public abstract class InfoRegisters {
     }
 
     private static void getDamageBound(Player player, ObjDoubleConsumer<String> consumer) {
-        Stream.of(
-                "undefined", "undead", "arthropod", "illager", "water"
-        ).forEach(key -> consumer.accept(key, EnchantmentHelper.getDamageBonus(player.getMainHandItem(), MobType.UNDEFINED)));
+        MOB_TYPE_MAP.forEach((k, v) -> consumer.accept(k, EnchantmentHelper.getDamageBonus(player.getMainHandItem(), v)));
     }
 
     public static void infoForgeAttach(String group, String key, ToDoubleFunction<Player> valueGetter) {
