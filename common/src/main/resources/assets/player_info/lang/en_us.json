@@ -117,6 +117,8 @@
   "attribute.extend.armor_bonus.arrow.tip": "Projectile Relief",
   "attribute.extend.armor_bonus.magic": "Magic Damage Reduction",
   "attribute.extend.armor_bonus.magic.tip": "Magic Damage Reduction.",
+  "attribute.extend.armor_bonus.thorns": "Thorns Damage Reduction",
+  "attribute.extend.armor_bonus.thorns.tip": "Thorns Damage Reduction.",
   "attribute.extend.armor_bonus.fall": "Fall Damage Reduction",
   "attribute.extend.armor_bonus.fall.tip": "Fall Damage Reduction.",
   "attribute.extend.armor_bonus.inFire": "Fire Damage Reduction",

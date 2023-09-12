@@ -118,6 +118,8 @@
   "attribute.extend.armor_bonus.arrow.tip": "弹射物减免",
   "attribute.extend.armor_bonus.magic": "魔法伤害减免",
   "attribute.extend.armor_bonus.magic.tip": "魔法伤害减免",
+  "attribute.extend.armor_bonus.thorns": "荆棘伤害减免",
+  "attribute.extend.armor_bonus.thorns.tip": "荆棘伤害减免",
   "attribute.extend.armor_bonus.fall": "坠落伤害减免",
   "attribute.extend.armor_bonus.fall.tip": "坠落伤害减免",
   "attribute.extend.armor_bonus.inFire": "火焰伤害减免",

@@ -183,8 +183,10 @@ public abstract class InfoRegisters {
         LivingEntityAccessor accessor = LivingEntityAccessor.get(player);
 
         Stream.of(
-                arrowTest, sources.magic(), sources.fall(), sources.inFire(), sources.freeze(), sources.lightningBolt(),
-                sources.explosion(null, null), sources.wither(), sources.drown(), sources.starve()
+                arrowTest, sources.magic(), sources.fall(), sources.inFire(),
+                sources.thorns(null), sources.freeze(), sources.lightningBolt(),
+                sources.explosion(null, null), sources.wither(), sources.drown(),
+                sources.starve()
         ).forEach(source -> consumer.accept(source.getMsgId(),
                 1 - (player.isInvulnerableTo(source) ? 0 : accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1))));
     }
