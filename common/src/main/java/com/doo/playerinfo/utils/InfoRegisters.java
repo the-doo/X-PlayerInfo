@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -128,8 +127,10 @@ public abstract class InfoRegisters {
             InfoGroupItems armor = InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
                     .add(Attributes.ARMOR.getDescriptionId(), armorValue)
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
-                    .addAttr(Attributes.KNOCKBACK_RESISTANCE, true)
-                    .add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - CombatRules.getDamageAfterAbsorb(1, armorValue, armorT), true);
+                    .addAttr(Attributes.KNOCKBACK_RESISTANCE, true);
+
+            float f = DamageSourceUtil.test(player, damageTest, 1);
+            armor.add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - f, true);
             addMagicArmor(player, (name, value) -> armor.add(ARMOR_BONUS_KEY_FORMAT.formatted(name), value, true));
             sorted.add(armor);
 
@@ -178,17 +179,18 @@ public abstract class InfoRegisters {
         });
     }
 
-    private static void addMagicArmor(Player player, ObjDoubleConsumer<String> consumer) {
+    private static void addMagicArmor(ServerPlayer player, ObjDoubleConsumer<String> consumer) {
         DamageSources sources = player.level().damageSources();
-        LivingEntityAccessor accessor = LivingEntityAccessor.get(player);
 
         Stream.of(
                 arrowTest, sources.magic(), sources.fall(), sources.inFire(),
                 sources.thorns(null), sources.freeze(), sources.lightningBolt(),
                 sources.explosion(null, null), sources.wither(), sources.drown(),
                 sources.starve()
-        ).forEach(source -> consumer.accept(source.getMsgId(),
-                1 - (player.isInvulnerableTo(source) ? 0 : accessor.x_PlayerInfo$getDamageAfterMagicAbsorb(source, 1))));
+        ).forEach(source -> {
+            float f = DamageSourceUtil.test(player, source, 1);
+            consumer.accept(source.getMsgId(), 1 - f);
+        });
     }
 
     private static void getDamageBound(Player player, ObjDoubleConsumer<String> consumer) {

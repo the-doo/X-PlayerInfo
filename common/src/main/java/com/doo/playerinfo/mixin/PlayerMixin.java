@@ -9,6 +9,7 @@ import com.doo.playerinfo.utils.ExtractAttributes;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,6 +56,29 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
             return;
         }
         FoodDataAccessor.setFoodBonus(getFoodData(), () -> ExtractAttributes.get(getAttributes(), ExtractAttributes.FOOD_BONUS));
+    }
+
+    @Inject(method = "setAbsorptionAmount", at = @At(value = "HEAD"), cancellable = true, require = 1)
+    private void testIgnoredSetAbsorptionAmount(float f, CallbackInfo ci) {
+        if (DamageSourceUtil.isTest()) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;awardStat(Lnet/minecraft/resources/ResourceLocation;I)V"), cancellable = true, require = 1)
+    private void testActuallyHurtReturnStat(DamageSource damageSource, float f, CallbackInfo ci) {
+        if (DamageSourceUtil.isTest()) {
+            DamageSourceUtil.setDamage(f);
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V"), cancellable = true, require = 1)
+    private void testActuallyHurtReturn(DamageSource damageSource, float f, CallbackInfo ci) {
+        if (DamageSourceUtil.isTest()) {
+            DamageSourceUtil.setDamage(f);
+            ci.cancel();
+        }
     }
 
     @ModifyVariable(method = "giveExperiencePoints", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)

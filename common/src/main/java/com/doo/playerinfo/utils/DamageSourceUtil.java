@@ -1,6 +1,7 @@
 package com.doo.playerinfo.utils;
 
 import com.doo.playerinfo.interfaces.LivingEntityAccessor;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +11,35 @@ import net.minecraft.world.entity.player.Player;
 
 public class DamageSourceUtil {
 
+    private static final ThreadLocal<Float> LOCAL = ThreadLocal.withInitial(() -> null);
+
     private DamageSourceUtil() {
+    }
+
+    public static float test(ServerPlayer player, DamageSource source, int damage) {
+        DamageSourceUtil.startTest();
+        LivingEntityAccessor.get(player).x_PlayerInfo$actuallyHurt(source, damage);
+        return DamageSourceUtil.endTest();
+    }
+
+    public static void startTest() {
+        LOCAL.set(0F);
+    }
+
+    public static void setDamage(float damage) {
+        if (LOCAL.get() != null) {
+            LOCAL.set(damage);
+        }
+    }
+
+    public static boolean isTest() {
+        return LOCAL.get() != null;
+    }
+
+    public static float endTest() {
+        float f = LOCAL.get();
+        LOCAL.remove();
+        return f;
     }
 
     public static float reductionFromArmor(DamageSource source, float armor) {

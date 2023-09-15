@@ -18,7 +18,7 @@ public abstract class FoodDataMixin implements FoodDataAccessor {
     @ModifyArg(method = {
             "eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;)V",
             "Lnet/minecraft/world/food/FoodData;eat(Lnet/minecraft/world/item/Item;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;)V"
-    }, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;eat(IF)V"), index = 0)
+    }, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;eat(IF)V"), index = 0, require = 1)
     private int eatOnPlayer(int i) {
         return extraFoodBonusGetter == null ? i : (int) (i * (1 + extraFoodBonusGetter.getAsDouble()));
     }
