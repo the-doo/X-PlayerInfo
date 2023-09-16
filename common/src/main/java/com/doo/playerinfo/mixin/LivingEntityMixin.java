@@ -36,6 +36,10 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     public abstract float getMaxHealth();
 
     @Shadow
+    protected abstract float getDamageAfterMagicAbsorb(DamageSource damageSource, float f);
+
+
+    @Shadow
     protected abstract void actuallyHurt(DamageSource damageSource, float f);
 
     @Shadow
@@ -163,5 +167,10 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
     @Override
     public float x_PlayerInfo$getJumpPower() {
         return getJumpPower();
+    }
+
+    @Override
+    public float x_PlayerInfo$getDamageAfterMagicAbsorb(DamageSource arg, float g) {
+        return getDamageAfterMagicAbsorb(arg, g);
     }
 }

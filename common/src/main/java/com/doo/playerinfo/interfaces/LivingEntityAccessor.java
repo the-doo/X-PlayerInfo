@@ -9,6 +9,8 @@ public interface LivingEntityAccessor {
         return XPlayerInfo.get(player);
     }
 
+    float x_PlayerInfo$getDamageAfterMagicAbsorb(DamageSource arg, float g);
+
     void x_PlayerInfo$actuallyHurt(DamageSource arg, float g);
 
     void x_PlayerInfo$addDamageHealing(float healing);

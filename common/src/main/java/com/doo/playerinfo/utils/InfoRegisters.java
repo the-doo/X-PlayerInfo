@@ -7,11 +7,13 @@ import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -45,7 +47,7 @@ public abstract class InfoRegisters {
 
     private static final Map<String, Map<String, Map<String, List<ValueAttach>>>> MOD_GROUPS_ATTACH_MAP = Maps.newHashMap();
 
-    private static DamageSource damageTest;
+    static DamageSource damageTest;
 
     private static DamageSource arrowTest;
 
@@ -59,6 +61,12 @@ public abstract class InfoRegisters {
     }
 
     public static void initMinecraft() {
+        JsonObject object = new JsonObject();
+        ConfigUtil.copyTo("X-PlayerInfo", object);
+        if (object.has("betterTest") && object.get("betterTest").getAsBoolean()) {
+            DamageSourceUtil.trueable = true;
+        }
+
         MOB_TYPE_MAP.put("undefined", MobType.UNDEFINED);
         MOB_TYPE_MAP.put("undead", MobType.UNDEAD);
         MOB_TYPE_MAP.put("arthropod", MobType.ARTHROPOD);
@@ -130,7 +138,7 @@ public abstract class InfoRegisters {
                     .addAttr(Attributes.KNOCKBACK_RESISTANCE, true);
 
             float baseDamage = 1;
-            float f = DamageSourceUtil.test(player, damageTest, baseDamage);
+            float f = DamageSourceUtil.test(player, damageTest, baseDamage, () -> CombatRules.getDamageAfterAbsorb(baseDamage, armorValue, armorT));
             armor.add(Const.DAMAGE_REDUCTION_BY_ARMOR, (baseDamage - f) / baseDamage, true);
             addMagicArmor(player, baseDamage, (name, value) -> armor.add(ARMOR_BONUS_KEY_FORMAT.formatted(name), value, true));
             sorted.add(armor);
@@ -189,7 +197,7 @@ public abstract class InfoRegisters {
                 sources.explosion(null, null), sources.wither(), sources.drown(),
                 sources.starve()
         ).forEach(source -> {
-            float f = DamageSourceUtil.test(player, source, baseDamage);
+            float f = DamageSourceUtil.test(player, source, baseDamage, () -> LivingEntityAccessor.get(player).x_PlayerInfo$getDamageAfterMagicAbsorb(source, baseDamage));
             consumer.accept(source.getMsgId(), (baseDamage - f) / baseDamage);
         });
     }

@@ -9,14 +9,22 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.function.Supplier;
+
 public class DamageSourceUtil {
+
+    protected static boolean trueable = false;
 
     private static final ThreadLocal<Float> LOCAL = ThreadLocal.withInitial(() -> null);
 
     private DamageSourceUtil() {
     }
 
-    public static float test(ServerPlayer player, DamageSource source, float damage) {
+    public static float test(ServerPlayer player, DamageSource source, float damage, Supplier<Float> defaultGetter) {
+        if (!trueable) {
+            return defaultGetter.get();
+        }
+
         DamageSourceUtil.startTest();
         LivingEntityAccessor.get(player).x_PlayerInfo$actuallyHurt(source, damage);
         return DamageSourceUtil.endTest();
