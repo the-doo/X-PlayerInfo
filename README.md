@@ -8,12 +8,12 @@ You can press [TAB] when you want to show its.
 
 Options:
 
-BetterTest: true/false - True is mock attack player, so maybe error in some mods like using waystone or other interrupable action, but the value will be preciser.
+mockTest: true/false - True is mock attack player, so maybe error in some mods like using waystone or other interrupable action, but the value will be preciser.
 
 File is config/X-PlayerInfo.json
 ```
 {
-    "betterTest": "true"
+    "mockTest": "true"
 }
 ```
 

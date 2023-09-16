@@ -63,7 +63,7 @@ public abstract class InfoRegisters {
     public static void initMinecraft() {
         JsonObject object = new JsonObject();
         ConfigUtil.copyTo("X-PlayerInfo", object);
-        if (object.has("betterTest") && object.get("betterTest").getAsBoolean()) {
+        if (object.has("mockTest") && object.get("mockTest").getAsBoolean()) {
             DamageSourceUtil.trueable = true;
         }
 
