@@ -9,6 +9,7 @@ import com.doo.playerinfo.utils.ExtractAttributes;
 import com.google.common.collect.Maps;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -65,10 +66,16 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
         }
     }
 
-    @Inject(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;awardStat(Lnet/minecraft/resources/ResourceLocation;I)V"), cancellable = true, require = 1)
-    private void testActuallyHurtReturnStat(DamageSource damageSource, float f, CallbackInfo ci) {
+    @Inject(method = "hurtArmor", at = @At(value = "HEAD"), cancellable = true, require = 1)
+    private void testIgnoredHurtArmor(DamageSource damageSource, float f, CallbackInfo ci) {
         if (DamageSourceUtil.isTest()) {
-            DamageSourceUtil.setDamage(f);
+            ci.cancel();
+        }
+    }
+
+    @Inject(method = "awardStat(Lnet/minecraft/resources/ResourceLocation;I)V", at = @At(value = "HEAD"), cancellable = true, require = 1)
+    private void testAwardStat(ResourceLocation resourceLocation, int i, CallbackInfo ci) {
+        if (DamageSourceUtil.isTest()) {
             ci.cancel();
         }
     }
