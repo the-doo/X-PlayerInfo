@@ -105,14 +105,14 @@ public abstract class InfoRegisters {
             InfoGroupItems damage = InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
                     .addAttr(Attributes.ATTACK_DAMAGE)
                     .addAttr(Attributes.ATTACK_SPEED)
-                    .add(Const.CRITICAL_HITS, 1.5F, true)
                     .addClientSideFlag(Const.ATTACK_RANGE)
+                    .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
+                    .add(Const.CRITICAL_HITS, 1.5F, true)
                     .addClientSideFlag(Const.ATTACK_SWEEP_RANGE)
                     .addAttr(ExtractAttributes.ATTACK_HEALING)
                     .addAttr(ExtractAttributes.DAMAGE_PERCENTAGE_HEALING, true)
                     .addAttr(ExtractAttributes.CRIT_RATE, true)
                     .addAttr(ExtractAttributes.CRIT_DAMAGE, true)
-                    .add(Attributes.ATTACK_KNOCKBACK.getDescriptionId(), knock)
                     .addAttr(ExtractAttributes.BOW_USING_SPEED, true)
                     .addAttr(ExtractAttributes.BOW_DAMAGE_BONUS, true)
                     .addAttr(ExtractAttributes.ARMOR_PENETRATION, true)
@@ -129,9 +129,10 @@ public abstract class InfoRegisters {
                     .add(Attributes.ARMOR_TOUGHNESS.getDescriptionId(), armorT)
                     .addAttr(Attributes.KNOCKBACK_RESISTANCE, true);
 
-            float f = DamageSourceUtil.test(player, damageTest, 1);
-            armor.add(Const.DAMAGE_REDUCTION_BY_ARMOR, 1 - f, true);
-            addMagicArmor(player, (name, value) -> armor.add(ARMOR_BONUS_KEY_FORMAT.formatted(name), value, true));
+            float baseDamage = 1;
+            float f = DamageSourceUtil.test(player, damageTest, baseDamage);
+            armor.add(Const.DAMAGE_REDUCTION_BY_ARMOR, (baseDamage - f) / baseDamage, true);
+            addMagicArmor(player, baseDamage, (name, value) -> armor.add(ARMOR_BONUS_KEY_FORMAT.formatted(name), value, true));
             sorted.add(armor);
 
             group = "digger";
@@ -179,7 +180,7 @@ public abstract class InfoRegisters {
         });
     }
 
-    private static void addMagicArmor(ServerPlayer player, ObjDoubleConsumer<String> consumer) {
+    private static void addMagicArmor(ServerPlayer player, float baseDamage, ObjDoubleConsumer<String> consumer) {
         DamageSources sources = player.level().damageSources();
 
         Stream.of(
@@ -188,8 +189,8 @@ public abstract class InfoRegisters {
                 sources.explosion(null, null), sources.wither(), sources.drown(),
                 sources.starve()
         ).forEach(source -> {
-            float f = DamageSourceUtil.test(player, source, 1);
-            consumer.accept(source.getMsgId(), 1 - f);
+            float f = DamageSourceUtil.test(player, source, baseDamage);
+            consumer.accept(source.getMsgId(), (baseDamage - f) / baseDamage);
         });
     }
 

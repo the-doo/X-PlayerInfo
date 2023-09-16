@@ -16,7 +16,7 @@ public class DamageSourceUtil {
     private DamageSourceUtil() {
     }
 
-    public static float test(ServerPlayer player, DamageSource source, int damage) {
+    public static float test(ServerPlayer player, DamageSource source, float damage) {
         DamageSourceUtil.startTest();
         LivingEntityAccessor.get(player).x_PlayerInfo$actuallyHurt(source, damage);
         return DamageSourceUtil.endTest();

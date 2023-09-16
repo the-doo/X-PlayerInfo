@@ -41,8 +41,14 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
     @Shadow
     public abstract FoodData getFoodData();
 
+    @Shadow
+    public abstract float getAbsorptionAmount();
+
     @Unique
     private long x_PlayerInfo$collectTime;
+
+    @Unique
+    private Float testDamage;
 
     @Unique
     private final Map<String, List<InfoGroupItems>> x_PlayerInfo$otherPlayerInfo = Maps.newConcurrentMap();
@@ -80,10 +86,22 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
         }
     }
 
-    @Inject(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V"), cancellable = true, require = 1)
+    @ModifyArg(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(FF)F", ordinal = 0), index = 0, require = 1)
+    private float testDamageBeforeAbsorption(float g) {
+        if (DamageSourceUtil.isTest()) {
+            testDamage = g + getAbsorptionAmount();
+        }
+        return g;
+    }
+
+    @Inject(method = "actuallyHurt", at = {
+            @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;causeFoodExhaustion(F)V"),
+            @At(value = "RETURN", ordinal = 1)
+    }, cancellable = true, require = 1)
     private void testActuallyHurtReturn(DamageSource damageSource, float f, CallbackInfo ci) {
         if (DamageSourceUtil.isTest()) {
-            DamageSourceUtil.setDamage(f);
+            DamageSourceUtil.setDamage(testDamage == null ? f : testDamage);
+            testDamage = null;
             ci.cancel();
         }
     }
