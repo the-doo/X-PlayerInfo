@@ -135,7 +135,7 @@ public class InfoScreen extends Screen {
         printString(guiGraphics, player.getName(), 10);
         InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, 40, minY.getAndAdd(interval), 30, (float) (51) - i, (float) (75 - 50) - j, player);
         printString(guiGraphics, InfoGroupItems.FORMAT.format(player.getBbHeight()), minY.getAndAdd(interval) - 2);
-        printString(guiGraphics, (minecraft.isLocalServer() ? 0 : minecraft.getCurrentServer().ping) + "ms", minY.getAndAdd(interval) - 2);
+        printString(guiGraphics, (minecraft.isLocalServer() ? 0 : playerInfo.getLatency()) + "ms", minY.getAndAdd(interval) - 2);
 
         if (playerInfo != null) {
             MutableComponent component = playerInfo.getGameMode().getShortDisplayName().copy()
