@@ -15,8 +15,10 @@ public class XpMixin {
     @Shadow
     private int value;
 
-    @Inject(method = "playerTouch", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;repairPlayerItems(Lnet/minecraft/world/entity/player/Player;I)I"))
+    @Inject(method = "playerTouch", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/world/entity/ExperienceOrb;repairPlayerItems(Lnet/minecraft/world/entity/player/Player;I)I"))
     private void modifyXp(Player player, CallbackInfo ci) {
-        value = value < 1 ? value : (int) (value * (1 + ExtractAttributes.get(player.getAttributes(), ExtractAttributes.XP_BONUS)));
+        if (value > 0) {
+            value = (int) (value * (1 + ExtractAttributes.get(player.getAttributes(), ExtractAttributes.XP_BONUS)));
+        }
     }
 }
