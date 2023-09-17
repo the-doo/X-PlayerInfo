@@ -65,7 +65,7 @@
   "attribute.extend.experience_progress": "Level Progress",
   "attribute.extend.experience_progress.tip": "Level Progress",
   "attribute.name.extend.xp_bonus": "Experience bonus",
-  "attribute.name.extend.xp_bonus.tip": "Extra experience bonus, applies to all experience sources. Special Note, the final xp ignores decimal(won't round), like 1(= 1 + 1 * 0.5).Only available to players.",
+  "attribute.name.extend.xp_bonus.tip": "Extra experience bonus, takes effect on picking up experience balls. Special Note, the final xp ignores decimal(won't round), like 1(= 1 + 1 * 0.5).Only available to players.",
   "attribute.extend.pick_range": "Pick Range",
   "attribute.extend.pick_range.tip": "Pick Range",
   "attribute.extend.attack_range": "Attack Range",

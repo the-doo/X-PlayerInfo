@@ -65,7 +65,7 @@
   "attribute.extend.experience_progress": "等级进度",
   "attribute.extend.experience_progress.tip": "等级进度",
   "attribute.name.extend.xp_bonus": "经验加成",
-  "attribute.name.extend.xp_bonus.tip": "额外的经验加成，生效于所有经验来源。特别说明，最终值会忽略小数(不会四舍五入)，如1(= 1 + 1 * 0.5)。仅对玩家有效。",
+  "attribute.name.extend.xp_bonus.tip": "额外的经验加成，生效于拾取经验球。特别说明，最终值会忽略小数(不会四舍五入)，如1(= 1 + 1 * 0.5)。仅对玩家有效。",
   "attribute.extend.pick_range": "触及范围",
   "attribute.extend.pick_range.tip": "触及范围",
   "attribute.extend.attack_range": "攻击范围",

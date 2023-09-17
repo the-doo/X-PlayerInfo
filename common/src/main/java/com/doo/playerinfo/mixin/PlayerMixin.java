@@ -106,11 +106,6 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
         }
     }
 
-    @ModifyVariable(method = "giveExperiencePoints", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
-    private int modifyXp(int value) {
-        return value <= 0 ? value : (int) (value * (1 + ExtractAttributes.get(getAttributes(), ExtractAttributes.XP_BONUS)));
-    }
-
     @ModifyVariable(method = "setAbsorptionAmount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getEntityData()Lnet/minecraft/network/syncher/SynchedEntityData;"), ordinal = 0, argsOnly = true)
     private float modifyAbsorptionBonus(float value) {
         return value <= 0 ? value : (int) (value * (1 + ExtractAttributes.get(getAttributes(), ExtractAttributes.ABSORPTION_BONUS)));
