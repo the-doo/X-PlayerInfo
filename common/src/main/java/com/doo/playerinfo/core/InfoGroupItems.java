@@ -24,6 +24,8 @@ public class InfoGroupItems {
 
     private static final String CLIENT_SIZE_FLAG = "$CLIENT_SIDE$";
 
+    private static final String VALUE_KEY_FLAG = "$VALUE_KEY$";
+
     public static final DecimalFormat FORMAT = new DecimalFormat("#.###");
 
     private final String group;
@@ -78,12 +80,12 @@ public class InfoGroupItems {
         return add(key, value, false);
     }
 
-    public InfoGroupItems add(String key, Object value, boolean percentageable) {
+    public InfoGroupItems add(String key, Object value, boolean percentage) {
         if (hasAttach && value instanceof Number n) {
             value = addAttach(key, n.doubleValue());
         }
 
-        if (percentageable && value instanceof Number n) {
+        if (percentage && value instanceof Number n) {
             sortedItems.add(Pair.of(key, FORMAT.format(n.doubleValue() * 100) + "%"));
         } else {
             sortedItems.add(Pair.of(key, value));
@@ -108,15 +110,16 @@ public class InfoGroupItems {
         return addAttr(attribute, false);
     }
 
-    public InfoGroupItems addAttr(Attribute attribute, boolean percentageable) {
+    public InfoGroupItems addAttr(Attribute attribute, boolean percentage) {
         if (!attributes.hasAttribute(attribute)) {
-            add(attribute.getDescriptionId(), 0, percentageable);
+            add(attribute.getDescriptionId(), 0, percentage);
             return this;
         }
-        add(attribute.getDescriptionId(), attributes.getValue(attribute), percentageable);
+        add(attribute.getDescriptionId(), attributes.getValue(attribute), percentage);
         return this;
     }
 
+    // send from server
     public CompoundTag toNBT() {
         CompoundTag tag = new CompoundTag();
         ListTag items = new ListTag();
@@ -139,6 +142,7 @@ public class InfoGroupItems {
         return tag;
     }
 
+    // handle client size
     public static InfoGroupItems fromNBT(CompoundTag tag) {
         String group = tag.getAllKeys().stream().findFirst().orElse("");
         ListTag list = tag.getList(group, Tag.TAG_COMPOUND);
@@ -149,15 +153,21 @@ public class InfoGroupItems {
         for (Tag t : list) {
             ct = (CompoundTag) t;
             key = ct.getAllKeys().stream().findFirst().orElse("");
-            Object value = ct.getString(key);
-            if (value.equals(CLIENT_SIZE_FLAG)) {
-                value = getFromClient(key).toString();
-            } else if (((String) value).isEmpty()) {
-                value = ct.getBoolean(key);
-            }
-            items.add(key, value);
+            items.add(key, parseValue(ct, key));
         }
         return items;
+    }
+
+    private static String parseValue(CompoundTag ct, String key) {
+        String value = ct.getString(key);
+        if (value.startsWith(VALUE_KEY_FLAG)) {
+            value = value.replace(VALUE_KEY_FLAG, "");
+        } else if (value.equals(CLIENT_SIZE_FLAG)) {
+            value = getFromClient(key).toString();
+        } else if (value.isEmpty()) {
+            value = String.valueOf(ct.getBoolean(key));
+        }
+        return value;
     }
 
     public String getGroup() {
@@ -181,6 +191,11 @@ public class InfoGroupItems {
 
     public InfoGroupItems addClientSideFlag(String key) {
         add(key, CLIENT_SIZE_FLAG, false);
+        return this;
+    }
+
+    public InfoGroupItems addValueKeyFlag(String key, String valueKey) {
+        add(key, VALUE_KEY_FLAG + valueKey, false);
         return this;
     }
 
