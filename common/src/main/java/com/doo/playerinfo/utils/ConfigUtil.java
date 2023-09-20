@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
 

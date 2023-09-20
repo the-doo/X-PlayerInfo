@@ -1,5 +1,6 @@
 package com.doo.playerinfo.utils;
 
+import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.core.InfoItemCollector;
@@ -8,6 +9,7 @@ import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
@@ -21,6 +23,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.food.FoodData;
@@ -34,9 +37,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.ObjDoubleConsumer;
 import java.util.function.ToDoubleFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.doo.playerinfo.consts.Const.MINECRAFT_NAME;
+import static com.doo.playerinfo.consts.Const.ATTR_NAME;
+import static com.doo.playerinfo.consts.Const.MINECRAFT_ID;
 
 public abstract class InfoRegisters {
 
@@ -47,15 +52,13 @@ public abstract class InfoRegisters {
 
     private static final Map<String, Map<String, Map<String, List<ValueAttach>>>> MOD_GROUPS_ATTACH_MAP = Maps.newHashMap();
 
-    static DamageSource damageTest;
-
-    private static DamageSource arrowTest;
-
     private static final Map<String, MobType> MOB_TYPE_MAP = new HashMap<>();
 
     private static final Stat<ResourceLocation> DEATH_STAT = Stats.CUSTOM.get(Stats.DEATHS);
     private static final Stat<ResourceLocation> PLAYER_KILLS_STAT = Stats.CUSTOM.get(Stats.PLAYER_KILLS);
     private static final Stat<ResourceLocation> MOB_KILLS_STAT = Stats.CUSTOM.get(Stats.MOB_KILLS);
+    static DamageSource damageTest;
+    private static DamageSource arrowTest;
 
     private InfoRegisters() {
     }
@@ -73,7 +76,7 @@ public abstract class InfoRegisters {
         MOB_TYPE_MAP.put("illager", MobType.ILLAGER);
         MOB_TYPE_MAP.put("water", MobType.WATER);
 
-        InfoItemCollector.register(MINECRAFT_NAME, player -> {
+        InfoItemCollector.register(XPlayerInfo.name(MINECRAFT_ID), player -> {
             if (damageTest == null) {
                 damageTest = player.level().damageSources().mobAttack(null);
                 Arrow arrow = new Arrow(player.level(), player);
@@ -83,7 +86,7 @@ public abstract class InfoRegisters {
 
             List<InfoGroupItems> sorted = Lists.newArrayList();
             AttributeMap attributes = player.getAttributes();
-            Map<String, Map<String, List<ValueAttach>>> map = MOD_GROUPS_ATTACH_MAP.getOrDefault(MINECRAFT_NAME, Collections.emptyMap());
+            Map<String, Map<String, List<ValueAttach>>> map = MOD_GROUPS_ATTACH_MAP.getOrDefault(MINECRAFT_ID, Collections.emptyMap());
 
             String group = "base";
             sorted.add(InfoGroupItems.group(group).attrMap(attributes).canAttach(player, map.getOrDefault(group, Collections.emptyMap()))
@@ -179,12 +182,31 @@ public abstract class InfoRegisters {
             return sorted;
         });
 
-        regisAttach("Minecraft", "base", ExtractAttributes.HEALING_PER_BONUS.getDescriptionId(), player -> {
+        regisAttrTab();
+
+        regisAttach(MINECRAFT_ID, "base", ExtractAttributes.HEALING_PER_BONUS.getDescriptionId(), player -> {
             MobEffectInstance effect = player.getEffect(MobEffects.REGENERATION);
             if (effect != null) {
                 return 20D / (50 >> effect.getAmplifier());
             }
             return 0;
+        });
+    }
+
+    private static void regisAttrTab() {
+        InfoItemCollector.register(ATTR_NAME, player -> {
+            List<InfoGroupItems> sorted = Lists.newArrayList();
+            AttributeMap attributes = player.getAttributes();
+            Map<String, List<ResourceLocation>> modAttrMap = BuiltInRegistries.ATTRIBUTE.keySet().stream()
+                    .collect(Collectors.groupingBy(ResourceLocation::getNamespace));
+            modAttrMap.forEach((k, list) -> {
+                InfoGroupItems group = InfoGroupItems.groupKey(XPlayerInfo.name(k)).attrMap(attributes);
+                list.stream().map(BuiltInRegistries.ATTRIBUTE::get)
+                        .filter(attributes::hasAttribute)
+                        .forEach(a -> group.addAttr(a, a instanceof RangedAttribute r && r.getMaxValue() == 1));
+                sorted.add(group);
+            });
+            return sorted;
         });
     }
 
@@ -207,11 +229,11 @@ public abstract class InfoRegisters {
     }
 
     public static void infoForgeAttach(String group, String key, ToDoubleFunction<Player> valueGetter) {
-        regisAttach("Minecraft", group, key, valueGetter::applyAsDouble);
+        regisAttach(MINECRAFT_ID, group, key, valueGetter::applyAsDouble);
     }
 
-    public static void regisAttach(String modName, String group, String key, ValueAttach attach) {
-        MOD_GROUPS_ATTACH_MAP.compute(modName, (k, v) -> {
+    public static void regisAttach(String modId, String group, String key, ValueAttach attach) {
+        MOD_GROUPS_ATTACH_MAP.compute(modId, (k, v) -> {
             if (v == null) {
                 v = Maps.newHashMap();
             }

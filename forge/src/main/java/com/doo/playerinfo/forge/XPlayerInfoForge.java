@@ -24,6 +24,7 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -45,7 +46,9 @@ public class XPlayerInfoForge {
     );
 
     public XPlayerInfoForge() {
-        XPlayerInfo.init(0);
+        XPlayerInfo.init(0,
+                id -> ModList.get().getModContainerById(id)
+                        .map(mod -> mod.getModInfo().getDisplayName()).orElse(id));
         InfoRegisters.infoForgeAttach("damage", Const.CRITICAL_HITS, p -> {
             CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
             if (hit != null) {

@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,12 +18,14 @@ import net.minecraft.network.FriendlyByteBuf;
 public class XPlayerInfoFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        XPlayerInfo.init(1);
+        XPlayerInfo.init(1,
+                id -> FabricLoader.getInstance().getModContainer(id)
+                .map(mod -> mod.getMetadata().getName()).orElse(id));
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> InfoItemCollector.start(server.getPlayerList().getPlayers(), (player, packet) -> ServerPlayNetworking.send(player, new FabricInfoPack(packet))));
         ServerLifecycleEvents.SERVER_STOPPED.register(server -> InfoItemCollector.clean());
 
-        ExtractAttributes.fabricRegister(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, a.getDescriptionId(), a));
+        ExtractAttributes.fabricRegister(a -> Registry.register(BuiltInRegistries.ATTRIBUTE, XPlayerInfo.MOD_ID + ":" + a.getDescriptionId(), a));
     }
 
     public static class FabricInfoPack implements FabricPacket {

@@ -1,5 +1,6 @@
 package com.doo.playerinfo.gui;
 
+import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.consts.Const;
 import com.doo.playerinfo.core.InfoGroupItems;
 import com.doo.playerinfo.interfaces.OtherPlayerInfoFieldInjector;
@@ -27,7 +28,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.List;
 import java.util.Map;
 
-import static com.doo.playerinfo.consts.Const.MINECRAFT_NAME;
+import static com.doo.playerinfo.consts.Const.MINECRAFT_ID;
 
 @Environment(EnvType.CLIENT)
 public class InfoScreen extends Screen {
@@ -85,7 +86,7 @@ public class InfoScreen extends Screen {
             list.update(font, b.getMessage(), map.get(b.getMessage().getString()), toTop);
             text.setMessage(collectTime());
         };
-        TabListWidget tags = new TabListWidget(Lists.newArrayList(map.keySet()), MINECRAFT_NAME, buttonPress, font,
+        TabListWidget tags = new TabListWidget(Lists.newArrayList(map.keySet()), XPlayerInfo.name(MINECRAFT_ID), buttonPress, font,
                 82, 15, endW, 15, Component.empty());
         addRenderableWidget(tags);
 

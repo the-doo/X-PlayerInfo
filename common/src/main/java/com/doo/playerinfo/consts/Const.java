@@ -3,7 +3,8 @@ package com.doo.playerinfo.consts;
 import net.minecraft.resources.ResourceLocation;
 
 public final class Const {
-    public static final String MINECRAFT_NAME = "Minecraft";
+    public static final String MINECRAFT_ID = "minecraft";
+    public static final String ATTR_NAME = "Attributes";
     public static final String ID = "player_info";
     public static final String DAY = "info.world.day";
     public static final String NOON = "info.world.noon";
@@ -30,7 +31,6 @@ public final class Const {
     public static final String DAMAGE_REDUCTION_BY_ARMOR = "attribute.extend.damage_reduction_by_armor";
     public static final String JUMP_POWER = "attribute.extend.jump_power";
     public static final String JUMP_COUNT = "attribute.extend.jump_count";
-    public static final String COLLECT_TIME = "info.collect.time";
     public static final String SCORE = "info.stat.score";
     public static final String DEATH_COUNT = "info.stat.death_count";
     public static final String PLAYER_KILL_COUNT = "info.stat.player_killed";

@@ -11,6 +11,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ExtractAttributes {
@@ -36,23 +38,29 @@ public class ExtractAttributes {
     public static final Attribute FOOD_BONUS = new RangedAttribute("attribute.name.extend.food_bonus", 0, 0, 1024);
     public static final Attribute TOUCH_RANGE_BONUS = new RangedAttribute("attribute.name.extend.touch_range_bonus", 0, 0, 1024);
 
+    public static final Set<Attribute> TOTAL_ATTRS = new HashSet<>();
+
+    static {
+        TOTAL_ATTRS.add(CRIT_RATE);
+        TOTAL_ATTRS.add(CRIT_DAMAGE);
+        TOTAL_ATTRS.add(XP_BONUS);
+        TOTAL_ATTRS.add(ARMOR_PENETRATION);
+        TOTAL_ATTRS.add(HEALING_BONUS);
+        TOTAL_ATTRS.add(HEALING_PER_BONUS);
+        TOTAL_ATTRS.add(ABSORPTION_BONUS);
+        TOTAL_ATTRS.add(DAMAGE_PERCENTAGE_BONUS);
+        TOTAL_ATTRS.add(BOW_USING_SPEED);
+        TOTAL_ATTRS.add(BOW_DAMAGE_BONUS);
+        TOTAL_ATTRS.add(ATTACK_HEALING);
+        TOTAL_ATTRS.add(DAMAGE_PERCENTAGE_HEALING);
+        TOTAL_ATTRS.add(JUMP_STRENGTH_BONUS);
+        TOTAL_ATTRS.add(JUMP_COUNT);
+        TOTAL_ATTRS.add(FOOD_BONUS);
+        TOTAL_ATTRS.add(TOUCH_RANGE_BONUS);
+    }
+
     public static void register(Consumer<Attribute> attributeConsumer) {
-        attributeConsumer.accept(CRIT_RATE);
-        attributeConsumer.accept(CRIT_DAMAGE);
-        attributeConsumer.accept(XP_BONUS);
-        attributeConsumer.accept(ARMOR_PENETRATION);
-        attributeConsumer.accept(HEALING_BONUS);
-        attributeConsumer.accept(HEALING_PER_BONUS);
-        attributeConsumer.accept(ABSORPTION_BONUS);
-        attributeConsumer.accept(DAMAGE_PERCENTAGE_BONUS);
-        attributeConsumer.accept(BOW_USING_SPEED);
-        attributeConsumer.accept(BOW_DAMAGE_BONUS);
-        attributeConsumer.accept(ATTACK_HEALING);
-        attributeConsumer.accept(DAMAGE_PERCENTAGE_HEALING);
-        attributeConsumer.accept(JUMP_STRENGTH_BONUS);
-        attributeConsumer.accept(JUMP_COUNT);
-        attributeConsumer.accept(FOOD_BONUS);
-        attributeConsumer.accept(TOUCH_RANGE_BONUS);
+        TOTAL_ATTRS.forEach(attributeConsumer);
     }
 
     public static void createAttrToLiving(AttributeSupplier.Builder builder) {
