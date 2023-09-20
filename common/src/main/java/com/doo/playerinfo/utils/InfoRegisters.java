@@ -30,6 +30,7 @@ import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -200,11 +201,19 @@ public abstract class InfoRegisters {
             Map<String, List<ResourceLocation>> modAttrMap = BuiltInRegistries.ATTRIBUTE.keySet().stream()
                     .collect(Collectors.groupingBy(ResourceLocation::getNamespace));
             modAttrMap.forEach((k, list) -> {
+                MutableBoolean exist = new MutableBoolean();
                 InfoGroupItems group = InfoGroupItems.groupKey(XPlayerInfo.name(k)).attrMap(attributes);
                 list.stream().map(BuiltInRegistries.ATTRIBUTE::get)
                         .filter(attributes::hasAttribute)
+                        .peek(a -> {
+                            if (exist.isFalse()) {
+                                exist.setTrue();
+                            }
+                        })
                         .forEach(a -> group.addAttr(a, a instanceof RangedAttribute r && r.getMaxValue() == 1));
-                sorted.add(group);
+                if (exist.isTrue()) {
+                    sorted.add(group);
+                }
             });
             return sorted;
         });
