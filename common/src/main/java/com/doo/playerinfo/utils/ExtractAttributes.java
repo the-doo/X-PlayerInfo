@@ -20,7 +20,7 @@ public class ExtractAttributes {
     private ExtractAttributes() {
     }
 
-    public static final Attribute CRIT_DAMAGE = new RangedAttribute("attribute.name.extend.attack.crit_damage", 0, 0, 1024);
+    public static final Attribute CRIT_DAMAGE = new RangedAttribute("attribute.name.extend.attack.crit_damage", 0, -1024, 1024);
     public static final Attribute CRIT_RATE = new RangedAttribute("attribute.name.extend.attack.crit_rate", 0, 0, 1);
     public static final Attribute XP_BONUS = new RangedAttribute("attribute.name.extend.xp_bonus", 0, 0, 1024);
     public static final Attribute ARMOR_PENETRATION = new RangedAttribute("attribute.name.extend.armor_penetration", 0, 0, 1);

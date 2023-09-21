@@ -87,7 +87,7 @@ public class DamageSourceUtil {
         // DAMAGE_PERCENTAGE_BONUS
         v = ExtractAttributes.get(attributes, ExtractAttributes.CRIT_RATE);
         amount = attacker.getRandom().nextDouble() >= v ||
-                (v = ExtractAttributes.get(attributes, ExtractAttributes.CRIT_DAMAGE)) != 0 ? amount : amount * (1 + (float) v);
+                (v = ExtractAttributes.get(attributes, ExtractAttributes.CRIT_DAMAGE)) == 0 ? amount : amount * (1 + (float) v);
         return amount;
     }
 
