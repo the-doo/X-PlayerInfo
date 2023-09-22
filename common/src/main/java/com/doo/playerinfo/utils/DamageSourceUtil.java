@@ -88,7 +88,7 @@ public class DamageSourceUtil {
         v = ExtractAttributes.get(attributes, ExtractAttributes.CRIT_RATE);
         amount = attacker.getRandom().nextDouble() >= v ||
                 (v = ExtractAttributes.get(attributes, ExtractAttributes.CRIT_DAMAGE)) == 0 ? amount : amount * (1 + (float) v);
-        return amount;
+        return Math.max(amount, 0);
     }
 
     public static void setHealingAddition(DamageSource source, float amount) {
