@@ -18,6 +18,7 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -49,13 +50,7 @@ public class XPlayerInfoForge {
         XPlayerInfo.init(0,
                 id -> ModList.get().getModContainerById(id)
                         .map(mod -> mod.getModInfo().getDisplayName()).orElse(id));
-        InfoRegisters.infoForgeAttach("damage", Const.CRITICAL_HITS, p -> {
-            CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
-            if (hit != null) {
-                return hit.getDamageModifier() - hit.getOldDamageModifier();
-            }
-            return 0;
-        });
+        attachInfo();
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -67,6 +62,20 @@ public class XPlayerInfoForge {
             contextSupplier.get().enqueueWork(() -> ClientSideHandler.handle(packet));
             contextSupplier.get().setPacketHandled(true);
         }));
+    }
+
+    private static void attachInfo() {
+        InfoRegisters.infoForgeAttach("damage", Const.CRITICAL_HITS, p -> {
+            CriticalHitEvent hit = ForgeHooks.getCriticalHit(p, p, true, 1.5F);
+            if (hit != null) {
+                return hit.getDamageModifier() - hit.getOldDamageModifier();
+            }
+            return 0;
+        });
+        InfoRegisters.infoForgeAttach("xp", ExtractAttributes.XP_BONUS.getDescriptionId(), p -> {
+            int drop = ForgeEventFactory.getExperienceDrop(null, p, 100);
+            return drop <= 100 ? 0 : (drop - 100D) / 100;
+        });
     }
 
     @SubscribeEvent
