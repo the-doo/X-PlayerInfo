@@ -90,6 +90,18 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         }
     }
 
+    @Inject(method = "setAbsorptionAmount", at = @At(value = "HEAD"), cancellable = true, require = 1)
+    private void testIgnoredSetAbsorptionAmount(float f, CallbackInfo ci) {
+        if (DamageSourceUtil.isTest()) {
+            ci.cancel();
+        }
+    }
+
+    @ModifyVariable(method = "setAbsorptionAmount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;internalSetAbsorptionAmount(F)V"), ordinal = 0, argsOnly = true)
+    private float modifyAbsorptionBonus(float value) {
+        return value <= 0 ? value : (int) (value * (1 + ExtractAttributes.get(getAttributes(), ExtractAttributes.ABSORPTION_BONUS)));
+    }
+
     @Inject(method = "getJumpPower", at = @At(value = "RETURN"), cancellable = true)
     private void injectedGetJumpPower(CallbackInfoReturnable<Float> cir) {
         double v = ExtractAttributes.get(getAttributes(), ExtractAttributes.JUMP_STRENGTH_BONUS);

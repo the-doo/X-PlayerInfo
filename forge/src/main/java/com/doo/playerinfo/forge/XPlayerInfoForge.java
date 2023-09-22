@@ -29,22 +29,28 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.network.ChannelBuilder;
+import net.minecraftforge.network.NetworkDirection;
+import net.minecraftforge.network.SimpleChannel;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(XPlayerInfo.MOD_ID)
 public class XPlayerInfoForge {
 
-    private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(XPlayerInfo.MOD_ID, "info_pack_sender"),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );
+    private static final int PROTOCOL_VERSION = 1;
+    public static final SimpleChannel INSTANCE = ChannelBuilder
+            .named(new ResourceLocation(XPlayerInfo.MOD_ID, "info_pack_sender"))
+            .networkProtocolVersion(PROTOCOL_VERSION)
+            .acceptedVersions((status, i) -> i == PROTOCOL_VERSION)
+            .simpleChannel()
+            .messageBuilder(InfoUpdatePacket.class, PROTOCOL_VERSION, NetworkDirection.PLAY_TO_CLIENT)
+            .decoder(InfoUpdatePacket::new)
+            .encoder(InfoUpdatePacket::write)
+            .consumerNetworkThread((packet, context) -> {
+                context.enqueueWork(() -> ClientSideHandler.handle(packet));
+            })
+            .add();
 
     public XPlayerInfoForge() {
         XPlayerInfo.init(0,
@@ -58,10 +64,10 @@ public class XPlayerInfoForge {
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        INSTANCE.registerMessage(0, InfoUpdatePacket.class, InfoUpdatePacket::write, InfoUpdatePacket::new, ((packet, contextSupplier) -> {
-            contextSupplier.get().enqueueWork(() -> ClientSideHandler.handle(packet));
-            contextSupplier.get().setPacketHandled(true);
-        }));
+//        INSTANCE.messageBuilder(InfoUpdatePacket.class, InfoUpdatePacket::write, InfoUpdatePacket::new, ((packet, contextSupplier) -> {
+//            contextSupplier.get().enqueueWork(() -> ClientSideHandler.handle(packet));
+//            contextSupplier.get().setPacketHandled(true);
+//        }));
     }
 
     private static void attachInfo() {
@@ -88,7 +94,7 @@ public class XPlayerInfoForge {
     @SubscribeEvent
     public void onServerStarted(ServerStartedEvent event) {
         InfoItemCollector.start(event.getServer().getPlayerList().getPlayers(),
-                (player, packet) -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet));
+                (player, packet) -> INSTANCE.send(packet, player.connection.getConnection()));
     }
 
 

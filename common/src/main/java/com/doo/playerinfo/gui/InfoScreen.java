@@ -79,7 +79,7 @@ public class InfoScreen extends Screen {
         InfoItemsWidget list = new InfoItemsWidget(font, 80, 35, endW, height - 60, Component.empty());
         addRenderableWidget(list);
 
-        StringWidget text = new StringWidget(125, height - 15, 0, 9, collectTime(), font);
+        StringWidget text = new StringWidget(70, height - 15, 100, 10, collectTime(), font);
         Button.OnPress buttonPress = b -> {
             boolean toTop = selected != b;
             selected = b;
@@ -128,13 +128,13 @@ public class InfoScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int i, int j, float f) {
-        renderBackground(guiGraphics);
+        renderBackground(guiGraphics, i, j, f);
 
         MutableInt minY = new MutableInt(80);
         int interval = 12;
 
         printString(guiGraphics, player.getName(), 10);
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, 40, minY.getAndAdd(interval), 30, (float) (51) - i, (float) (75 - 50) - j, player);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, 4, 20, 75, minY.getAndAdd(interval), 30, 0.0625F, i, j, this.minecraft.player);
         printString(guiGraphics, InfoGroupItems.FORMAT.format(player.getBbHeight()), minY.getAndAdd(interval) - 2);
         printString(guiGraphics, (minecraft.isLocalServer() ? 0 : playerInfo.getLatency()) + "ms", minY.getAndAdd(interval) - 2);
 

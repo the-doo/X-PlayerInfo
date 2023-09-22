@@ -65,13 +65,6 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
         FoodDataAccessor.setFoodBonus(getFoodData(), () -> ExtractAttributes.get(getAttributes(), ExtractAttributes.FOOD_BONUS));
     }
 
-    @Inject(method = "setAbsorptionAmount", at = @At(value = "HEAD"), cancellable = true, require = 1)
-    private void testIgnoredSetAbsorptionAmount(float f, CallbackInfo ci) {
-        if (DamageSourceUtil.isTest()) {
-            ci.cancel();
-        }
-    }
-
     @Inject(method = "hurtArmor", at = @At(value = "HEAD"), cancellable = true, require = 1)
     private void testIgnoredHurtArmor(DamageSource damageSource, float f, CallbackInfo ci) {
         if (DamageSourceUtil.isTest()) {
@@ -104,11 +97,6 @@ public abstract class PlayerMixin extends LivingEntity implements OtherPlayerInf
             testDamage = null;
             ci.cancel();
         }
-    }
-
-    @ModifyVariable(method = "setAbsorptionAmount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getEntityData()Lnet/minecraft/network/syncher/SynchedEntityData;"), ordinal = 0, argsOnly = true)
-    private float modifyAbsorptionBonus(float value) {
-        return value <= 0 ? value : (int) (value * (1 + ExtractAttributes.get(getAttributes(), ExtractAttributes.ABSORPTION_BONUS)));
     }
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;doPostDamageEffects(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/Entity;)V"))
