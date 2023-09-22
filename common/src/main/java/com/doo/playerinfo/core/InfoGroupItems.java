@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -161,7 +162,7 @@ public class InfoGroupItems {
     private static String parseValue(CompoundTag ct, String key) {
         String value = ct.getString(key);
         if (value.startsWith(VALUE_KEY_FLAG)) {
-            value = value.replace(VALUE_KEY_FLAG, "");
+            value = Component.translatable(value.replace(VALUE_KEY_FLAG, "")).getString();
         } else if (value.equals(CLIENT_SIZE_FLAG)) {
             value = getFromClient(key).toString();
         } else if (value.isEmpty()) {
