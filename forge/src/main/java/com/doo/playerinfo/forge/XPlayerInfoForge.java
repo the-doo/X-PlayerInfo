@@ -73,7 +73,7 @@ public class XPlayerInfoForge {
             return 0;
         });
         InfoRegisters.infoForgeAttach("xp", ExtractAttributes.XP_BONUS.getDescriptionId(), p -> {
-            int drop = ForgeEventFactory.getExperienceDrop(null, p, 100);
+            int drop = ForgeEventFactory.getExperienceDrop(p, p, 100);
             return drop <= 100 ? 0 : (drop - 100D) / 100;
         });
     }
