@@ -21,13 +21,13 @@ public class DamageSourceUtil {
     }
 
     public static float test(ServerPlayer player, DamageSource source, float damage, Supplier<Float> defaultGetter) {
+        startTest();
         if (!trueable) {
-            return defaultGetter.get();
+            setDamage(defaultGetter.get());
+        } else {
+            LivingEntityAccessor.get(player).x_PlayerInfo$actuallyHurt(source, damage);
         }
-
-        DamageSourceUtil.startTest();
-        LivingEntityAccessor.get(player).x_PlayerInfo$actuallyHurt(source, damage);
-        return DamageSourceUtil.endTest();
+        return endTest();
     }
 
     public static void startTest() {
