@@ -5,6 +5,7 @@ import com.doo.playerinfo.interfaces.LivingEntityAccessor;
 import com.doo.playerinfo.utils.DamageSourceUtil;
 import com.doo.playerinfo.utils.ExtractAttributes;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -134,6 +135,14 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityAc
         }
 
         return f * (1 + (float) getAttributeValue(ExtractAttributes.HEALING_BONUS));
+    }
+
+    @Inject(method = "canBeAffected", at = @At(value = "HEAD"), cancellable = true, require = 1)
+    private void testIgnoredSetAbsorptionAmount(MobEffectInstance mobEffectInstance, CallbackInfoReturnable<Boolean> cir) {
+        if (DamageSourceUtil.isTest()) {
+            cir.setReturnValue(false);
+            cir.cancel();
+        }
     }
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V", ordinal = 2))
