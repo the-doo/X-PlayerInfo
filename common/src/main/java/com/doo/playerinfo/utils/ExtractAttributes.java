@@ -117,7 +117,7 @@ public class ExtractAttributes {
         }
 
         range += 1;
-        AABB newBox = box.inflate(range, 0, range);
+        AABB newBox = box.inflate(range, range / 2, range);
         for (Entity item : player.level().getEntities(player, newBox)) {
             if (item instanceof ItemEntity || item instanceof ExperienceOrb) {
                 item.playerTouch(player);
