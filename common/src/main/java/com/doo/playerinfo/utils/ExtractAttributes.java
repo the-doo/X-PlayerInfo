@@ -4,6 +4,7 @@ import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.consts.Const;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -119,9 +120,10 @@ public class ExtractAttributes {
         range += 1;
         AABB newBox = box.inflate(range, range / 2, range);
         for (Entity item : player.level().getEntities(player, newBox)) {
-            if (item instanceof ItemEntity || item instanceof ExperienceOrb) {
-                item.playerTouch(player);
+            if (item instanceof LivingEntity) {
+                continue;
             }
+            item.playerTouch(player);
         }
     }
 }
