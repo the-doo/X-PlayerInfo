@@ -3,11 +3,12 @@ package com.doo.playerinfo.utils;
 import com.doo.playerinfo.XPlayerInfo;
 import com.doo.playerinfo.consts.Const;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
@@ -111,17 +112,16 @@ public class ExtractAttributes {
 
     public static void playerTouchItems(Player player, AABB box) {
         double range = get(player.getAttributes(), ExtractAttributes.TOUCH_RANGE_BONUS);
-        if (range != 0) {
+        if (range == 0) {
             return;
         }
 
         range += 1;
         AABB newBox = box.inflate(range, 0, range);
         for (Entity item : player.level().getEntities(player, newBox)) {
-            if (item instanceof Monster) {
-                continue;
+            if (item instanceof ItemEntity || item instanceof ExperienceOrb) {
+                item.playerTouch(player);
             }
-            item.playerTouch(player);
         }
     }
 }
